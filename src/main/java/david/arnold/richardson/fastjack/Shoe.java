@@ -9,6 +9,12 @@ public class Shoe {
     private final int numCards;
     private final int numDecks;
 
+    // note: This is -1 if there are no burn cards.
+    private int indexOfLastBurnCard;
+
+    private int indexOfNextCardToBeDealt;
+    private int indexOfCutCard;
+
     private static final int SUITE_BITS_LEFT_SHIFT = 4;
     private static final byte SUITE_MASK = 0x03 << SUITE_BITS_LEFT_SHIFT;
     private static final byte CARD_SYMBOL_MASK = 0x0F;
@@ -18,7 +24,7 @@ public class Shoe {
         this.numDecks = rules.getNumDecks();
         this.numCards = numDecks * Rules.NUM_CARDS_PER_DECK;
         this.cards = createCards();
-        shuffle();
+        resetAndShuffle();
     }
 
     @Override
@@ -32,12 +38,30 @@ public class Shoe {
         return result.toString();
     }
 
+    public Rules getRules() {
+        return rules;
+    }
+
     public char getSuiteSymbol(int cardIndex) {
         return SUITE_SYMBOLS.charAt((cards[cardIndex] & SUITE_MASK) >> SUITE_BITS_LEFT_SHIFT);
     }
 
     public char getCardSymbol(int cardIndex) {
         return CARD_SYMBOLS.charAt((cards[cardIndex] & CARD_SYMBOL_MASK));
+    }
+
+    public boolean isAce(int cardIndex) {
+        return (cards[cardIndex] & CARD_SYMBOL_MASK) == 0;
+    }
+
+    public int getCardPointValue(int cardIndex) {
+        // card value is +1 because it's zero-based.
+        int cardValue = (cards[cardIndex] & CARD_SYMBOL_MASK) + 1;
+        return cardValue >= 10 ? 10 : cardValue;
+    }
+
+    public boolean hasCutCardBeenDrawn() {
+        return indexOfNextCardToBeDealt >= indexOfCutCard;
     }
 
     private byte[] createCards() {
@@ -59,7 +83,7 @@ public class Shoe {
         return (byte) ((byte) (suiteIndex << SUITE_BITS_LEFT_SHIFT) | cardValueIndex);
     }
 
-    private void shuffle() {
+    private void resetAndShuffle() {
         Randomness randomness = rules.getRandomness();
         for (int i = 0; i < numCards; i++) {
             int randomPosition = randomness.getRandomInt(numCards);
@@ -67,5 +91,20 @@ public class Shoe {
             cards[i] = cards[randomPosition];
             cards[randomPosition] = temp;
         }
+        this.indexOfNextCardToBeDealt = 0;
+        this.indexOfLastBurnCard = 0;
+        setCutCardIndex();
+        burnCards();
+    }
+
+    private void setCutCardIndex() {
+        // todo: make this random between the min and max
+        this.indexOfCutCard = numCards - rules.getMinNumCardsBehindCutCard();
+    }
+
+    private void burnCards() {
+        int numBurnCards = rules.getNumBurnCards();
+        this.indexOfLastBurnCard = numBurnCards - 1;
+        this.indexOfNextCardToBeDealt = numBurnCards;
     }
 }
