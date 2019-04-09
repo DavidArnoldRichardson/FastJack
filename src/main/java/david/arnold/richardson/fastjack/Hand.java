@@ -13,6 +13,15 @@ public abstract class Hand {
         numCardsInHand = 0;
     }
 
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < numCardsInHand; i++) {
+            builder.append(shoe.getCardForDisplay(indexesOfCards[i]));
+            builder.append(" ");
+        }
+        return builder.toString();
+    }
+
     public void reset() {
         numCardsInHand = 0;
     }
@@ -24,29 +33,18 @@ public abstract class Hand {
     protected int computeMinPointSum() {
         int sum = 0;
         for (int i = 0; i < numCardsInHand; i++) {
-            sum += shoe.getCardPointValue(i);
+            sum += shoe.getCardPointValue(indexesOfCards[i]);
         }
         return sum;
     }
 
     protected boolean hasAtLeastOneAce() {
         for (int i = 0; i < numCardsInHand; i++) {
-            if (shoe.isAce(i)) {
+            if (shoe.isAce(indexesOfCards[i])) {
                 return true;
             }
         }
         return false;
-    }
-
-    public int computeMaxPointSum() {
-        int minPointSum = computeMinPointSum();
-        if (!hasAtLeastOneAce()) {
-            return minPointSum;
-        }
-        if (minPointSum <= 11) {
-            return minPointSum + 10;
-        }
-        return minPointSum;
     }
 
     // returns true of the hand has an ace that can be 11

@@ -16,6 +16,15 @@ public class Rules {
     private int numBurnCards;
     private boolean isH17;
 
+    public static Rules getDefault() {
+        return new Rules(
+                6,
+                52,
+                52,
+                1,
+                true);
+    }
+
     public static Rules getWendover6D() {
         return new Rules(
                 6,
@@ -47,30 +56,50 @@ public class Rules {
         this.isH17 = isH17;
     }
 
+    public Randomness getRandomness() {
+        if (randomness == null) {
+            this.randomness = new Randomness(Randomness.generateRandomSeed());
+        }
+        return randomness;
+    }
+
     public int getNumDecks() {
         return numDecks;
+    }
+
+    public void setNumDecks(int numDecks) {
+        this.numDecks = numDecks;
     }
 
     public int getMinNumCardsBehindCutCard() {
         return minNumCardsBehindCutCard;
     }
 
+    public void setMinNumCardsBehindCutCard(int minNumCardsBehindCutCard) {
+        this.minNumCardsBehindCutCard = minNumCardsBehindCutCard;
+    }
+
     public int getMaxNumCardsBehindCutCard() {
         return maxNumCardsBehindCutCard;
+    }
+
+    public void setMaxNumCardsBehindCutCard(int maxNumCardsBehindCutCard) {
+        this.maxNumCardsBehindCutCard = maxNumCardsBehindCutCard;
     }
 
     public int getNumBurnCards() {
         return numBurnCards;
     }
 
+    public void setNumBurnCards(int numBurnCards) {
+        this.numBurnCards = numBurnCards;
+    }
+
     public boolean isH17() {
         return isH17;
     }
 
-    public Randomness getRandomness() {
-        if (randomness == null) {
-            this.randomness = new Randomness(Randomness.generateRandomSeed());
-        }
-        return randomness;
+    public void setH17(boolean h17) {
+        isH17 = h17;
     }
 }

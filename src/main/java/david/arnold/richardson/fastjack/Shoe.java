@@ -5,7 +5,7 @@ import static david.arnold.richardson.fastjack.Rules.*;
 public class Shoe {
 
     private Rules rules;
-    private final byte[] cards;
+    final byte[] cards;
     private final int numCards;
     private final int numDecks;
 
@@ -31,8 +31,7 @@ public class Shoe {
     public String toString() {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < numCards; i++) {
-            result.append(getCardSymbol(i));
-            result.append(getSuiteSymbol(i));
+            result.append(getCardForDisplay(i));
             result.append(" ");
         }
         return result.toString();
@@ -42,12 +41,16 @@ public class Shoe {
         return rules;
     }
 
-    public char getSuiteSymbol(int cardIndex) {
-        return SUITE_SYMBOLS.charAt((cards[cardIndex] & SUITE_MASK) >> SUITE_BITS_LEFT_SHIFT);
+    private String getSuiteSymbol(int cardIndex) {
+        return String.valueOf(SUITE_SYMBOLS.charAt((cards[cardIndex] & SUITE_MASK) >> SUITE_BITS_LEFT_SHIFT));
     }
 
-    public char getCardSymbol(int cardIndex) {
-        return CARD_SYMBOLS.charAt((cards[cardIndex] & CARD_SYMBOL_MASK));
+    private String getCardValueSymbol(int cardIndex) {
+        return String.valueOf(CARD_SYMBOLS.charAt((cards[cardIndex] & CARD_SYMBOL_MASK)));
+    }
+
+    public String getCardForDisplay(int cardIndex) {
+        return getCardValueSymbol(cardIndex) + getSuiteSymbol(cardIndex);
     }
 
     public boolean isAce(int cardIndex) {
@@ -58,6 +61,10 @@ public class Shoe {
         // card value is +1 because it's zero-based.
         int cardValue = (cards[cardIndex] & CARD_SYMBOL_MASK) + 1;
         return cardValue >= 10 ? 10 : cardValue;
+    }
+
+    public int getNumCards() {
+        return numCards;
     }
 
     public boolean hasCutCardBeenDrawn() {
@@ -77,7 +84,7 @@ public class Shoe {
         return cards;
     }
 
-    private byte createCard(
+    byte createCard(
             byte suiteIndex,
             byte cardValueIndex) {
         return (byte) ((byte) (suiteIndex << SUITE_BITS_LEFT_SHIFT) | cardValueIndex);
