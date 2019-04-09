@@ -109,8 +109,14 @@ public class Shoe {
     }
 
     private void setCutCardIndex() {
-        // todo: make this random between the min and max
-        this.indexOfCutCard = numCards - rules.getMinNumCardsBehindCutCard();
+        // Set them to the same value for a performance boost, and slightly less realism.
+        int minNumCardsBehindCutCard = rules.getMinNumCardsBehindCutCard();
+        if (minNumCardsBehindCutCard == rules.getMaxNumCardsBehindCutCard()) {
+            this.indexOfCutCard = numCards - 1 - minNumCardsBehindCutCard;
+        }
+
+        int range = rules.getMaxNumCardsBehindCutCard() - minNumCardsBehindCutCard;
+        this.indexOfCutCard = numCards - 1 - minNumCardsBehindCutCard + rules.getRandomness().getRandomInt(range);
     }
 
     private void burnCards() {
