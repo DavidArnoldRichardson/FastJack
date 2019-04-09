@@ -32,6 +32,8 @@ public abstract class HelperForTests {
         }
     }
 
+    // We override some of the cards, at the very back of the shoe,
+    // so we can use their indexes for tests.
     private void prepareCardsForTests(Shoe shoe) {
         byte suite = 0x00;
         byte cardValue = 9; // This is a ten, zero-based.

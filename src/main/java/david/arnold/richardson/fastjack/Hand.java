@@ -47,7 +47,7 @@ public abstract class Hand {
         return false;
     }
 
-    // returns true of the hand has an ace that can be 11
+    // returns true if the hand has an ace that can be 11
     public boolean isSoft() {
         if (!hasAtLeastOneAce()) {
             return false;

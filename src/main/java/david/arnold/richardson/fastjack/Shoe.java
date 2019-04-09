@@ -5,7 +5,11 @@ import static david.arnold.richardson.fastjack.Rules.*;
 public class Shoe {
 
     private Rules rules;
-    final byte[] cards;
+
+    // All the card values are stored here in this array. They never leave.
+    // All reference to the cards is done via the index into this array.
+    byte[] cards;
+
     private final int numCards;
     private final int numDecks;
 
