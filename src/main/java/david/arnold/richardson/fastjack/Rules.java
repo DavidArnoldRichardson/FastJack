@@ -15,6 +15,7 @@ public class Rules {
     private int maxNumCardsBehindCutCard;
     private int numBurnCards;
     private boolean isH17;
+    private int maxNumSplits;
 
     public static Rules getDefault() {
         return new Rules(
@@ -22,7 +23,8 @@ public class Rules {
                 52,
                 52,
                 1,
-                true);
+                true,
+                3);
     }
 
     public static Rules getWendover6D() {
@@ -31,7 +33,8 @@ public class Rules {
                 52,
                 78,
                 1,
-                true);
+                true,
+                3);
     }
 
     public static Rules getWendover1D() {
@@ -40,7 +43,8 @@ public class Rules {
                 13,
                 26,
                 1,
-                true);
+                true,
+                3);
     }
 
     public Rules(
@@ -48,12 +52,14 @@ public class Rules {
             int minNumCardsBehindCutCard,
             int maxNumCardsBehindCutCard,
             int numBurnCards,
-            boolean isH17) {
+            boolean isH17,
+            int maxNumSplits) {
         this.numDecks = numDecks;
         this.minNumCardsBehindCutCard = minNumCardsBehindCutCard;
         this.maxNumCardsBehindCutCard = maxNumCardsBehindCutCard;
         this.numBurnCards = numBurnCards;
         this.isH17 = isH17;
+        this.maxNumSplits = maxNumSplits;
     }
 
     public Randomness getRandomness() {
@@ -101,5 +107,13 @@ public class Rules {
 
     public void setH17(boolean h17) {
         isH17 = h17;
+    }
+
+    public int getMaxNumSplits() {
+        return maxNumSplits;
+    }
+
+    public void setMaxNumSplits(int maxNumSplits) {
+        this.maxNumSplits = maxNumSplits;
     }
 }

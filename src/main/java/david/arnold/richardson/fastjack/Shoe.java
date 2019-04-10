@@ -28,7 +28,6 @@ public class Shoe {
         this.numDecks = rules.getNumDecks();
         this.numCards = numDecks * Rules.NUM_CARDS_PER_DECK;
         this.cards = createCards();
-        resetAndShuffle();
     }
 
     @Override
@@ -94,7 +93,7 @@ public class Shoe {
         return (byte) ((byte) (suiteIndex << SUITE_BITS_LEFT_SHIFT) | cardValueIndex);
     }
 
-    private void resetAndShuffle() {
+    public void shuffle() {
         Randomness randomness = rules.getRandomness();
         for (int i = 0; i < numCards; i++) {
             int randomPosition = randomness.getRandomInt(numCards);
@@ -102,13 +101,9 @@ public class Shoe {
             cards[i] = cards[randomPosition];
             cards[randomPosition] = temp;
         }
-        this.indexOfNextCardToBeDealt = 0;
-        this.indexOfLastBurnCard = 0;
-        setCutCardIndex();
-        burnCards();
     }
 
-    private void setCutCardIndex() {
+    public void setPenetration() {
         // Set them to the same value for a performance boost, and slightly less realism.
         int minNumCardsBehindCutCard = rules.getMinNumCardsBehindCutCard();
         if (minNumCardsBehindCutCard == rules.getMaxNumCardsBehindCutCard()) {
@@ -119,9 +114,14 @@ public class Shoe {
         this.indexOfCutCard = numCards - 1 - minNumCardsBehindCutCard + rules.getRandomness().getRandomInt(range);
     }
 
-    private void burnCards() {
+    public void burnCards() {
         int numBurnCards = rules.getNumBurnCards();
         this.indexOfLastBurnCard = numBurnCards - 1;
         this.indexOfNextCardToBeDealt = numBurnCards;
+    }
+
+    public int dealCard() {
+        indexOfNextCardToBeDealt++;
+        return indexOfNextCardToBeDealt - 1;
     }
 }

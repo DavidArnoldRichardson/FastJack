@@ -1,5 +1,11 @@
 package david.arnold.richardson.fastjack.strategy.play;
 
+import david.arnold.richardson.fastjack.HandForPlayer;
+import david.arnold.richardson.fastjack.Play;
+
 public class PlayStrategyBasic extends PlayStrategy {
-    // todo
+    @Override
+    public Play getPlay(HandForPlayer hand) {
+        return Play.Stand;
+    }
 }

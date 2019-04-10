@@ -10,7 +10,7 @@ public abstract class Hand {
             int maxNumCardsInHand) {
         this.shoe = shoe;
         indexesOfCards = new int[maxNumCardsInHand];
-        numCardsInHand = 0;
+        reset();
     }
 
     public String toString() {
@@ -22,9 +22,16 @@ public abstract class Hand {
         return builder.toString();
     }
 
+    public String showCard(int cardIndex) {
+        return shoe.getCardForDisplay(cardIndex);
+    }
+
     public void reset() {
         numCardsInHand = 0;
+        resetHelper();
     }
+
+    public abstract void resetHelper();
 
     public void addCard(int cardIndex) {
         indexesOfCards[numCardsInHand++] = cardIndex;

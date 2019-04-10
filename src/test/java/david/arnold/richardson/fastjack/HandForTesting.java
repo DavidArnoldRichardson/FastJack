@@ -6,4 +6,9 @@ public class HandForTesting extends Hand {
             int maxNumCardsInHand) {
         super(shoe, maxNumCardsInHand);
     }
+
+    @Override
+    public void resetHelper() {
+        // noop
+    }
 }
