@@ -24,4 +24,8 @@ public abstract class Outputter {
     public abstract void showHand(Player player, HandForPlayer hand);
 
     public abstract void roundAborted();
+
+    public abstract void placeBet(Player player, int seatNumber, long desiredBetAmount);
+
+    public abstract void sitPlayer(Player player, int seatNumber);
 }

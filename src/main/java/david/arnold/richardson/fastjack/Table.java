@@ -24,7 +24,7 @@ public class Table {
         seats = new Seat[NUM_SEATS];
         insuranceBets = new long[NUM_SEATS];
         for (int i = 0; i < NUM_SEATS; i++) {
-            seats[i] = new Seat(this);
+            seats[i] = new Seat(this, i);
             insuranceBets[i] = 0L;
         }
         handForDealer = new HandForDealer(shoe);
@@ -44,7 +44,7 @@ public class Table {
         shoe.burnCards();
 
         // Note: Everything that happens inside this loop is optimized for performance.
-        // Don't do anything unnecessary. No allocating memory from the heap.
+        // Don't do anything unnecessary. No allocating memory from the heap if you can help it.
         int roundNumber = 0;
         boolean keepPlayingRounds = true;
         while (keepPlayingRounds) {
@@ -77,6 +77,7 @@ public class Table {
 
         // deal first card to each player
         for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
+            // todo: output deal
             seats[seatNumber].getHand(0).addCard(shoe.dealCard());
         }
 
@@ -303,5 +304,9 @@ public class Table {
 
     public long getTableBankroll() {
         return tableBankroll;
+    }
+
+    public Outputter getOutputter() {
+        return outputter;
     }
 }

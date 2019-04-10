@@ -1,11 +1,17 @@
 package david.arnold.richardson.fastjack;
 
 public class Seat {
+    private int seatNumber;
     private Player player;
+    private Table table;
     private HandForPlayer[] hands;
     private int numHandsInUse;
 
-    public Seat(Table table) {
+    public Seat(
+            Table table,
+            int seatNumber) {
+        this.seatNumber = seatNumber;
+        this.table = table;
         Shoe shoe = table.getShoe();
         int maxNumHands = shoe.getRules().getMaxNumSplits() + 1;
         hands = new HandForPlayer[maxNumHands];
@@ -16,6 +22,7 @@ public class Seat {
     }
 
     public void assignPlayerToSeat(Player player) {
+        table.getOutputter().sitPlayer(player, seatNumber);
         this.player = player;
     }
 
@@ -32,10 +39,16 @@ public class Seat {
     }
 
     public boolean createNewHandWithBet() {
-        return createNewHandWithBet(player.getBetStrategy().getBetAmount());
+        long desiredBetAmount = MoneyHelper.computeAcceptableBet(
+                player.getBetStrategy().getBetAmount(),
+                player.getBankroll(),
+                table.getShoe().getRules().getMinBetAmount(),
+                table.getShoe().getRules().getMaxBetAmount());
+        return createNewHandWithBet(desiredBetAmount);
     }
 
     private boolean createNewHandWithBet(long betAmount) {
+        table.getOutputter().placeBet(player, seatNumber, betAmount);
         HandForPlayer hand = hands[numHandsInUse++];
         hand.reset();
         hand.setBetAmount(betAmount);

@@ -45,4 +45,12 @@ public class OutputterSilentAndFast extends Outputter {
     @Override
     public void roundAborted() {
     }
+
+    @Override
+    public void placeBet(Player player, int seatNumber, long desiredBetAmount) {
+    }
+
+    @Override
+    public void sitPlayer(Player player, int seatNumber) {
+    }
 }

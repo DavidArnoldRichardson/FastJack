@@ -20,6 +20,8 @@ public class Rules {
     private boolean canResplitAces;
     private boolean canHitSplitAces;
     private boolean canDoubleAfterSplit;
+    private long minBetAmount;
+    private long maxBetAmount;
 
     public static Rules getDefault() {
         return new Rules(
@@ -32,7 +34,9 @@ public class Rules {
                 3,
                 true,
                 false,
-                false);
+                false,
+                500L,
+                20000L);
     }
 
     public static Rules getWendover6D() {
@@ -46,7 +50,9 @@ public class Rules {
                 3,
                 true,
                 false,
-                false);
+                false,
+                500L,
+                20000L);
     }
 
     public static Rules getWendover1D() {
@@ -60,7 +66,9 @@ public class Rules {
                 3,
                 true,
                 false,
-                false);
+                false,
+                500L,
+                20000L);
     }
 
     public Rules(
@@ -73,7 +81,9 @@ public class Rules {
             int maxNumSplits,
             boolean canResplitAces,
             boolean canHitSplitAces,
-            boolean canDoubleAfterSplit) {
+            boolean canDoubleAfterSplit,
+            long minBetAmount,
+            long maxBetAmount) {
         this.numDecks = numDecks;
         this.minNumCardsBehindCutCard = minNumCardsBehindCutCard;
         this.maxNumCardsBehindCutCard = maxNumCardsBehindCutCard;
@@ -84,6 +94,8 @@ public class Rules {
         this.canResplitAces = canResplitAces;
         this.canHitSplitAces = canHitSplitAces;
         this.canDoubleAfterSplit = canDoubleAfterSplit;
+        this.minBetAmount = minBetAmount;
+        this.maxBetAmount = maxBetAmount;
     }
 
     public Randomness getRandomness() {
@@ -171,5 +183,21 @@ public class Rules {
 
     public void setCanDoubleAfterSplit(boolean canDoubleAfterSplit) {
         this.canDoubleAfterSplit = canDoubleAfterSplit;
+    }
+
+    public long getMinBetAmount() {
+        return minBetAmount;
+    }
+
+    public void setMinBetAmount(long minBetAmount) {
+        this.minBetAmount = minBetAmount;
+    }
+
+    public long getMaxBetAmount() {
+        return maxBetAmount;
+    }
+
+    public void setMaxBetAmount(long maxBetAmount) {
+        this.maxBetAmount = maxBetAmount;
     }
 }

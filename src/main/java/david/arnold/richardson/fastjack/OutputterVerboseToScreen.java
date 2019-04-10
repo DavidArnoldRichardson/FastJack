@@ -60,4 +60,19 @@ public class OutputterVerboseToScreen extends Outputter {
     public void roundAborted() {
         showMessage("Round aborted.");
     }
+
+    @Override
+    public void placeBet(
+            Player player,
+            int seatNumber,
+            long desiredBetAmount) {
+        showMessage("Player " + player.getPlayerName()
+                + " in seat " + (seatNumber + 1)
+                + " put down a bet of " + MoneyHelper.formatForDisplay(desiredBetAmount) + ".");
+    }
+
+    @Override
+    public void sitPlayer(Player player, int seatNumber) {
+        showMessage("Player " + player.getPlayerName() + " sat down in seat number " + (seatNumber + 1) + ".");
+    }
 }
