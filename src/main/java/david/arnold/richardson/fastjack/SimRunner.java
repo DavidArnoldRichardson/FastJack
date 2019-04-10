@@ -19,7 +19,8 @@ public class SimRunner {
         player1.setStrategies(playStrategy, betStrategy);
         table.addPlayer(player1);
 
-        table.playRounds(1);
+        int numRoundsPlayed = table.playRounds(1);
+        outputter.showMessage("Played " + numRoundsPlayed + " rounds.");
         outputter.showMessage(player1.showResult());
     }
 }

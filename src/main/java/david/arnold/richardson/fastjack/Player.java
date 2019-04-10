@@ -12,9 +12,6 @@ public class Player {
     private Rules rules;
     private Table table;
 
-    private HandForPlayer[] hands;
-    private int numHandsInUse;
-
     public Player(
             String playerName,
             long bankroll,
@@ -25,13 +22,6 @@ public class Player {
         this.bankroll = bankroll;
         this.rules = rules;
         this.table = table;
-
-        int maxNumHands = rules.getMaxNumSplits() + 1;
-        hands = new HandForPlayer[maxNumHands];
-        for (int i = 0; i < maxNumHands; i++) {
-            hands[i] = new HandForPlayer(table.getShoe());
-        }
-        numHandsInUse = 0;
     }
 
     public void setStrategies(
@@ -41,31 +31,37 @@ public class Player {
         this.betStrategy = betStrategy;
     }
 
-    public void createNewHandWithBet() {
-        HandForPlayer hand = hands[numHandsInUse++];
-        hand.reset();
-        hand.setBetAmount(betStrategy.getBetAmount());
+    public PlayStrategy getPlayStrategy() {
+        return playStrategy;
     }
 
-    public int getNumHandsInUse() {
-        return numHandsInUse;
+    public BetStrategy getBetStrategy() {
+        return betStrategy;
     }
 
-    public HandForPlayer getHand(int handIndex) {
-        return hands[handIndex];
+    public void payPlayer(long money) {
+        bankroll += money;
     }
 
     public String getPlayerName() {
         return playerName;
     }
 
+    public long getBankroll() {
+        return bankroll;
+    }
+
+    public void removeFromBankroll(long money) {
+        bankroll -= money;
+    }
+
+    public void addToBankroll(long money) {
+        bankroll += money;
+    }
+
     public String showResult() {
         return playerName
                 + " started with " + MoneyHelper.formatForDisplay(initialBankroll)
                 + " ended with " + MoneyHelper.formatForDisplay(bankroll) + ".";
-    }
-
-    public void resetHands() {
-        numHandsInUse = 0;
     }
 }

@@ -22,4 +22,6 @@ public abstract class Outputter {
     public abstract void showDealerUpcard(HandForDealer handForDealer);
 
     public abstract void showHand(Player player, HandForPlayer hand);
+
+    public abstract void roundAborted();
 }

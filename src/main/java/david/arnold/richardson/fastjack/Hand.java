@@ -31,6 +31,10 @@ public abstract class Hand {
         resetHelper();
     }
 
+    public boolean hasCards() {
+        return numCardsInHand > 0;
+    }
+
     public abstract void resetHelper();
 
     public void addCard(int cardIndex) {
@@ -41,6 +45,21 @@ public abstract class Hand {
         int sum = 0;
         for (int i = 0; i < numCardsInHand; i++) {
             sum += shoe.getCardPointValue(indexesOfCards[i]);
+        }
+        return sum;
+    }
+
+    protected int computeMaxPointSum() {
+        boolean hasAnAce = false;
+        int sum = 0;
+        for (int i = 0; i < numCardsInHand; i++) {
+            sum += shoe.getCardPointValue(indexesOfCards[i]);
+            if (shoe.isAce(indexesOfCards[i])) {
+                hasAnAce = true;
+            }
+        }
+        if (hasAnAce && sum <= 11) {
+            return sum + 10;
         }
         return sum;
     }

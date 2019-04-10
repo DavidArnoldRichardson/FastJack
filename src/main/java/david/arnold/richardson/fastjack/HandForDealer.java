@@ -15,6 +15,10 @@ public class HandForDealer extends Hand {
         // nothing to do here
     }
 
+    public boolean isBlackjack() {
+        return isBlackjack(false);
+    }
+
     public boolean shouldDealerHit() {
         int minPointSum = computeMinPointSum();
         boolean hasAce = hasAtLeastOneAce();
@@ -34,5 +38,13 @@ public class HandForDealer extends Hand {
 
     public String showUpcard() {
         return showCard(CARD_INDEX_OF_UPCARD);
+    }
+
+    public boolean isUpcardAce() {
+        return shoe.getCardPointValue(indexesOfCards[CARD_INDEX_OF_UPCARD]) == 1;
+    }
+
+    public boolean isUpcardTen() {
+        return shoe.getCardPointValue(indexesOfCards[CARD_INDEX_OF_UPCARD]) == 10;
     }
 }

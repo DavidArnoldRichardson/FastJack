@@ -1,6 +1,6 @@
 package david.arnold.richardson.fastjack;
 
-public enum Play {
+public enum PlayerDecision {
     Stand,
     Hit,
     Split,

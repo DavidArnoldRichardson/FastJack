@@ -55,4 +55,9 @@ public class OutputterVerboseToScreen extends Outputter {
     public void showHand(Player player, HandForPlayer hand) {
         showMessage("Player " + player.getPlayerName() + " has " + hand.show() + ".");
     }
+
+    @Override
+    public void roundAborted() {
+        showMessage("Round aborted.");
+    }
 }

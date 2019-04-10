@@ -2,6 +2,9 @@ package david.arnold.richardson.fastjack;
 
 import static david.arnold.richardson.fastjack.Rules.*;
 
+// TODO: add option for each player to get dealt the same cards.
+// Only trickyish bit is to synchronize the next-card-to-deal index to the max position after a round.
+
 public class Shoe {
 
     private Rules rules;

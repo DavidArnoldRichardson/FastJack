@@ -41,4 +41,8 @@ public class OutputterSilentAndFast extends Outputter {
     @Override
     public void showHand(Player player, HandForPlayer hand) {
     }
+
+    @Override
+    public void roundAborted() {
+    }
 }
