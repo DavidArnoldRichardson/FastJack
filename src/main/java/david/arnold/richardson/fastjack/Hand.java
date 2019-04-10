@@ -5,6 +5,9 @@ public abstract class Hand {
     protected int[] indexesOfCards;
     protected int numCardsInHand;
 
+    // prevents computing max hand point value more often than necessary.
+    protected boolean isTwentyOnePoints;
+
     protected Hand(
             Shoe shoe,
             int maxNumCardsInHand) {
@@ -28,6 +31,7 @@ public abstract class Hand {
 
     public void reset() {
         numCardsInHand = 0;
+        isTwentyOnePoints = false;
         resetHelper();
     }
 
@@ -50,6 +54,10 @@ public abstract class Hand {
     }
 
     protected int computeMaxPointSum() {
+        if (isTwentyOnePoints) {
+            return 21;
+        }
+
         boolean hasAnAce = false;
         int sum = 0;
         for (int i = 0; i < numCardsInHand; i++) {
@@ -104,14 +112,14 @@ public abstract class Hand {
             }
         }
 
-        //noinspection RedundantIfStatement
-        if (hasAtLeastOneAce && sum == 11) {
-            return true;
-        }
-        return false;
+        return hasAtLeastOneAce && sum == 11;
     }
 
     public boolean isBusted() {
         return computeMinPointSum() > 21;
+    }
+
+    public void setIsTwentyOnePoints() {
+        isTwentyOnePoints = true;
     }
 }

@@ -195,16 +195,16 @@ public class Table {
 
     private void playSeat(Seat seat) {
         long betAmount;
-        long halfOfBet;
-        int handValue;
+        long halfOfBetAmount;
+        int playerHandValue;
 
         // first hand can be blackjack
         HandForPlayer firstHand = seat.getHand(0);
         if (firstHand.isBlackjack()) {
             betAmount = firstHand.getBetAmount();
-            halfOfBet = betAmount >> 1;
-            seat.getPlayer().payPlayer((betAmount << 1) + halfOfBet);
-            tableBankroll -= (betAmount + halfOfBet);
+            halfOfBetAmount = betAmount >> 1;
+            seat.getPlayer().payPlayer((betAmount << 1) + halfOfBetAmount);
+            tableBankroll -= (betAmount + halfOfBetAmount);
             firstHand.reset();
             return;
         }
@@ -230,12 +230,14 @@ public class Table {
                         break;
                     case Hit:
                         hand.addCard(shoe.dealCard());
-                        handValue = hand.computeMaxPointSum();
-                        keepPlaying = handValue < 21;
-                        if (handValue > 21) {
+                        playerHandValue = hand.computeMaxPointSum();
+                        keepPlaying = playerHandValue < 21;
+                        if (playerHandValue > 21) {
                             betAmount = hand.getBetAmount();
                             tableBankroll += betAmount;
                             hand.reset();
+                        } else if (playerHandValue == 21) {
+                            hand.setIsTwentyOnePoints();
                         }
                         break;
                     case Split:
@@ -248,18 +250,20 @@ public class Table {
                         hand.setBetAmount(betAmount << 1);
                         hand.addCard(shoe.dealCard());
                         keepPlaying = false;
-                        handValue = hand.computeMaxPointSum();
-                        if (handValue > 21) {
+                        playerHandValue = hand.computeMaxPointSum();
+                        if (playerHandValue > 21) {
                             betAmount = hand.getBetAmount();
                             tableBankroll += betAmount;
                             hand.reset();
+                        } else if (playerHandValue == 21) {
+                            hand.setIsTwentyOnePoints();
                         }
                         break;
                     case Surrender:
                         betAmount = hand.getBetAmount();
-                        halfOfBet = betAmount >> 1;
-                        seat.getPlayer().addToBankroll(halfOfBet);
-                        this.tableBankroll += halfOfBet;
+                        halfOfBetAmount = betAmount >> 1;
+                        seat.getPlayer().addToBankroll(halfOfBetAmount);
+                        this.tableBankroll += halfOfBetAmount;
                         keepPlaying = false;
                         hand.reset();
                         break;
