@@ -9,6 +9,7 @@ public class Table {
     private long[] insuranceBets;
     private int numSeatsInUse = 0;
     private Shoe shoe;
+    private Rules rules;
     private HandForDealer handForDealer;
     private long tableBankrollStart = 100000000000000L;
     private long tableBankroll = tableBankrollStart;
@@ -18,6 +19,7 @@ public class Table {
             Rules rules) {
         this.outputter = outputter;
         this.shoe = new Shoe(rules, outputter);
+        this.rules = shoe.getRules();
 
         seats = new Seat[NUM_SEATS];
         insuranceBets = new long[NUM_SEATS];
@@ -117,7 +119,7 @@ public class Table {
                 Seat seat = seats[seatNumber];
                 HandForPlayer hand = seat.getHand(0);
                 long betAmount = hand.getBetAmount();
-                boolean playerHandIsBlackjack = hand.isBlackjack(false);
+                boolean playerHandIsBlackjack = hand.isBlackjack();
                 if (playerHandIsBlackjack) {
                     // player pushes
                     seat.getPlayer().payPlayer(betAmount);
@@ -132,8 +134,10 @@ public class Table {
                 playSeat(seats[seatNumber]);
             }
 
+            // player blackjacks have already been paid, and the hands reset, at this point.
+
             // Note: both sides of the conditional have some duplicate code.
-            // This is to save CPU cycles, as we don't need to compute the dealer
+            // This is to save a few CPU cycles, as we don't need to compute the dealer
             // hand value if the dealer busted.
             boolean dealerBusted = playDealer();
             if (dealerBusted) {
@@ -194,13 +198,14 @@ public class Table {
         long halfOfBet;
         int handValue;
 
-        HandForPlayer hand = seat.getHand(0);
-        if (hand.isBlackjack(false)) {
-            betAmount = hand.getBetAmount();
+        // first hand can be blackjack
+        HandForPlayer firstHand = seat.getHand(0);
+        if (firstHand.isBlackjack()) {
+            betAmount = firstHand.getBetAmount();
             halfOfBet = betAmount >> 1;
             seat.getPlayer().payPlayer((betAmount << 1) + halfOfBet);
             tableBankroll -= (betAmount + halfOfBet);
-            hand.reset();
+            firstHand.reset();
             return;
         }
 
@@ -208,7 +213,15 @@ public class Table {
         int handIndexToPlay = 0;
 
         while (seat.getNumHandsInUse() > handIndexToPlay) {
+            HandForPlayer hand = seat.getHand(handIndexToPlay);
+
             boolean keepPlaying = true;
+
+            // this hand was created from a split. It needs another card.
+            if (hand.numCardsInHand == 1) {
+                keepPlaying = playOnSplitHand(hand);
+            }
+
             while (keepPlaying) {
                 PlayerDecision playerDecision = seat.getPlayerDecision(handIndexToPlay);
                 switch (playerDecision) {
@@ -216,7 +229,6 @@ public class Table {
                         keepPlaying = false;
                         break;
                     case Hit:
-                        hand = seat.getHand(handIndexToPlay);
                         hand.addCard(shoe.dealCard());
                         handValue = hand.computeMaxPointSum();
                         keepPlaying = handValue < 21;
@@ -227,10 +239,10 @@ public class Table {
                         }
                         break;
                     case Split:
-                        // todo
+                        seat.createSplitHand(handIndexToPlay);
+                        keepPlaying = playOnSplitHand(hand);
                         break;
                     case Double:
-                        hand = seat.getHand(handIndexToPlay);
                         betAmount = hand.getBetAmount();
                         seat.getPlayer().removeFromBankroll(betAmount);
                         hand.setBetAmount(betAmount << 1);
@@ -244,7 +256,6 @@ public class Table {
                         }
                         break;
                     case Surrender:
-                        hand = seat.getHand(handIndexToPlay);
                         betAmount = hand.getBetAmount();
                         halfOfBet = betAmount >> 1;
                         seat.getPlayer().addToBankroll(halfOfBet);
@@ -258,6 +269,24 @@ public class Table {
             }
             handIndexToPlay++;
         }
+    }
+
+    private boolean playOnSplitHand(HandForPlayer hand) {
+        boolean keepPlaying = true;
+
+        hand.addCard(shoe.dealCard());
+
+        // check various situations that would make the player unable to continue with this hand
+        if (hand.isBlackjack()) {
+            keepPlaying = false;
+        } else {
+            if (hand.isPairOfAces()
+                    && !rules.isCanHitSplitAces()
+                    && !rules.isCanResplitAces()) {
+                keepPlaying = false;
+            }
+        }
+        return keepPlaying;
     }
 
     private boolean playDealer() {

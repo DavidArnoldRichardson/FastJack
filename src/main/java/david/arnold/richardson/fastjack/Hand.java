@@ -75,21 +75,37 @@ public abstract class Hand {
 
     // returns true if the hand has an ace that can be 11
     public boolean isSoft() {
-        if (!hasAtLeastOneAce()) {
+        boolean hasAtLeastOneAce = false;
+        int sum = 0;
+        for (int i = 0; i < numCardsInHand; i++) {
+            sum += shoe.getCardPointValue(indexesOfCards[i]);
+            if (shoe.isAce(indexesOfCards[i])) {
+                hasAtLeastOneAce = true;
+            }
+        }
+
+        if (!hasAtLeastOneAce) {
             return false;
         }
-        return computeMinPointSum() <= 11;
+        return sum <= 11;
     }
 
-    public boolean isBlackjack(boolean isHandResultOfSplit) {
-        if (isHandResultOfSplit) {
-            return false;
-        }
+    public boolean isBlackjack() {
         if (numCardsInHand != 2) {
             return false;
         }
+
+        boolean hasAtLeastOneAce = false;
+        int sum = 0;
+        for (int i = 0; i < numCardsInHand; i++) {
+            sum += shoe.getCardPointValue(indexesOfCards[i]);
+            if (shoe.isAce(indexesOfCards[i])) {
+                hasAtLeastOneAce = true;
+            }
+        }
+
         //noinspection RedundantIfStatement
-        if (hasAtLeastOneAce() && computeMinPointSum() == 11) {
+        if (hasAtLeastOneAce && sum == 11) {
             return true;
         }
         return false;

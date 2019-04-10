@@ -17,6 +17,9 @@ public class Rules {
     private boolean showBurnCards;
     private boolean isH17;
     private int maxNumSplits;
+    private boolean canResplitAces;
+    private boolean canHitSplitAces;
+    private boolean canDoubleAfterSplit;
 
     public static Rules getDefault() {
         return new Rules(
@@ -26,7 +29,10 @@ public class Rules {
                 1,
                 false,
                 true,
-                3);
+                3,
+                true,
+                false,
+                false);
     }
 
     public static Rules getWendover6D() {
@@ -37,7 +43,10 @@ public class Rules {
                 1,
                 false,
                 true,
-                3);
+                3,
+                true,
+                false,
+                false);
     }
 
     public static Rules getWendover1D() {
@@ -48,7 +57,10 @@ public class Rules {
                 1,
                 false,
                 true,
-                3);
+                3,
+                true,
+                false,
+                false);
     }
 
     public Rules(
@@ -58,7 +70,10 @@ public class Rules {
             int numBurnCards,
             boolean showBurnCards,
             boolean isH17,
-            int maxNumSplits) {
+            int maxNumSplits,
+            boolean canResplitAces,
+            boolean canHitSplitAces,
+            boolean canDoubleAfterSplit) {
         this.numDecks = numDecks;
         this.minNumCardsBehindCutCard = minNumCardsBehindCutCard;
         this.maxNumCardsBehindCutCard = maxNumCardsBehindCutCard;
@@ -66,6 +81,9 @@ public class Rules {
         this.showBurnCards = showBurnCards;
         this.isH17 = isH17;
         this.maxNumSplits = maxNumSplits;
+        this.canResplitAces = canResplitAces;
+        this.canHitSplitAces = canHitSplitAces;
+        this.canDoubleAfterSplit = canDoubleAfterSplit;
     }
 
     public Randomness getRandomness() {
@@ -129,5 +147,29 @@ public class Rules {
 
     public void setMaxNumSplits(int maxNumSplits) {
         this.maxNumSplits = maxNumSplits;
+    }
+
+    public boolean isCanResplitAces() {
+        return canResplitAces;
+    }
+
+    public void setCanResplitAces(boolean canResplitAces) {
+        this.canResplitAces = canResplitAces;
+    }
+
+    public boolean isCanHitSplitAces() {
+        return canHitSplitAces;
+    }
+
+    public void setCanHitSplitAces(boolean canHitSplitAces) {
+        this.canHitSplitAces = canHitSplitAces;
+    }
+
+    public boolean isCanDoubleAfterSplit() {
+        return canDoubleAfterSplit;
+    }
+
+    public void setCanDoubleAfterSplit(boolean canDoubleAfterSplit) {
+        this.canDoubleAfterSplit = canDoubleAfterSplit;
     }
 }

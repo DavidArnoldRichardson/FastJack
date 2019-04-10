@@ -15,10 +15,6 @@ public class HandForDealer extends Hand {
         // nothing to do here
     }
 
-    public boolean isBlackjack() {
-        return isBlackjack(false);
-    }
-
     public boolean shouldDealerHit() {
         int minPointSum = computeMinPointSum();
         boolean hasAce = hasAtLeastOneAce();

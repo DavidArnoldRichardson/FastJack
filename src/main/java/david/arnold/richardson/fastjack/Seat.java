@@ -32,11 +32,23 @@ public class Seat {
     }
 
     public boolean createNewHandWithBet() {
+        return createNewHandWithBet(player.getBetStrategy().getBetAmount());
+    }
+
+    private boolean createNewHandWithBet(long betAmount) {
         HandForPlayer hand = hands[numHandsInUse++];
         hand.reset();
-        long betAmount = player.getBetStrategy().getBetAmount();
         hand.setBetAmount(betAmount);
         return betAmount > 0L;
+    }
+
+    public void createSplitHand(int handIndexToPlay) {
+        HandForPlayer handToBeSplit = hands[handIndexToPlay];
+        createNewHandWithBet(handToBeSplit.getBetAmount());
+        HandForPlayer handThatWasCreated = hands[numHandsInUse - 1];
+        handThatWasCreated.addCard(handToBeSplit.split());
+        handToBeSplit.setHandIsResultOfSplit();
+        handThatWasCreated.setHandIsResultOfSplit();
     }
 
     public long determineInsuranceBet() {
