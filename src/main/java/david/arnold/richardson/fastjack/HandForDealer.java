@@ -2,6 +2,7 @@ package david.arnold.richardson.fastjack;
 
 public class HandForDealer extends Hand {
 
+    private static final int CARD_INDEX_OF_UPCARD = 0;
     private static final int CARD_INDEX_OF_HOLE_CARD = 1;
 
     public HandForDealer(Shoe shoe) {
@@ -28,6 +29,10 @@ public class HandForDealer extends Hand {
     }
 
     public String showHoleCard() {
-        return shoe.getCardForDisplay(CARD_INDEX_OF_HOLE_CARD);
+        return showCard(CARD_INDEX_OF_HOLE_CARD);
+    }
+
+    public String showUpcard() {
+        return showCard(CARD_INDEX_OF_UPCARD);
     }
 }

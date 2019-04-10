@@ -16,7 +16,7 @@ public class Table {
             Rules rules) {
         this.outputter = outputter;
         this.rules = rules;
-        this.shoe = new Shoe(rules);
+        this.shoe = new Shoe(rules, outputter);
         for (int i = 0; i < NUM_SEATS; i++) {
             players[i] = null;
         }
@@ -35,16 +35,19 @@ public class Table {
         shoe.shuffle();
         shoe.setPenetration();
         shoe.burnCards();
+
+        // Note: Everything that happens inside this loop is optimized for performance.
+        // Don't do anything unnecessary. No allocating memory from the heap.
         for (int roundNumber = 0; roundNumber < numRoundsToPlay; roundNumber++) {
             playRound(roundNumber);
         }
     }
 
     void playRound(int roundNumber) {
-        outputter.showMessage("Starting round " + roundNumber + ".");
+        outputter.startRound(roundNumber);
 
         if (shoe.hasCutCardBeenDrawn()) {
-            outputter.showMessage("Cut card was drawn.");
+            outputter.cutCardWasDrawn();
             shoe.shuffle();
             shoe.setPenetration();
             shoe.burnCards();
@@ -70,12 +73,11 @@ public class Table {
 
         // deal hole card to dealer
         handForDealer.addCard(shoe.dealCard());
+        outputter.showDealerUpcard(handForDealer);
 
         for (int seatNumber = 0; seatNumber < numPlayers; seatNumber++) {
             playPlayer(players[seatNumber]);
         }
-
-        outputter.showMessage("Dealer shows her hole card: " + handForDealer.showHoleCard());
 
         playDealer();
 
@@ -88,10 +90,23 @@ public class Table {
     }
 
     private void playPlayer(Player player) {
-        // todo
+        // More may be added due to splits.
+        int handIndexToPlay = 0;
+
+        while(player.getNumHandsInUse() > handIndexToPlay) {
+            HandForPlayer hand = player.getHand(handIndexToPlay++);
+        }
+    }
+
+    private void playPlayerHand(
+            Player player,
+            HandForPlayer hand) {
+        outputter.showHand(player, hand);
     }
 
     private void playDealer() {
+        outputter.showHoleCard(handForDealer);
+
         // todo
     }
 }

@@ -14,6 +14,7 @@ public class Rules {
     private int minNumCardsBehindCutCard;
     private int maxNumCardsBehindCutCard;
     private int numBurnCards;
+    private boolean showBurnCards;
     private boolean isH17;
     private int maxNumSplits;
 
@@ -23,6 +24,7 @@ public class Rules {
                 52,
                 52,
                 1,
+                false,
                 true,
                 3);
     }
@@ -33,6 +35,7 @@ public class Rules {
                 52,
                 78,
                 1,
+                false,
                 true,
                 3);
     }
@@ -43,6 +46,7 @@ public class Rules {
                 13,
                 26,
                 1,
+                false,
                 true,
                 3);
     }
@@ -52,12 +56,14 @@ public class Rules {
             int minNumCardsBehindCutCard,
             int maxNumCardsBehindCutCard,
             int numBurnCards,
+            boolean showBurnCards,
             boolean isH17,
             int maxNumSplits) {
         this.numDecks = numDecks;
         this.minNumCardsBehindCutCard = minNumCardsBehindCutCard;
         this.maxNumCardsBehindCutCard = maxNumCardsBehindCutCard;
         this.numBurnCards = numBurnCards;
+        this.showBurnCards = showBurnCards;
         this.isH17 = isH17;
         this.maxNumSplits = maxNumSplits;
     }
@@ -95,6 +101,14 @@ public class Rules {
 
     public int getNumBurnCards() {
         return numBurnCards;
+    }
+
+    public boolean isShowBurnCards() {
+        return showBurnCards;
+    }
+
+    public void setShowBurnCards(boolean showBurnCards) {
+        this.showBurnCards = showBurnCards;
     }
 
     public void setNumBurnCards(int numBurnCards) {

@@ -21,7 +21,7 @@ public abstract class HelperForTests {
 
     @Before
     public void setupOneTest() {
-        shoe = new Shoe(rules);
+        shoe = new Shoe(rules, new OutputterSilentAndFast());
         prepareCardsForTests(shoe);
     }
 

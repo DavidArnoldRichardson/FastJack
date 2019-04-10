@@ -12,12 +12,14 @@ public class SimRunner {
         Player player1 = new Player(
                 "Abe",
                 200000L,
-                new PlayStrategyAlwaysStand(),
-                new BetStrategyAlwaysMin(),
                 rules,
                 table);
+        PlayStrategyAlwaysStand playStrategy = new PlayStrategyAlwaysStand();
+        BetStrategyAlwaysMin betStrategy = new BetStrategyAlwaysMin(player1, rules);
+        player1.setStrategies(playStrategy, betStrategy);
         table.addPlayer(player1);
+
         table.playRounds(1);
-        outputter.showMessage(player1.toString());
+        outputter.showMessage(player1.showResult());
     }
 }

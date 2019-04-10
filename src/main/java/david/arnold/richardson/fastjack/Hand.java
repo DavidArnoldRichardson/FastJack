@@ -13,7 +13,7 @@ public abstract class Hand {
         reset();
     }
 
-    public String toString() {
+    public String show() {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < numCardsInHand; i++) {
             builder.append(shoe.getCardForDisplay(indexesOfCards[i]));

@@ -18,15 +18,11 @@ public class Player {
     public Player(
             String playerName,
             long bankroll,
-            PlayStrategy playStrategy,
-            BetStrategy betStrategy,
             Rules rules,
             Table table) {
         this.playerName = playerName;
         this.initialBankroll = bankroll;
         this.bankroll = bankroll;
-        this.playStrategy = playStrategy;
-        this.betStrategy = betStrategy;
         this.rules = rules;
         this.table = table;
 
@@ -36,6 +32,13 @@ public class Player {
             hands[i] = new HandForPlayer(table.getShoe());
         }
         numHandsInUse = 0;
+    }
+
+    public void setStrategies(
+            PlayStrategy playStrategy,
+            BetStrategy betStrategy) {
+        this.playStrategy = playStrategy;
+        this.betStrategy = betStrategy;
     }
 
     public void createNewHandWithBet() {
@@ -52,8 +55,11 @@ public class Player {
         return hands[handIndex];
     }
 
-    @Override
-    public String toString() {
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public String showResult() {
         return playerName
                 + " started with " + MoneyHelper.formatForDisplay(initialBankroll)
                 + " ended with " + MoneyHelper.formatForDisplay(bankroll) + ".";
