@@ -193,12 +193,12 @@ public class Table {
                     for (int handIndex = numHands - 1; handIndex >= 0; handIndex--) {
                         HandForPlayer hand = seat.getHand(handIndex);
                         if (hand.hasCards()) {
-                            int handValue = hand.computeMaxPointSum();
+                            int playerHandValue = hand.computeMaxPointSum();
                             long betAmount = hand.getBetAmount();
-                            if (handValue < dealerHandValue) {
+                            if (playerHandValue < dealerHandValue) {
                                 // dealer win
                                 tableBankroll += betAmount;
-                            } else if (handValue > dealerHandValue) {
+                            } else if (playerHandValue > dealerHandValue) {
                                 // player win
                                 seat.getPlayer().addToBankroll(betAmount << 1);
                                 tableBankroll -= betAmount;
@@ -248,7 +248,7 @@ public class Table {
 
             // this hand was created from a split. It needs another card.
             if (hand.numCardsInHand == 1) {
-                keepPlaying = playOnSplitHand(seat, hand);
+                keepPlaying = playOnNewlySplitHand(seat, hand);
                 outputter.gotSecondCardOnSplit(seat, hand);
             }
 
@@ -264,38 +264,44 @@ public class Table {
                         playerHandValue = hand.computeMaxPointSum();
                         keepPlaying = playerHandValue < 21;
                         if (playerHandValue > 21) {
+                            // player bust
                             outputter.playerHitAndBust(seat, hand);
                             betAmount = hand.getBetAmount();
                             tableBankroll += betAmount;
                             hand.reset();
                         } else if (playerHandValue == 21) {
+                            // player 21
                             outputter.playerHitAndGot21(seat, hand);
                             hand.setIsTwentyOnePoints();
                         } else {
+                            // player hit and can hit more if they want
                             outputter.playerHit(seat, hand);
                         }
                         break;
                     case Split:
                         outputter.playerSplits(seat, hand);
                         seat.createSplitHand(handIndexToPlay);
-                        keepPlaying = playOnSplitHand(seat, hand);
+                        keepPlaying = playOnNewlySplitHand(seat, hand);
                         break;
                     case Double:
                         betAmount = hand.getBetAmount();
                         seat.getPlayer().removeFromBankroll(betAmount);
-                        hand.setBetAmount(betAmount << 1);
+                        betAmount = betAmount << 1;
+                        hand.setBetAmount(betAmount);
                         hand.addCard(shoe.dealCard());
                         keepPlaying = false;
                         playerHandValue = hand.computeMaxPointSum();
                         if (playerHandValue > 21) {
+                            // player bust
                             outputter.playerDoubledAndBust(seat, hand);
-                            betAmount = hand.getBetAmount();
                             tableBankroll += betAmount;
                             hand.reset();
                         } else if (playerHandValue == 21) {
+                            // player 21
                             outputter.playerDoubledAndGot21(seat, hand);
                             hand.setIsTwentyOnePoints();
                         } else {
+                            // player got their card and is done
                             outputter.playerDoubled(seat, hand);
                         }
                         break;
@@ -316,7 +322,7 @@ public class Table {
         }
     }
 
-    private boolean playOnSplitHand(
+    private boolean playOnNewlySplitHand(
             Seat seat,
             HandForPlayer hand) {
         boolean keepPlaying = true;

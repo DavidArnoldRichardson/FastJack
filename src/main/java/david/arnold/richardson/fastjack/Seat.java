@@ -52,6 +52,7 @@ public class Seat {
         HandForPlayer hand = hands[numHandsInUse++];
         hand.reset();
         hand.setBetAmount(betAmount);
+        player.removeFromBankroll(betAmount);
         return betAmount > 0L;
     }
 

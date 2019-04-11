@@ -98,6 +98,10 @@ public class Rules {
         this.maxBetAmount = maxBetAmount;
     }
 
+    public void setSeed(long seed) {
+        this.randomness = new Randomness(seed);
+    }
+
     public Randomness getRandomness() {
         if (randomness == null) {
             this.randomness = new Randomness(Randomness.generateRandomSeed());

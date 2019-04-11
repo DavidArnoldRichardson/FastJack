@@ -7,6 +7,8 @@ public class SimRunner {
     public void run() {
         Outputter outputter = new OutputterVerboseToScreen();
         Rules rules = Rules.getWendover6D();
+//        rules.setSeed(1L);
+        System.out.println("FastJack Seed: " + rules.getRandomness().getSeed());
         Table table = new Table(outputter, rules);
 
         Player player1 = new Player(
