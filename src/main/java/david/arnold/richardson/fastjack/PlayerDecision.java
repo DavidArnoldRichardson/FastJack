@@ -5,5 +5,7 @@ public enum PlayerDecision {
     Hit,
     Split,
     Double,
-    Surrender
+    Surrender,
+    SpecialHandling,
+    DoesNotApply
 }
