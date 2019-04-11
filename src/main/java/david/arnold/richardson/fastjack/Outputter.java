@@ -29,7 +29,43 @@ public abstract class Outputter {
 
     public abstract void dealerUpcardIsAce();
 
-    public abstract void insuranceBetMade(Seat seat, int seatNumber, long insuranceBet);
+    public abstract void insuranceBetMade(Seat seat, long insuranceBet);
 
     public abstract void revealDealerHand(HandForDealer handForDealer);
+
+    public abstract void payInsurance(Player player, int seatNumber, long insuranceBet);
+
+    public abstract void dealerBlackjack();
+
+    public abstract void pushOnDealerBlackjack(Player player, int seatNumber, long betAmount);
+
+    public abstract void loseOnDealerBlackjack(Player player, int seatNumber, long betAmount);
+
+    public abstract void playerBlackjack(Seat seat, HandForPlayer hand);
+
+    public abstract void playerStand(Seat seat, HandForPlayer hand);
+
+    public abstract void playerHitAndBust(Seat seat, HandForPlayer hand);
+
+    public abstract void playerHitAndGot21(Seat seat, HandForPlayer hand);
+
+    public abstract void playerHit(Seat seat, HandForPlayer hand);
+
+    public abstract void playerDoubledAndBust(Seat seat, HandForPlayer hand);
+
+    public abstract void playerDoubledAndGot21(Seat seat, HandForPlayer hand);
+
+    public abstract void playerDoubled(Seat seat, HandForPlayer hand);
+
+    public abstract void playerSurrendered(Seat seat, HandForPlayer hand);
+
+    public abstract void playerSplits(Seat seat, HandForPlayer hand);
+
+    public abstract void gotSecondCardOnSplit(Seat seat, HandForPlayer hand);
+
+    public abstract void gotSecondCardOnSplitAndGot21(Seat seat, HandForPlayer hand);
+
+    public abstract void gotSecondCardOnSplitAndCannotContinue(Seat seat, HandForPlayer hand);
+
+    public abstract void dealerHandResult(HandForDealer handForDealer, boolean dealerBusted);
 }

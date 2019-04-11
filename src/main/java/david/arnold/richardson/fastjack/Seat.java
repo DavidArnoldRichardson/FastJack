@@ -84,4 +84,8 @@ public class Seat {
     public void resetHands() {
         numHandsInUse = 0;
     }
+
+    public int getSeatNumber() {
+        return seatNumber;
+    }
 }
