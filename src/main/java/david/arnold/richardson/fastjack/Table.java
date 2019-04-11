@@ -349,8 +349,8 @@ public class Table {
         return dealerBusted;
     }
 
-    public long getTableBankroll() {
-        return tableBankroll;
+    public long getTableBankrollDelta() {
+        return tableBankroll - tableBankrollStart;
     }
 
     public Outputter getOutputter() {

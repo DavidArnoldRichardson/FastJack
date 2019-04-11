@@ -22,5 +22,13 @@ public class SimRunner {
         int numRoundsPlayed = table.playRounds(1);
         outputter.showMessage("Played " + numRoundsPlayed + " rounds.");
         outputter.showMessage(player1.showResult());
+        long tableBankrollDelta = table.getTableBankrollDelta();
+        if (tableBankrollDelta < 0L) {
+            outputter.showMessage("Casino paid the players a total of " + MoneyHelper.formatForDisplay(-tableBankrollDelta) + ".");
+        } else if (tableBankrollDelta > 0L) {
+            outputter.showMessage("Casino took " + MoneyHelper.formatForDisplay(tableBankrollDelta) + " from the players.");
+        } else {
+            outputter.showMessage("Casino was a wash.");
+        }
     }
 }
