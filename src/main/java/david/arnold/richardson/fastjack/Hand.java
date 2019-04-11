@@ -16,12 +16,38 @@ public abstract class Hand {
         reset();
     }
 
+    @Override
+    public String toString() {
+        return show();
+    }
+
     public String show() {
+        if (numCardsInHand == 0) {
+            return "(empty hand)";
+        }
+
         StringBuilder builder = new StringBuilder();
+        boolean hasAtLeastOneAce = false;
+        int minSum = 0;
         for (int i = 0; i < numCardsInHand; i++) {
-            builder.append(shoe.getCardForDisplay(indexesOfCards[i]));
+            int indexOfCard = indexesOfCards[i];
+            if (shoe.isAce(indexOfCard)) {
+                hasAtLeastOneAce = true;
+            }
+            minSum += shoe.getCardPointValue(indexOfCard);
+            builder.append(shoe.getCardForDisplay(indexOfCard));
             builder.append(" ");
         }
+
+        builder.append("(");
+        builder.append(minSum);
+        boolean hasTwoValues = hasAtLeastOneAce && minSum <= 11;
+        if (hasTwoValues) {
+            builder.append(" or ");
+            builder.append(minSum + 10);
+        }
+        builder.append(")");
+
         return builder.toString();
     }
 

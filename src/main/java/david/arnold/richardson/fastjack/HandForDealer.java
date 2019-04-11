@@ -29,11 +29,11 @@ public class HandForDealer extends Hand {
     }
 
     public String showHoleCard() {
-        return showCard(CARD_INDEX_OF_HOLE_CARD);
+        return showCard(indexesOfCards[CARD_INDEX_OF_HOLE_CARD]);
     }
 
     public String showUpcard() {
-        return showCard(CARD_INDEX_OF_UPCARD);
+        return showCard(indexesOfCards[CARD_INDEX_OF_UPCARD]);
     }
 
     public boolean isUpcardAce() {

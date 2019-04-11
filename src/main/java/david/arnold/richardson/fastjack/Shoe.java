@@ -67,7 +67,7 @@ public class Shoe {
     public int getCardPointValue(int cardIndex) {
         // card value is +1 because it's zero-based.
         int cardValue = (cards[cardIndex] & CARD_SYMBOL_MASK) + 1;
-        return cardValue >= 10 ? 10 : cardValue;
+        return cardValue > 10 ? 10 : cardValue;
     }
 
     public int getNumCards() {

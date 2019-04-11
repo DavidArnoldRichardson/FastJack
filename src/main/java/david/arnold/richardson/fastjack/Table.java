@@ -77,7 +77,6 @@ public class Table {
 
         // deal first card to each player
         for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
-            // todo: output deal
             seats[seatNumber].getHand(0).addCard(shoe.dealCard());
         }
 
@@ -86,7 +85,10 @@ public class Table {
 
         // deal second card to each player
         for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
-            seats[seatNumber].getHand(0).addCard(shoe.dealCard());
+            Seat seat = seats[seatNumber];
+            HandForPlayer hand = seat.getHand(0);
+            hand.addCard(shoe.dealCard());
+            outputter.showDealtHand(seat.getPlayer(), seatNumber, hand);
         }
 
         // deal hole card to dealer
@@ -96,10 +98,15 @@ public class Table {
         // take insurance bets
         boolean upcardIsAce = handForDealer.isUpcardAce();
         if (upcardIsAce) {
+            outputter.dealerUpcardIsAce();
             for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
-                insuranceBets[seatNumber] = seats[seatNumber].determineInsuranceBet();
+                long insuranceBet = seats[seatNumber].determineInsuranceBet();
+                insuranceBets[seatNumber] = insuranceBet;
+                outputter.insuranceBetMade(seats[seatNumber], seatNumber, insuranceBet);
             }
         }
+
+        outputter.revealDealerHand(handForDealer);
 
         if (handForDealer.isBlackjack()) {
             // pay out insurance
@@ -295,7 +302,6 @@ public class Table {
     }
 
     private boolean playDealer() {
-        outputter.showHoleCard(handForDealer);
         while (handForDealer.shouldDealerHit()) {
             handForDealer.addCard(shoe.dealCard());
         }

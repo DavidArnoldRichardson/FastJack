@@ -9,8 +9,6 @@ public abstract class Outputter {
 
     public abstract void cutCardWasDrawn();
 
-    public abstract void showHoleCard(HandForDealer handForDealer);
-
     public abstract void freshCards(int numDecks);
 
     public abstract void shuffle();
@@ -21,11 +19,17 @@ public abstract class Outputter {
 
     public abstract void showDealerUpcard(HandForDealer handForDealer);
 
-    public abstract void showHand(Player player, HandForPlayer hand);
-
     public abstract void roundAborted();
 
     public abstract void placeBet(Player player, int seatNumber, long desiredBetAmount);
 
     public abstract void sitPlayer(Player player, int seatNumber);
+
+    public abstract void showDealtHand(Player player, int seatNumber, HandForPlayer hand);
+
+    public abstract void dealerUpcardIsAce();
+
+    public abstract void insuranceBetMade(Seat seat, int seatNumber, long insuranceBet);
+
+    public abstract void revealDealerHand(HandForDealer handForDealer);
 }

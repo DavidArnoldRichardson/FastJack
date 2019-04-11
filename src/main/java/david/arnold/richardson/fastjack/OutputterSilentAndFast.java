@@ -15,10 +15,6 @@ public class OutputterSilentAndFast extends Outputter {
     }
 
     @Override
-    public void showHoleCard(HandForDealer handForDealer) {
-    }
-
-    @Override
     public void freshCards(int numDecks) {
     }
 
@@ -39,10 +35,6 @@ public class OutputterSilentAndFast extends Outputter {
     }
 
     @Override
-    public void showHand(Player player, HandForPlayer hand) {
-    }
-
-    @Override
     public void roundAborted() {
     }
 
@@ -52,5 +44,21 @@ public class OutputterSilentAndFast extends Outputter {
 
     @Override
     public void sitPlayer(Player player, int seatNumber) {
+    }
+
+    @Override
+    public void showDealtHand(Player player, int seatNumber, HandForPlayer hand) {
+    }
+
+    @Override
+    public void dealerUpcardIsAce() {
+    }
+
+    @Override
+    public void insuranceBetMade(Seat seat, int seatNumber, long insuranceBet) {
+    }
+
+    @Override
+    public void revealDealerHand(HandForDealer handForDealer) {
     }
 }
