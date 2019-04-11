@@ -1,5 +1,7 @@
 package david.arnold.richardson.fastjack;
 
+import david.arnold.richardson.fastjack.strategy.play.DecisionTables;
+
 public class Rules {
 
     public static final String CARD_SYMBOLS = "A23456789TJQK";
@@ -9,6 +11,7 @@ public class Rules {
     public static final int NUM_CARDS_PER_DECK = NUM_SUITES * NUM_CARDS_PER_SUITE;
 
     private Randomness randomness;
+    private DecisionTables decisionTables;
 
     private int numDecks;
     private int minNumCardsBehindCutCard;
@@ -22,6 +25,7 @@ public class Rules {
     private boolean canDoubleAfterSplit;
     private long minBetAmount;
     private long maxBetAmount;
+    private boolean lateSurrenderAvailable;
 
     public static Rules getDefault() {
         return new Rules(
@@ -36,7 +40,8 @@ public class Rules {
                 false,
                 false,
                 500L,
-                20000L);
+                20000L,
+                true);
     }
 
     public static Rules getWendover6D() {
@@ -52,7 +57,8 @@ public class Rules {
                 false,
                 false,
                 500L,
-                20000L);
+                20000L,
+                false);
     }
 
     public static Rules getWendover1D() {
@@ -68,7 +74,8 @@ public class Rules {
                 false,
                 false,
                 500L,
-                20000L);
+                20000L,
+                false);
     }
 
     public Rules(
@@ -83,7 +90,8 @@ public class Rules {
             boolean canHitSplitAces,
             boolean canDoubleAfterSplit,
             long minBetAmount,
-            long maxBetAmount) {
+            long maxBetAmount,
+            boolean lateSurrenderAvailable) {
         this.numDecks = numDecks;
         this.minNumCardsBehindCutCard = minNumCardsBehindCutCard;
         this.maxNumCardsBehindCutCard = maxNumCardsBehindCutCard;
@@ -96,6 +104,9 @@ public class Rules {
         this.canDoubleAfterSplit = canDoubleAfterSplit;
         this.minBetAmount = minBetAmount;
         this.maxBetAmount = maxBetAmount;
+        this.lateSurrenderAvailable = lateSurrenderAvailable;
+
+        this.decisionTables = new DecisionTables(this);
     }
 
     public void setSeed(long seed) {
@@ -107,6 +118,10 @@ public class Rules {
             this.randomness = new Randomness(Randomness.generateRandomSeed());
         }
         return randomness;
+    }
+
+    public DecisionTables getDecisionTables() {
+        return decisionTables;
     }
 
     public int getNumDecks() {
@@ -203,5 +218,13 @@ public class Rules {
 
     public void setMaxBetAmount(long maxBetAmount) {
         this.maxBetAmount = maxBetAmount;
+    }
+
+    public boolean isLateSurrenderAvailable() {
+        return lateSurrenderAvailable;
+    }
+
+    public void setLateSurrenderAvailable(boolean lateSurrenderAvailable) {
+        this.lateSurrenderAvailable = lateSurrenderAvailable;
     }
 }

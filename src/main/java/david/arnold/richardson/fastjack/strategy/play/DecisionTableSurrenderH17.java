@@ -7,12 +7,14 @@ import david.arnold.richardson.fastjack.Rules;
 import static david.arnold.richardson.fastjack.PlayerDecision.*;
 
 // This is only valid for 4 deck through 8 deck games.
-public class DecisionTableSurrenderS17 extends DecisionTable {
+public class DecisionTableSurrenderH17 extends DecisionTable {
 
     private PlayerDecision[][] table;
 
-    public DecisionTableSurrenderS17(Rules rules) {
+    public DecisionTableSurrenderH17(Rules rules) {
         super(rules);
+
+        // todo: These are the values for S17, update for H17
 
         // across the top are the dealer upcard values. Index 0 is ace, index 9 is ten.
         // down the side are the player hand totals. Index 0 is 2 (pair of aces), index

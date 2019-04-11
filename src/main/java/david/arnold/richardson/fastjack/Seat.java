@@ -78,8 +78,12 @@ public class Seat {
         return insuranceBet;
     }
 
-    public PlayerDecision getPlayerDecision(int handIndex) {
-        return player.getPlayStrategy().getPlay(hands[handIndex]);
+    public PlayerDecision getPlayerDecision(
+            int handIndex,
+            int dealerUpcardValue) {
+        return player.getPlayStrategy().getPlay(
+                hands[handIndex],
+                dealerUpcardValue);
     }
 
     public void resetHands() {

@@ -16,7 +16,7 @@ public class SimRunner {
                 200000L,
                 rules,
                 table);
-        PlayStrategyAlwaysStand playStrategy = new PlayStrategyAlwaysStand();
+        PlayStrategyAlwaysStand playStrategy = new PlayStrategyAlwaysStand(rules);
         BetStrategyAlwaysMin betStrategy = new BetStrategyAlwaysMin(player1, rules);
         player1.setStrategies(playStrategy, betStrategy);
         table.addPlayer(player1);

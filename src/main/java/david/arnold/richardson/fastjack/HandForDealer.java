@@ -36,11 +36,7 @@ public class HandForDealer extends Hand {
         return showCard(indexesOfCards[CARD_INDEX_OF_UPCARD]);
     }
 
-    public boolean isUpcardAce() {
-        return shoe.getCardPointValue(indexesOfCards[CARD_INDEX_OF_UPCARD]) == 1;
-    }
-
-    public boolean isUpcardTen() {
-        return shoe.getCardPointValue(indexesOfCards[CARD_INDEX_OF_UPCARD]) == 10;
+    public int getUpcardValue() {
+        return shoe.getCardPointValue(indexesOfCards[CARD_INDEX_OF_UPCARD]);
     }
 }
