@@ -61,11 +61,11 @@ public abstract class Hand {
         resetHelper();
     }
 
+    public abstract void resetHelper();
+
     public boolean hasCards() {
         return numCardsInHand > 0;
     }
-
-    public abstract void resetHelper();
 
     public void addCard(int cardIndex) {
         indexesOfCards[numCardsInHand++] = cardIndex;

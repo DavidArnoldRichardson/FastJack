@@ -13,25 +13,25 @@ public class MatrixSurrenderS17 extends Matrix {
         super(rules);
         table = new PlayerDecision[][]{
                 //A    2    3    4    5    6    7    8    9    T
-                {dna, dna, dna, dna, dna, dna, dna, dna, dna, dna}, // 2
-                {dna, dna, dna, dna, dna, dna, dna, dna, dna, dna}, // 3
-                {dna, dna, dna, dna, dna, dna, dna, dna, dna, dna}, // 4
-                {dna, dna, dna, dna, dna, dna, dna, dna, dna, dna}, // 5
-                {dna, dna, dna, dna, dna, dna, dna, dna, dna, dna}, // 6
-                {dna, dna, dna, dna, dna, dna, dna, dna, dna, dna}, // 7
-                {dna, dna, dna, dna, dna, dna, dna, dna, dna, dna}, // 8
-                {dna, dna, dna, dna, dna, dna, dna, dna, dna, dna}, // 9
-                {dna, dna, dna, dna, dna, dna, dna, dna, dna, dna}, // 10
-                {dna, dna, dna, dna, dna, dna, dna, dna, dna, dna}, // 11
-                {dna, dna, dna, dna, dna, dna, dna, dna, dna, dna}, // 12
-                {dna, dna, dna, dna, dna, dna, dna, dna, dna, dna}, // 13
-                {dna, dna, dna, dna, dna, dna, dna, dna, dna, dna}, // 14
-                {dna, dna, dna, dna, dna, dna, dna, dna, dna, SUR}, // 15
-                {XXX, dna, dna, dna, dna, dna, dna, dna, XXX, XXX}, // 16
-                {dna, dna, dna, dna, dna, dna, dna, dna, dna, dna}, // 17
-                {dna, dna, dna, dna, dna, dna, dna, dna, dna, dna}, // 18
-                {dna, dna, dna, dna, dna, dna, dna, dna, dna, dna}, // 19
-                {dna, dna, dna, dna, dna, dna, dna, dna, dna, dna}  // 20
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 2
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 3
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 4
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 5
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 6
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 7
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 8
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 9
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 10
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 11
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 12
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 13
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 14
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, SUR}, // 15
+                {XXX, n_a, n_a, n_a, n_a, n_a, n_a, n_a, XXX, XXX}, // 16
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 17
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 18
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 19
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}  // 20
         };
     }
 
@@ -41,14 +41,9 @@ public class MatrixSurrenderS17 extends Matrix {
             int playerHandValue,
             int dealerUpcardValue) {
         PlayerDecision playerDecision = lookup(table, playerHandValue, dealerUpcardValue);
-        if (playerDecision == XXX && isSplittablePairOfEights(hand)) {
-            return dna;
+        if (playerDecision == XXX) {
+            playerDecision = hand.isPair() ? n_a : SUR;
         }
         return playerDecision;
-    }
-
-    private boolean isSplittablePairOfEights(HandForPlayer hand) {
-        // todo
-        return false;
     }
 }

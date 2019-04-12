@@ -16,7 +16,7 @@ public class Seat {
         int maxNumHands = shoe.getRules().getMaxNumSplits() + 1;
         hands = new HandForPlayer[maxNumHands];
         for (int i = 0; i < maxNumHands; i++) {
-            hands[i] = new HandForPlayer(shoe);
+            hands[i] = new HandForPlayer(shoe, this);
         }
         resetHands();
     }

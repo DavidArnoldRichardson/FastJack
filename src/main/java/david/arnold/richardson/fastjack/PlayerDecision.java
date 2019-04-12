@@ -7,5 +7,5 @@ public enum PlayerDecision {
     DBL, // Double down
     SUR, // Surrender
     XXX, // Special handing
-    dna // Does Not Apply
+    n_a // Not applicable
 }

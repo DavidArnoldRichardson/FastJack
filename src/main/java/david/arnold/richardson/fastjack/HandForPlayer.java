@@ -3,10 +3,14 @@ package david.arnold.richardson.fastjack;
 public class HandForPlayer extends Hand {
     private long betAmount;
     private boolean handIsResultOfSplit;
+    private Seat seat;
 
-    public HandForPlayer(Shoe shoe) {
+    public HandForPlayer(
+            Shoe shoe,
+            Seat seat) {
         // could be all twos, to a max of 11 (22 points), where the player busts.
         super(shoe, 11);
+        this.seat = seat;
     }
 
     @Override
@@ -28,10 +32,40 @@ public class HandForPlayer extends Hand {
         return indexesOfCards[1];
     }
 
+    public boolean hasExactlyTwoCards() {
+        return numCardsInHand == 2;
+    }
+
+    public boolean isPair() {
+        if (!hasExactlyTwoCards()) {
+            return false;
+        }
+
+        return shoe.getCardPointValue(indexesOfCards[0]) == shoe.getCardPointValue(indexesOfCards[1]);
+    }
+
     public boolean isPairOfAces() {
-        return numCardsInHand == 2
-                && shoe.isAce(indexesOfCards[0])
-                && shoe.isAce(indexesOfCards[1]);
+        return isPair() && shoe.isAce(indexesOfCards[0]);
+    }
+
+    public boolean isSplittablePair() {
+
+        if (!isPair()) {
+            return false;
+        }
+
+        // check to make sure there haven't already been too many splits
+        if (seat.getNumHandsInUse() == shoe.getRules().getMaxNumSplits() + 1) {
+            return false;
+        }
+
+        // check to make sure player has sufficient funds to split
+        //noinspection RedundantIfStatement
+        if (seat.getPlayer().getBankroll() < getBetAmount()) {
+            return false;
+        }
+
+        return true;
     }
 
     public boolean isHandIsResultOfSplit() {

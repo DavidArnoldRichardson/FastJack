@@ -27,6 +27,37 @@ public class Rules {
     private long maxBetAmount;
     private boolean lateSurrenderAvailable;
 
+    public Rules(
+            int numDecks,
+            int minNumCardsBehindCutCard,
+            int maxNumCardsBehindCutCard,
+            int numBurnCards,
+            boolean showBurnCards,
+            boolean isH17,
+            int maxNumSplits,
+            boolean canResplitAces,
+            boolean canHitSplitAces,
+            boolean canDoubleAfterSplit,
+            long minBetAmount,
+            long maxBetAmount,
+            boolean lateSurrenderAvailable) {
+        this.numDecks = numDecks;
+        this.minNumCardsBehindCutCard = minNumCardsBehindCutCard;
+        this.maxNumCardsBehindCutCard = maxNumCardsBehindCutCard;
+        this.numBurnCards = numBurnCards;
+        this.showBurnCards = showBurnCards;
+        this.isH17 = isH17;
+        this.maxNumSplits = maxNumSplits;
+        this.canResplitAces = canResplitAces;
+        this.canHitSplitAces = canHitSplitAces;
+        this.canDoubleAfterSplit = canDoubleAfterSplit;
+        this.minBetAmount = minBetAmount;
+        this.maxBetAmount = maxBetAmount;
+        this.lateSurrenderAvailable = lateSurrenderAvailable;
+
+        this.matrixHolder = new MatrixHolder(this);
+    }
+
     public static Rules getDefault() {
         return new Rules(
                 6,
@@ -76,37 +107,6 @@ public class Rules {
                 500L,
                 20000L,
                 false);
-    }
-
-    public Rules(
-            int numDecks,
-            int minNumCardsBehindCutCard,
-            int maxNumCardsBehindCutCard,
-            int numBurnCards,
-            boolean showBurnCards,
-            boolean isH17,
-            int maxNumSplits,
-            boolean canResplitAces,
-            boolean canHitSplitAces,
-            boolean canDoubleAfterSplit,
-            long minBetAmount,
-            long maxBetAmount,
-            boolean lateSurrenderAvailable) {
-        this.numDecks = numDecks;
-        this.minNumCardsBehindCutCard = minNumCardsBehindCutCard;
-        this.maxNumCardsBehindCutCard = maxNumCardsBehindCutCard;
-        this.numBurnCards = numBurnCards;
-        this.showBurnCards = showBurnCards;
-        this.isH17 = isH17;
-        this.maxNumSplits = maxNumSplits;
-        this.canResplitAces = canResplitAces;
-        this.canHitSplitAces = canHitSplitAces;
-        this.canDoubleAfterSplit = canDoubleAfterSplit;
-        this.minBetAmount = minBetAmount;
-        this.maxBetAmount = maxBetAmount;
-        this.lateSurrenderAvailable = lateSurrenderAvailable;
-
-        this.matrixHolder = new MatrixHolder(this);
     }
 
     public void setSeed(long seed) {
