@@ -34,6 +34,11 @@ public class Seat {
         return numHandsInUse;
     }
 
+    // just used for testing
+    public void setNumHandsInUse(int numHandsInUse) {
+        this.numHandsInUse = numHandsInUse;
+    }
+
     public HandForPlayer getHand(int handIndex) {
         return hands[handIndex];
     }

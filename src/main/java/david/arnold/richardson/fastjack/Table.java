@@ -34,8 +34,9 @@ public class Table {
         return shoe;
     }
 
-    public void addPlayer(Player player) {
+    public Seat addPlayer(Player player) {
         seats[numSeatsInUse++].assignPlayerToSeat(player);
+        return seats[numSeatsInUse - 2];
     }
 
     public int playRounds(int numRoundsToPlay) {
