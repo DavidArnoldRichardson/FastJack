@@ -70,7 +70,7 @@ public class OutputterVerboseToScreen extends Outputter {
     @Override
     public void sitPlayer(Player player, int seatNumber) {
         showMessage(getPrefix(player, seatNumber)
-                + " contains " + player.getPlayerName() + ".");
+                + " has a bankroll of " + MoneyHelper.formatForDisplay(player.getBankroll()) + ".");
     }
 
     @Override

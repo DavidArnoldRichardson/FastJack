@@ -253,7 +253,6 @@ public class Table {
             // this hand was created from a split. It needs another card.
             if (hand.numCardsInHand == 1) {
                 keepPlaying = playOnNewlySplitHand(seat, hand);
-                outputter.gotSecondCardOnSplit(seat, hand);
             }
 
             while (keepPlaying) {
