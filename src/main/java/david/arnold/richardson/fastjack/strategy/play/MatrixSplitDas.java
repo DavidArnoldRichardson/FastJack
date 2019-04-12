@@ -10,25 +10,25 @@ public class MatrixSplitDas extends Matrix {
     public MatrixSplitDas() {
         table = new PlayerDecision[][]{
                 //A    2    3    4    5    6    7    8    9    T
-                {SPL, SPL, SPL, SPL, SPL, SPL, SPL, SPL, SPL, SPL}, // 2: AA
+                {SPL, SPL, SPL, SPL, SPL, SPL, SPL, SPL, SPL, SPL}, // 2: A,A
                 {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 3: (unused)
-                {n_a, SPL, SPL, SPL, SPL, SPL, SPL, n_a, n_a, n_a}, // 4: 22
+                {n_a, SPL, SPL, SPL, SPL, SPL, SPL, n_a, n_a, n_a}, // 4: 2,2
                 {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 5: (unused)
-                {n_a, SPL, SPL, SPL, SPL, SPL, SPL, n_a, n_a, n_a}, // 6: 33
+                {n_a, SPL, SPL, SPL, SPL, SPL, SPL, n_a, n_a, n_a}, // 6: 3,3
                 {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 7: (unused)
-                {n_a, n_a, n_a, n_a, SPL, SPL, n_a, n_a, n_a, n_a}, // 8: 44
+                {n_a, n_a, n_a, n_a, SPL, SPL, n_a, n_a, n_a, n_a}, // 8: 4,4
                 {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 9: (unused)
-                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 10: 55
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 10: 5,5
                 {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 11: (unused)
-                {n_a, SPL, SPL, SPL, SPL, SPL, n_a, n_a, n_a, n_a}, // 12: 66
+                {n_a, SPL, SPL, SPL, SPL, SPL, n_a, n_a, n_a, n_a}, // 12: 6,6
                 {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 13: (unused)
-                {n_a, SPL, SPL, SPL, SPL, SPL, SPL, n_a, n_a, n_a}, // 14: 77
+                {n_a, SPL, SPL, SPL, SPL, SPL, SPL, n_a, n_a, n_a}, // 14: 7,7
                 {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 15: (unused)
-                {SPL, SPL, SPL, SPL, SPL, SPL, SPL, SPL, SPL, SPL}, // 16: 88
+                {SPL, SPL, SPL, SPL, SPL, SPL, SPL, SPL, SPL, SPL}, // 16: 8,8
                 {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 17: (unused)
-                {n_a, SPL, SPL, SPL, SPL, SPL, n_a, SPL, SPL, n_a}, // 18: 99
+                {n_a, SPL, SPL, SPL, SPL, SPL, n_a, SPL, SPL, n_a}, // 18: 9,9
                 {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}, // 19: (unused)
-                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}  // 20: TT
+                {n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a, n_a}  // 20: T,T
         };
     }
 }

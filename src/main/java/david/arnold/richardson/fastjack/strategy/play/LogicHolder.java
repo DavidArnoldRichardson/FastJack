@@ -1,9 +1,7 @@
 package david.arnold.richardson.fastjack.strategy.play;
 
-import david.arnold.richardson.fastjack.Rules;
-
-// This holds an instantiation of all the matricies, so they are hot and ready when needed.
-public class MatrixHolder {
+// This holds an instantiation of all the logic tables, so they are hot and ready when needed.
+public class LogicHolder {
 
     private Matrix matrixSurrenderIsPairS17;
     private Matrix matrixSurrenderIsPairH17;
@@ -28,7 +26,7 @@ public class MatrixHolder {
     private Matrix matrixHitStandSoft;
     private Matrix matrixHitStandHard;
 
-    public MatrixHolder(Rules rules) {
+    public LogicHolder() {
         matrixSurrenderIsPairS17 = new MatrixSurrenderIsPairS17();
         matrixSurrenderIsPairH17 = new MatrixSurrenderIsPairH17();
         matrixSurrenderIsNotPairS17 = new MatrixSurrenderIsNotPairS17();
@@ -44,7 +42,13 @@ public class MatrixHolder {
         matrixDoubleSoftDoubleDeckH17 = new MatrixDoubleSoftDoubleDeckH17();
         matrixDoubleSoftSingleDeck = new MatrixDoubleSoftSingleDeck();
 
-        // todo: instantiate the missing matrixes
+        matrixDoubleHardManyDeckH17 = new MatrixDoubleHardManyDeckH17();
+        matrixDoubleHardManyDeckS17 = new MatrixDoubleHardManyDeckS17();
+        matrixDoubleHardDoubleDeck = new MatrixDoubleHardDoubleDeck();
+        matrixDoubleHardSingleDeck = new MatrixDoubleHardSingleDeck();
+
+        matrixHitStandSoft = new MatrixHitStandSoft();
+        matrixHitStandHard = new MatrixHitStandHard();
     }
 
     public Matrix getMatrixSurrenderIsPairS17() {

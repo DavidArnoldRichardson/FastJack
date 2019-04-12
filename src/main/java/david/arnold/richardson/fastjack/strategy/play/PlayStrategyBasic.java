@@ -8,7 +8,8 @@ import static david.arnold.richardson.fastjack.PlayerDecision.n_a;
 
 public class PlayStrategyBasic extends PlayStrategy {
 
-    Matrix matrixForSurrender = null;
+    Matrix matrixForSurrenderIsPair = null;
+    Matrix matrixForSurrenderIsNotPair = null;
     Matrix matrixForSplit;
     Matrix matrixForSoftDouble = null;
     Matrix matrixForHardDouble;
@@ -17,8 +18,11 @@ public class PlayStrategyBasic extends PlayStrategy {
 
     public PlayStrategyBasic(Rules rules) {
         super(rules);
+        setupLogic();
+    }
 
-        MatrixHolder matrixHolder = rules.getMatrixHolder();
+    private void setupLogic() {
+        LogicHolder logicHolder = rules.getLogicHolder();
         int numDecks = rules.getNumDecks();
         boolean isH17 = rules.isH17();
 
@@ -29,41 +33,43 @@ public class PlayStrategyBasic extends PlayStrategy {
             }
 
             if (isH17) {
-                matrixForSurrender = matrixHolder.getMatrixSurrenderIsPairH17();
+                matrixForSurrenderIsPair = logicHolder.getMatrixSurrenderIsPairH17();
+                matrixForSurrenderIsNotPair = logicHolder.getMatrixSurrenderIsNotPairH17();
             } else {
-                matrixForSurrender = matrixHolder.getMatrixSurrenderIsPairS17();
+                matrixForSurrenderIsPair = logicHolder.getMatrixSurrenderIsPairS17();
+                matrixForSurrenderIsNotPair = logicHolder.getMatrixSurrenderIsNotPairS17();
             }
         }
 
         // choose a split matrix
         if (rules.isCanDoubleAfterSplit()) {
-            matrixForSplit = matrixHolder.getMatrixSplitDas();
+            matrixForSplit = logicHolder.getMatrixSplitDas();
         } else {
             switch (numDecks) {
                 case 1:
-                    matrixForSplit = matrixHolder.getMatrixSplitSingleDeckNoDas();
+                    matrixForSplit = logicHolder.getMatrixSplitSingleDeckNoDas();
                     break;
                 case 2:
-                    matrixForSplit = matrixHolder.getMatrixSplitDoubleDeckNoDas();
+                    matrixForSplit = logicHolder.getMatrixSplitDoubleDeckNoDas();
                     break;
                 default:
-                    matrixForSplit = matrixHolder.getMatrixSplitManyDeckNoDas();
+                    matrixForSplit = logicHolder.getMatrixSplitManyDeckNoDas();
             }
         }
 
         // choose matrix for doubling on soft hands, if needed
         if (!rules.isCanDoubleOnTenOrElevenOnly()) {
             if (numDecks == 1) {
-                matrixForSoftDouble = matrixHolder.getMatrixDoubleSoftSingleDeck();
+                matrixForSoftDouble = logicHolder.getMatrixDoubleSoftSingleDeck();
             } else {
                 if (isH17) {
                     if (numDecks == 2) {
-                        matrixForSoftDouble = matrixHolder.getMatrixDoubleSoftDoubleDeckH17();
+                        matrixForSoftDouble = logicHolder.getMatrixDoubleSoftDoubleDeckH17();
                     } else {
-                        matrixForSoftDouble = matrixHolder.getMatrixDoubleSoftManyDeckH17();
+                        matrixForSoftDouble = logicHolder.getMatrixDoubleSoftManyDeckH17();
                     }
                 } else {
-                    matrixForSoftDouble = matrixHolder.getMatrixDoubleSoftManyDeckS17();
+                    matrixForSoftDouble = logicHolder.getMatrixDoubleSoftManyDeckS17();
                 }
             }
         }
@@ -71,22 +77,22 @@ public class PlayStrategyBasic extends PlayStrategy {
         // choose matrix for doubling on hard hands
         switch (numDecks) {
             case 1:
-                matrixForHardDouble = matrixHolder.getMatrixDoubleHardSingleDeck();
+                matrixForHardDouble = logicHolder.getMatrixDoubleHardSingleDeck();
                 break;
             case 2:
-                matrixForHardDouble = matrixHolder.getMatrixDoubleHardDoubleDeck();
+                matrixForHardDouble = logicHolder.getMatrixDoubleHardDoubleDeck();
                 break;
             default:
                 if (isH17) {
-                    matrixForHardDouble = matrixHolder.getMatrixDoubleHardManyDeckH17();
+                    matrixForHardDouble = logicHolder.getMatrixDoubleHardManyDeckH17();
                 } else {
-                    matrixForHardDouble = matrixHolder.getMatrixDoubleHardManyDeckS17();
+                    matrixForHardDouble = logicHolder.getMatrixDoubleHardManyDeckS17();
                 }
         }
 
         // assign matrix for hit or stand
-        matrixForHardHitStand = matrixHolder.getMatrixHitStandHard();
-        matrixForSoftHitStand = matrixHolder.getMatrixHitStandSoft();
+        matrixForHardHitStand = logicHolder.getMatrixHitStandHard();
+        matrixForSoftHitStand = logicHolder.getMatrixHitStandSoft();
     }
 
     @Override
@@ -98,7 +104,11 @@ public class PlayStrategyBasic extends PlayStrategy {
 
         if (rules.isLateSurrenderAvailable()) {
             if (hand.hasExactlyTwoCards()) {
-                playerDecision = matrixForSurrender.lookup(playerHandMinPointSum, dealerUpcardValue);
+                if (hand.isPair()) {
+                    playerDecision = matrixForSurrenderIsPair.lookup(playerHandMinPointSum, dealerUpcardValue);
+                } else {
+                    playerDecision = matrixForSurrenderIsNotPair.lookup(playerHandMinPointSum, dealerUpcardValue);
+                }
                 if (playerDecision != n_a) {
                     return playerDecision;
                 }

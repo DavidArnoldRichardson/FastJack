@@ -1,6 +1,6 @@
 package david.arnold.richardson.fastjack;
 
-import david.arnold.richardson.fastjack.strategy.play.MatrixHolder;
+import david.arnold.richardson.fastjack.strategy.play.LogicHolder;
 
 public class Rules {
 
@@ -11,7 +11,7 @@ public class Rules {
     public static final int NUM_CARDS_PER_DECK = NUM_SUITES * NUM_CARDS_PER_SUITE;
 
     private Randomness randomness;
-    private MatrixHolder matrixHolder;
+    private LogicHolder logicHolder;
 
     private int numDecks;
     private int minNumCardsBehindCutCard;
@@ -58,7 +58,7 @@ public class Rules {
         this.lateSurrenderAvailable = lateSurrenderAvailable;
         this.canDoubleOnTenOrElevenOnly = canDoubleOnTenOrElevenOnly;
 
-        this.matrixHolder = new MatrixHolder(this);
+        this.logicHolder = new LogicHolder();
     }
 
     public static Rules getDefault() {
@@ -126,8 +126,8 @@ public class Rules {
         return randomness;
     }
 
-    public MatrixHolder getMatrixHolder() {
-        return matrixHolder;
+    public LogicHolder getLogicHolder() {
+        return logicHolder;
     }
 
     public int getNumDecks() {
