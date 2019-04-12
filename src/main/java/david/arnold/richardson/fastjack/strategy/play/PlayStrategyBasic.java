@@ -29,9 +29,9 @@ public class PlayStrategyBasic extends PlayStrategy {
             }
 
             if (isH17) {
-                matrixForSurrender = matrixHolder.getMatrixSurrenderH17();
+                matrixForSurrender = matrixHolder.getMatrixSurrenderIsPairH17();
             } else {
-                matrixForSurrender = matrixHolder.getMatrixSurrenderS17();
+                matrixForSurrender = matrixHolder.getMatrixSurrenderIsPairS17();
             }
         }
 
@@ -98,10 +98,7 @@ public class PlayStrategyBasic extends PlayStrategy {
 
         if (rules.isLateSurrenderAvailable()) {
             if (hand.hasExactlyTwoCards()) {
-                playerDecision = matrixForSurrender.lookup(
-                        hand,
-                        playerHandMinPointSum,
-                        dealerUpcardValue);
+                playerDecision = matrixForSurrender.lookup(playerHandMinPointSum, dealerUpcardValue);
                 if (playerDecision != n_a) {
                     return playerDecision;
                 }
@@ -109,10 +106,7 @@ public class PlayStrategyBasic extends PlayStrategy {
         }
 
         if (hand.isSplittablePair()) {
-            playerDecision = matrixForSplit.lookup(
-                    hand,
-                    playerHandMinPointSum,
-                    dealerUpcardValue);
+            playerDecision = matrixForSplit.lookup(playerHandMinPointSum, dealerUpcardValue);
             if (playerDecision != n_a) {
                 return playerDecision;
             }
@@ -121,15 +115,9 @@ public class PlayStrategyBasic extends PlayStrategy {
         boolean isSoft = hand.isSoft();
         if (hand.canDoubleDown(isSoft)) {
             if (isSoft) {
-                playerDecision = matrixForSoftDouble.lookup(
-                        hand,
-                        playerHandMinPointSum,
-                        dealerUpcardValue);
+                playerDecision = matrixForSoftDouble.lookup(playerHandMinPointSum, dealerUpcardValue);
             } else {
-                playerDecision = matrixForHardDouble.lookup(
-                        hand,
-                        playerHandMinPointSum,
-                        dealerUpcardValue);
+                playerDecision = matrixForHardDouble.lookup(playerHandMinPointSum, dealerUpcardValue);
             }
             if (playerDecision != n_a) {
                 return playerDecision;
@@ -137,15 +125,9 @@ public class PlayStrategyBasic extends PlayStrategy {
         }
 
         if (isSoft) {
-            return matrixForSoftHitStand.lookup(
-                    hand,
-                    playerHandMinPointSum,
-                    dealerUpcardValue);
+            return matrixForSoftHitStand.lookup(playerHandMinPointSum, dealerUpcardValue);
         } else {
-            return matrixForHardHitStand.lookup(
-                    hand,
-                    playerHandMinPointSum,
-                    dealerUpcardValue);
+            return matrixForHardHitStand.lookup(playerHandMinPointSum, dealerUpcardValue);
         }
     }
 

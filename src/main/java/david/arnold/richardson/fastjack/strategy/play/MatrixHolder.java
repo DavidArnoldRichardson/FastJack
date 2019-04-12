@@ -5,8 +5,10 @@ import david.arnold.richardson.fastjack.Rules;
 // This holds an instantiation of all the matricies, so they are hot and ready when needed.
 public class MatrixHolder {
 
-    private Matrix matrixSurrenderS17;
-    private Matrix matrixSurrenderH17;
+    private Matrix matrixSurrenderIsPairS17;
+    private Matrix matrixSurrenderIsPairH17;
+    private Matrix matrixSurrenderIsNotPairS17;
+    private Matrix matrixSurrenderIsNotPairH17;
 
     private Matrix matrixSplitDas;
     private Matrix matrixSplitSingleDeckNoDas;
@@ -27,23 +29,38 @@ public class MatrixHolder {
     private Matrix matrixHitStandHard;
 
     public MatrixHolder(Rules rules) {
-        matrixSurrenderS17 = new MatrixSurrenderS17(rules);
-        matrixSurrenderH17 = new MatrixSurrenderH17(rules);
+        matrixSurrenderIsPairS17 = new MatrixSurrenderIsPairS17();
+        matrixSurrenderIsPairH17 = new MatrixSurrenderIsPairH17();
+        matrixSurrenderIsNotPairS17 = new MatrixSurrenderIsNotPairS17();
+        matrixSurrenderIsNotPairH17 = new MatrixSurrenderIsNotPairH17();
 
-        matrixSplitDas = new MatrixSplitDas(rules);
-        matrixSplitSingleDeckNoDas = new MatrixSplitSingleDeckNoDas(rules);
-        matrixSplitDoubleDeckNoDas = new MatrixSplitDoubleDeckNoDas(rules);
-        matrixSplitManyDeckNoDas = new MatrixSplitManyDeckNoDas(rules);
+        matrixSplitDas = new MatrixSplitDas();
+        matrixSplitSingleDeckNoDas = new MatrixSplitSingleDeckNoDas();
+        matrixSplitDoubleDeckNoDas = new MatrixSplitDoubleDeckNoDas();
+        matrixSplitManyDeckNoDas = new MatrixSplitManyDeckNoDas();
+
+        matrixDoubleSoftManyDeckS17 = new MatrixDoubleSoftManyDeckS17();
+        matrixDoubleSoftManyDeckH17 = new MatrixDoubleSoftManyDeckH17();
+        matrixDoubleSoftDoubleDeckH17 = new MatrixDoubleSoftDoubleDeckH17();
+        matrixDoubleSoftSingleDeck = new MatrixDoubleSoftSingleDeck();
 
         // todo: instantiate the missing matrixes
     }
 
-    public Matrix getMatrixSurrenderS17() {
-        return matrixSurrenderS17;
+    public Matrix getMatrixSurrenderIsPairS17() {
+        return matrixSurrenderIsPairS17;
     }
 
-    public Matrix getMatrixSurrenderH17() {
-        return matrixSurrenderH17;
+    public Matrix getMatrixSurrenderIsPairH17() {
+        return matrixSurrenderIsPairH17;
+    }
+
+    public Matrix getMatrixSurrenderIsNotPairS17() {
+        return matrixSurrenderIsNotPairS17;
+    }
+
+    public Matrix getMatrixSurrenderIsNotPairH17() {
+        return matrixSurrenderIsNotPairH17;
     }
 
     public Matrix getMatrixSplitDas() {
