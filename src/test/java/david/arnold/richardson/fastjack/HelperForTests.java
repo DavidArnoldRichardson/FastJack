@@ -7,7 +7,6 @@ import org.junit.Before;
 
 public abstract class HelperForTests {
 
-    protected Rules rules = Rules.getDefault();
     protected Shoe shoe;
 
     // These are indexes to a card with the corresponding value.
@@ -40,9 +39,6 @@ public abstract class HelperForTests {
 
     @Before
     public void setupOneTest() {
-        shoe = new Shoe(rules, new OutputterSilentAndFast());
-        prepareCardsForTests(shoe);
-
         rulesDefault = Rules.getDefault();
 
         rulesDoubleDownLimited = Rules.getDefault();
@@ -53,6 +49,12 @@ public abstract class HelperForTests {
 
         rulesCannotSurrender = Rules.getDefault();
         rulesCannotSurrender.setLateSurrenderAvailable(false);
+
+        shoe = new Shoe(
+                rulesDefault,
+                new OutputterSilentAndFast());
+
+        prepareCardsForTests(shoe);
     }
 
     protected void resetHand(Hand hand, int... cardIndexes) {
@@ -69,7 +71,6 @@ public abstract class HelperForTests {
         byte cardValue = 9; // This is a ten, zero-based.
         int index = shoe.getNumCards() - 1;
 
-        // todo: replace with an array
         shoe.cards[index] = shoe.createCard(suite, cardValue--);
         cT = index--;
         shoe.cards[index] = shoe.createCard(suite, cardValue--);
@@ -92,86 +93,88 @@ public abstract class HelperForTests {
         cA = index;
     }
 
-    protected PlayerDecision compute(int... values) {
-        return compute(rulesDefault, values);
+    protected PlayerDecision compute(int... cards) {
+        return compute(rulesDefault, true, cards);
     }
 
-    protected PlayerDecision computeCannotSplit(int... values) {
-        return compute(rules, true, values);
-    }
-
-    protected PlayerDecision compute(
-            Rules rules,
-            int... values) {
-        return compute(rules, false, values);
+    protected PlayerDecision computeCannotSplit(int... cards) {
+        return compute(rulesDefault, false, cards);
     }
 
     protected PlayerDecision compute(
             Rules rules,
-            boolean splittingNotAvailable,
-            int... values) {
-        int numValues = values.length;
-        int numCardsInHand = numValues - 1;
-        int[] handIndexes = new int[numValues - 1];
-        for (int i = 0; i < numCardsInHand; i++) {
-            switch(values[i]) {
-                // todo: use an array
-                case 1:
-                    handIndexes[i] = cA;
-                    break;
-                case 2:
-                    handIndexes[i] = c2;
-                    break;
-                case 3:
-                    handIndexes[i] = c3;
-                    break;
-                case 4:
-                    handIndexes[i] = c4;
-                    break;
-                case 5:
-                    handIndexes[i] = c5;
-                    break;
-                case 6:
-                    handIndexes[i] = c6;
-                    break;
-                case 7:
-                    handIndexes[i] = c7;
-                    break;
-                case 8:
-                    handIndexes[i] = c8;
-                    break;
-                case 9:
-                    handIndexes[i] = c9;
-                    break;
-                case 10:
-                    handIndexes[i] = cT;
-                    break;
-                default:
-                    throw new RuntimeException("bad value");
-            }
-        }
+            int... cards) {
+        return compute(rules, true, cards);
+    }
 
-        int indexOfDealerUpcardValue = numValues - 2;
-        int dealerUpcardValue = values[indexOfDealerUpcardValue];
+    protected PlayerDecision compute(
+            Rules rules,
+            boolean splittingAvailable,
 
+            // the first ones are indexes into the shoe
+            // the last one is the dealer upcard value (needs to be converted to index into shoe).
+            int... cards) {
+
+        // todo: There is a bug here. There are two shoes, one built by the table, and this one.
+        //  Problem is there are Rules all over the place. Should consolidate those, and only store them on the Table
+        //  object, and have everything pull from that, and not have its own copy. Everything can link to the table.
+        shoe.setRules(rules);
         PlayStrategy playStrategy = new PlayStrategyBasic(rules);
-        Table table = new Table(
-                new OutputterSilentAndFast(),
-                rules);
+        Table table = new Table(new OutputterSilentAndFast(), rules);
         Player player = new Player("test", 100000L, rules, table);
         player.setStrategies(playStrategy, new BetStrategyAlwaysMin(player, rules));
         Seat seat = table.addPlayer(player);
 
-        HandForPlayer hand = new HandForPlayer(table.getShoe(), seat);
-        for (int i = 0; i < numCardsInHand; i++) {
-            hand.addCard(handIndexes[i]);
+        int indexOfDealerUpcardValue = cards.length - 1;
+        int dealerUpcardValue = cards[indexOfDealerUpcardValue];
+        int dealerUpcardIndexIntoShoe;
+        switch(dealerUpcardValue) {
+            case 1:
+                dealerUpcardIndexIntoShoe = cA;
+                break;
+            case 2:
+                dealerUpcardIndexIntoShoe = c2;
+                break;
+            case 3:
+                dealerUpcardIndexIntoShoe = c3;
+                break;
+            case 4:
+                dealerUpcardIndexIntoShoe = c4;
+                break;
+            case 5:
+                dealerUpcardIndexIntoShoe = c5;
+                break;
+            case 6:
+                dealerUpcardIndexIntoShoe = c6;
+                break;
+            case 7:
+                dealerUpcardIndexIntoShoe = c7;
+                break;
+            case 8:
+                dealerUpcardIndexIntoShoe = c8;
+                break;
+            case 9:
+                dealerUpcardIndexIntoShoe = c9;
+                break;
+            case 10:
+                dealerUpcardIndexIntoShoe = cT;
+                break;
+            default:
+                throw new RuntimeException("bad value");
         }
 
-        if (splittingNotAvailable) {
+        int numCardsInHand = cards.length - 1;
+        HandForPlayer hand = new HandForPlayer(table.getShoe(), seat);
+        for (int i = 0; i < numCardsInHand; i++) {
+            hand.addCard(cards[i]);
+        }
+        System.out.println(hand.show());
+
+        if (!splittingAvailable) {
             hand.setHandIsResultOfSplit();
             seat.setNumHandsInUse(rules.getMaxNumSplits() + 1);
         }
 
-        return playStrategy.getPlay(hand, dealerUpcardValue);
+        return playStrategy.getPlay(hand, dealerUpcardIndexIntoShoe);
     }
 }

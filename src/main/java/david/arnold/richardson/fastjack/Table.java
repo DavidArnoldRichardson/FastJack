@@ -35,8 +35,10 @@ public class Table {
     }
 
     public Seat addPlayer(Player player) {
-        seats[numSeatsInUse++].assignPlayerToSeat(player);
-        return seats[numSeatsInUse - 2];
+        seats[numSeatsInUse].assignPlayerToSeat(player);
+        Seat newlyOccupiedSeat = seats[numSeatsInUse];
+        numSeatsInUse++;
+        return newlyOccupiedSeat;
     }
 
     public int playRounds(int numRoundsToPlay) {

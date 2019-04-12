@@ -48,6 +48,11 @@ public class Shoe {
         return rules;
     }
 
+    // used for tests
+    public void setRules(Rules rules) {
+        this.rules = rules;
+    }
+
     private String getSuiteSymbol(int cardIndex) {
         return String.valueOf(SUITE_SYMBOLS.charAt((cards[cardIndex] & SUITE_MASK) >> SUITE_BITS_LEFT_SHIFT));
     }
