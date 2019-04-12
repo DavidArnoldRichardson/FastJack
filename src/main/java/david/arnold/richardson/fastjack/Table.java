@@ -177,6 +177,7 @@ public class Table {
                     for (int handIndex = numHands - 1; handIndex >= 0; handIndex--) {
                         HandForPlayer hand = seat.getHand(handIndex);
                         if (hand.hasCards()) {
+                            outputter.playerWins(seat, hand);
                             long betAmount = hand.getBetAmount();
                             seat.getPlayer().addToBankroll(betAmount << 1);
                             tableBankroll -= betAmount;
@@ -197,14 +198,14 @@ public class Table {
                             int playerHandValue = hand.computeMaxPointSum();
                             long betAmount = hand.getBetAmount();
                             if (playerHandValue < dealerHandValue) {
-                                // dealer win
+                                outputter.dealerWins(seat, hand);
                                 tableBankroll += betAmount;
                             } else if (playerHandValue > dealerHandValue) {
-                                // player win
+                                outputter.playerWins(seat, hand);
                                 seat.getPlayer().addToBankroll(betAmount << 1);
                                 tableBankroll -= betAmount;
                             } else {
-                                // push
+                                outputter.playerPushes(seat, hand);
                                 seat.getPlayer().addToBankroll(betAmount);
                             }
                             hand.reset();

@@ -133,4 +133,16 @@ public class OutputterSilentAndFast extends Outputter {
     @Override
     public void dealerHandResult(HandForDealer handForDealer, boolean dealerBusted) {
     }
+
+    @Override
+    public void playerWins(Seat seat, HandForPlayer hand) {
+    }
+
+    @Override
+    public void dealerWins(Seat seat, HandForPlayer hand) {
+    }
+
+    @Override
+    public void playerPushes(Seat seat, HandForPlayer hand) {
+    }
 }

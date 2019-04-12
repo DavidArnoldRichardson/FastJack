@@ -218,4 +218,24 @@ public class OutputterVerboseToScreen extends Outputter {
             showMessage("Dealer ends up with " + handForDealer.show() + ".");
         }
     }
+
+    @Override
+    public void playerWins(Seat seat, HandForPlayer hand) {
+        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+                + ", hand of " + hand.show() + " beat the dealer, and won "
+                + MoneyHelper.formatForDisplay(hand.getBetAmount()) + ".");
+    }
+
+    @Override
+    public void dealerWins(Seat seat, HandForPlayer hand) {
+        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+                + ", hand of " + hand.show() + " lost "
+                + MoneyHelper.formatForDisplay(hand.getBetAmount()) + ".");
+    }
+
+    @Override
+    public void playerPushes(Seat seat, HandForPlayer hand) {
+        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+                + ", hand of " + hand.show() + " tied with the dealer.");
+    }
 }

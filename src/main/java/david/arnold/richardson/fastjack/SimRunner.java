@@ -1,7 +1,9 @@
 package david.arnold.richardson.fastjack;
 
+import david.arnold.richardson.fastjack.strategy.bet.BetStrategy;
 import david.arnold.richardson.fastjack.strategy.bet.BetStrategyAlwaysMin;
-import david.arnold.richardson.fastjack.strategy.play.PlayStrategyAlwaysStand;
+import david.arnold.richardson.fastjack.strategy.play.PlayStrategy;
+import david.arnold.richardson.fastjack.strategy.play.PlayStrategyBasic;
 
 public class SimRunner {
     public void run() {
@@ -16,8 +18,8 @@ public class SimRunner {
                 200000L,
                 rules,
                 table);
-        PlayStrategyAlwaysStand playStrategy = new PlayStrategyAlwaysStand(rules);
-        BetStrategyAlwaysMin betStrategy = new BetStrategyAlwaysMin(player1, rules);
+        PlayStrategy playStrategy = new PlayStrategyBasic(rules);
+        BetStrategy betStrategy = new BetStrategyAlwaysMin(player1, rules);
         player1.setStrategies(playStrategy, betStrategy);
         table.addPlayer(player1);
 

@@ -68,4 +68,10 @@ public abstract class Outputter {
     public abstract void gotSecondCardOnSplitAndCannotContinue(Seat seat, HandForPlayer hand);
 
     public abstract void dealerHandResult(HandForDealer handForDealer, boolean dealerBusted);
+
+    public abstract void playerWins(Seat seat, HandForPlayer hand);
+
+    public abstract void dealerWins(Seat seat, HandForPlayer hand);
+
+    public abstract void playerPushes(Seat seat, HandForPlayer hand);
 }
