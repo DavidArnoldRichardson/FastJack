@@ -26,6 +26,7 @@ public class Rules {
     private long minBetAmount;
     private long maxBetAmount;
     private boolean lateSurrenderAvailable;
+    private boolean canDoubleOnTenOrElevenOnly;
 
     public Rules(
             int numDecks,
@@ -40,7 +41,8 @@ public class Rules {
             boolean canDoubleAfterSplit,
             long minBetAmount,
             long maxBetAmount,
-            boolean lateSurrenderAvailable) {
+            boolean lateSurrenderAvailable,
+            boolean canDoubleOnTenOrElevenOnly) {
         this.numDecks = numDecks;
         this.minNumCardsBehindCutCard = minNumCardsBehindCutCard;
         this.maxNumCardsBehindCutCard = maxNumCardsBehindCutCard;
@@ -54,6 +56,7 @@ public class Rules {
         this.minBetAmount = minBetAmount;
         this.maxBetAmount = maxBetAmount;
         this.lateSurrenderAvailable = lateSurrenderAvailable;
+        this.canDoubleOnTenOrElevenOnly = canDoubleOnTenOrElevenOnly;
 
         this.matrixHolder = new MatrixHolder(this);
     }
@@ -72,7 +75,8 @@ public class Rules {
                 false,
                 500L,
                 20000L,
-                true);
+                true,
+                false);
     }
 
     public static Rules getWendover6D() {
@@ -89,6 +93,7 @@ public class Rules {
                 false,
                 500L,
                 20000L,
+                false,
                 false);
     }
 
@@ -106,6 +111,7 @@ public class Rules {
                 false,
                 500L,
                 20000L,
+                false,
                 false);
     }
 
@@ -226,5 +232,13 @@ public class Rules {
 
     public void setLateSurrenderAvailable(boolean lateSurrenderAvailable) {
         this.lateSurrenderAvailable = lateSurrenderAvailable;
+    }
+
+    public boolean isCanDoubleOnTenOrElevenOnly() {
+        return canDoubleOnTenOrElevenOnly;
+    }
+
+    public void setCanDoubleOnTenOrElevenOnly(boolean canDoubleOnTenOrElevenOnly) {
+        this.canDoubleOnTenOrElevenOnly = canDoubleOnTenOrElevenOnly;
     }
 }

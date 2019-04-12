@@ -40,7 +40,6 @@ public class HandForPlayer extends Hand {
         if (!hasExactlyTwoCards()) {
             return false;
         }
-
         return shoe.getCardPointValue(indexesOfCards[0]) == shoe.getCardPointValue(indexesOfCards[1]);
     }
 
@@ -68,11 +67,25 @@ public class HandForPlayer extends Hand {
         return true;
     }
 
-    public boolean isHandIsResultOfSplit() {
-        return handIsResultOfSplit;
-    }
-
     public void setHandIsResultOfSplit() {
         this.handIsResultOfSplit = true;
+    }
+
+    // passing the parameter in to save some CPU cycles
+    public boolean canDoubleDown(boolean isSoft) {
+        if (!hasExactlyTwoCards()) {
+            return false;
+        }
+
+        if (handIsResultOfSplit && !shoe.getRules().isCanDoubleAfterSplit()) {
+            return false;
+        }
+
+        //noinspection RedundantIfStatement
+        if (isSoft && shoe.getRules().isCanDoubleOnTenOrElevenOnly()) {
+            return false;
+        }
+
+        return true;
     }
 }
