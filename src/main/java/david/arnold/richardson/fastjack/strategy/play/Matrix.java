@@ -4,11 +4,12 @@ import david.arnold.richardson.fastjack.HandForPlayer;
 import david.arnold.richardson.fastjack.PlayerDecision;
 import david.arnold.richardson.fastjack.Rules;
 
-public abstract class DecisionTable {
+public abstract class Matrix {
 
     protected Rules rules;
+    protected PlayerDecision[][] table;
 
-    public DecisionTable(Rules rules) {
+    public Matrix(Rules rules) {
         this.rules = rules;
     }
 

@@ -6,7 +6,7 @@ import david.arnold.richardson.fastjack.Rules;
 
 public class PlayStrategyBasic extends PlayStrategy {
 
-    DecisionTable decisionTableForSurrender = null;
+    Matrix matrixForSurrender = null;
 
     public PlayStrategyBasic(Rules rules) {
         super(rules);
@@ -18,9 +18,9 @@ public class PlayStrategyBasic extends PlayStrategy {
             }
 
             if (rules.isH17()) {
-                decisionTableForSurrender = rules.getDecisionTables().getDecisionTableSurrenderH17();
+                matrixForSurrender = rules.getMatrixHolder().getMatrixSurrenderH17();
             } else {
-                decisionTableForSurrender = rules.getDecisionTables().getDecisionTableSurrenderS17();
+                matrixForSurrender = rules.getMatrixHolder().getMatrixSurrenderS17();
             }
         }
     }

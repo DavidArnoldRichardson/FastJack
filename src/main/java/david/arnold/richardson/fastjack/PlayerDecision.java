@@ -6,6 +6,6 @@ public enum PlayerDecision {
     SPL, // Split
     DBL, // Double down
     SUR, // Surrender
-    SPC, // Special handing
-    DNA // Does Not Apply
+    XXX, // Special handing
+    dna // Does Not Apply
 }

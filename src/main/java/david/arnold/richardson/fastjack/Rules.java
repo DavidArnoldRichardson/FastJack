@@ -1,6 +1,6 @@
 package david.arnold.richardson.fastjack;
 
-import david.arnold.richardson.fastjack.strategy.play.DecisionTables;
+import david.arnold.richardson.fastjack.strategy.play.MatrixHolder;
 
 public class Rules {
 
@@ -11,7 +11,7 @@ public class Rules {
     public static final int NUM_CARDS_PER_DECK = NUM_SUITES * NUM_CARDS_PER_SUITE;
 
     private Randomness randomness;
-    private DecisionTables decisionTables;
+    private MatrixHolder matrixHolder;
 
     private int numDecks;
     private int minNumCardsBehindCutCard;
@@ -106,7 +106,7 @@ public class Rules {
         this.maxBetAmount = maxBetAmount;
         this.lateSurrenderAvailable = lateSurrenderAvailable;
 
-        this.decisionTables = new DecisionTables(this);
+        this.matrixHolder = new MatrixHolder(this);
     }
 
     public void setSeed(long seed) {
@@ -120,8 +120,8 @@ public class Rules {
         return randomness;
     }
 
-    public DecisionTables getDecisionTables() {
-        return decisionTables;
+    public MatrixHolder getMatrixHolder() {
+        return matrixHolder;
     }
 
     public int getNumDecks() {
