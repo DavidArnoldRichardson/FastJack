@@ -9,9 +9,7 @@ public abstract class Outputter {
 
     public abstract void cutCardWasDrawn();
 
-    public abstract void freshCards(int numDecks);
-
-    public abstract void shuffle();
+    public abstract void shuffle(int numDecks);
 
     public abstract void placeCutCard(Shoe shoe);
 
@@ -35,7 +33,7 @@ public abstract class Outputter {
 
     public abstract void payInsurance(Player player, int seatNumber, long insuranceBet);
 
-    public abstract void dealerBlackjack();
+    public abstract void dealerBlackjack(HandForDealer handForDealer);
 
     public abstract void pushOnDealerBlackjack(Player player, int seatNumber, long betAmount);
 

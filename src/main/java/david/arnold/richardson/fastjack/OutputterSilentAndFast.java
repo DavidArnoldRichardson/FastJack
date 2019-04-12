@@ -15,11 +15,7 @@ public class OutputterSilentAndFast extends Outputter {
     }
 
     @Override
-    public void freshCards(int numDecks) {
-    }
-
-    @Override
-    public void shuffle() {
+    public void shuffle(int numDecks) {
     }
 
     @Override
@@ -67,7 +63,7 @@ public class OutputterSilentAndFast extends Outputter {
     }
 
     @Override
-    public void dealerBlackjack() {
+    public void dealerBlackjack(HandForDealer handForDealer) {
     }
 
     @Override

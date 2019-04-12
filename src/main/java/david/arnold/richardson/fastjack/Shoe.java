@@ -79,8 +79,6 @@ public class Shoe {
     }
 
     private byte[] createCards() {
-        outputter.freshCards(numDecks);
-
         int cardIndex = 0;
         byte[] cards = new byte[numCards];
         for (int deckNumber = 0; deckNumber < numDecks; deckNumber++) {
@@ -100,7 +98,7 @@ public class Shoe {
     }
 
     public void shuffle() {
-        outputter.shuffle();
+        outputter.shuffle(rules.getNumDecks());
         Randomness randomness = rules.getRandomness();
         for (int i = 0; i < numCards; i++) {
             int randomPosition = randomness.getRandomInt(numCards);

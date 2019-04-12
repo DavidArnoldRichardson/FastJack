@@ -125,7 +125,7 @@ public class Table {
                 }
             }
 
-            outputter.dealerBlackjack();
+            outputter.dealerBlackjack(handForDealer);
 
             // clear out all the player hands because nobody plays when dealer gets blackjack
             for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {

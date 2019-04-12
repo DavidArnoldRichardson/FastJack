@@ -9,7 +9,7 @@ public class SimRunner {
     public void run() {
         Outputter outputter = new OutputterVerboseToScreen();
         Rules rules = Rules.getWendover6D();
-        //rules.setSeed(-992325881349688040L);
+        rules.setSeed(2366873846580742047L);
         System.out.println("FastJack Seed: " + rules.getRandomness().getSeed());
         Table table = new Table(outputter, rules);
 

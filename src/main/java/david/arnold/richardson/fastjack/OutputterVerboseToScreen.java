@@ -24,13 +24,12 @@ public class OutputterVerboseToScreen extends Outputter {
     }
 
     @Override
-    public void freshCards(int numDecks) {
-        showMessage("Dealer opens " + numDecks + " fresh decks of cards.");
-    }
-
-    @Override
-    public void shuffle() {
-        showMessage("Dealer shuffles.");
+    public void shuffle(int numDecks) {
+        if (numDecks == 1) {
+            showMessage("Dealer shuffles the deck.");
+        } else {
+            showMessage("Dealer shuffles " + numDecks + " decks.");
+        }
     }
 
     @Override
@@ -112,8 +111,8 @@ public class OutputterVerboseToScreen extends Outputter {
     }
 
     @Override
-    public void dealerBlackjack() {
-        showMessage("All non-blackjack player hands lose on dealer blackjack.");
+    public void dealerBlackjack(HandForDealer handForDealer) {
+        showMessage("Dealer checks the hole card, then turns it over showing " + handForDealer.show() + ". Blackjack!");
     }
 
     @Override
