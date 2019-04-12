@@ -2,6 +2,7 @@ package david.arnold.richardson.fastjack.strategy.play;
 
 import david.arnold.richardson.fastjack.Rules;
 
+// This holds an instantiation of all the matricies, so they are hot and ready when needed.
 public class MatrixHolder {
 
     private Matrix matrixSurrenderS17;

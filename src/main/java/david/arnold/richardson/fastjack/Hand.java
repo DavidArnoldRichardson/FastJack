@@ -71,7 +71,7 @@ public abstract class Hand {
         indexesOfCards[numCardsInHand++] = cardIndex;
     }
 
-    protected int computeMinPointSum() {
+    public int computeMinPointSum() {
         int sum = 0;
         for (int i = 0; i < numCardsInHand; i++) {
             sum += shoe.getCardPointValue(indexesOfCards[i]);

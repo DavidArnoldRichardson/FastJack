@@ -4,6 +4,8 @@ import david.arnold.richardson.fastjack.HandForPlayer;
 import david.arnold.richardson.fastjack.PlayerDecision;
 import david.arnold.richardson.fastjack.Rules;
 
+import static david.arnold.richardson.fastjack.PlayerDecision.n_a;
+
 public class PlayStrategyBasic extends PlayStrategy {
 
     Matrix matrixForSurrender = null;
@@ -29,17 +31,19 @@ public class PlayStrategyBasic extends PlayStrategy {
     public PlayerDecision getPlay(
             HandForPlayer hand,
             int dealerUpcardValue) {
+        int playerHandMinPointSum = hand.computeMinPointSum();
 
-        /*
-        int playerHandValue = hand.
-
-        // todo: use the tables
+        PlayerDecision playerDecision = n_a;
         if (rules.isLateSurrenderAvailable()) {
-            // todo: can surrender?
-            decisionTableForSurrender.lookup(hand, hand)
+            if (hand.hasExactlyTwoCards()) {
+                playerDecision = matrixForSurrender.lookup(
+                        hand,
+                        playerHandMinPointSum,
+                        dealerUpcardValue);
+            }
         }
-        */
-        return PlayerDecision.STD;
+
+        return playerDecision;
     }
 
     @Override

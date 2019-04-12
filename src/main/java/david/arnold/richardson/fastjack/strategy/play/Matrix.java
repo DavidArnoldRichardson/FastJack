@@ -15,16 +15,16 @@ public abstract class Matrix {
 
     public abstract PlayerDecision lookup(
             HandForPlayer hand,
-            int playerHandValue,
+            int playerHandMinPointSum,
             int dealerUpcardValue);
 
     protected PlayerDecision lookup(
             PlayerDecision[][] table,
-            int playerHandValue,
+            int playerHandMinPointSum,
             int dealerUpcardValue) {
         // Adjust the indexes:
         // the hand value index 0 corresponds to double aces (hand value of 2).
         // the dealer upcard index 0 corresponds to ace (value 1).
-        return table[playerHandValue - 2][dealerUpcardValue - 1];
+        return table[playerHandMinPointSum - 2][dealerUpcardValue - 1];
     }
 }

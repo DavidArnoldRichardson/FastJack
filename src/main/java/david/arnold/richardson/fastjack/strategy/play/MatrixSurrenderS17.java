@@ -38,9 +38,9 @@ public class MatrixSurrenderS17 extends Matrix {
     @Override
     public PlayerDecision lookup(
             HandForPlayer hand,
-            int playerHandValue,
+            int playerHandMinPointSum,
             int dealerUpcardValue) {
-        PlayerDecision playerDecision = lookup(table, playerHandValue, dealerUpcardValue);
+        PlayerDecision playerDecision = lookup(table, playerHandMinPointSum, dealerUpcardValue);
         if (playerDecision == XXX) {
             playerDecision = hand.isPair() ? n_a : SUR;
         }
