@@ -72,7 +72,8 @@ public class HandForPlayer extends Hand {
     }
 
     // passing the parameter in to save some CPU cycles
-    public boolean canDoubleDown(boolean isSoft) {
+    public boolean canDoubleDown(
+            int minHandSum) {
         if (!hasExactlyTwoCards()) {
             return false;
         }
@@ -82,7 +83,7 @@ public class HandForPlayer extends Hand {
         }
 
         //noinspection RedundantIfStatement
-        if (isSoft && shoe.getRules().isCanDoubleOnTenOrElevenOnly()) {
+        if (minHandSum != 10 && minHandSum != 11 && shoe.getRules().isCanDoubleOnTenOrElevenOnly()) {
             return false;
         }
 

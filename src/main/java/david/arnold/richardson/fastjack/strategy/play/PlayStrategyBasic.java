@@ -123,7 +123,7 @@ public class PlayStrategyBasic extends PlayStrategy {
         }
 
         boolean isSoft = hand.isSoft();
-        if (hand.canDoubleDown(isSoft)) {
+        if (hand.canDoubleDown(playerHandMinPointSum)) {
             if (isSoft) {
                 playerDecision = matrixForSoftDouble.lookup(playerHandMinPointSum, dealerUpcardValue);
             } else {
