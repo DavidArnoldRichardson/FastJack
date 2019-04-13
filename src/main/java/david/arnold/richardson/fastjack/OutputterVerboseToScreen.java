@@ -15,7 +15,7 @@ public class OutputterVerboseToScreen extends Outputter {
 
     @Override
     public void startRound(int roundNumber) {
-        showMessage("Starting round " + roundNumber + ".");
+        showMessage("\nStarting round " + roundNumber + ".");
     }
 
     @Override
