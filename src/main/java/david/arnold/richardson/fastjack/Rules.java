@@ -61,6 +61,31 @@ public class Rules {
         this.logicHolder = new LogicHolder();
     }
 
+    public String show() {
+        String prefix = "████ ";
+
+        @SuppressWarnings("StringBufferReplaceableByString")
+        StringBuilder builder = new StringBuilder();
+        builder.append("███████████████████████████████████████\n");
+        builder.append(prefix).append("Number of decks: ").append(numDecks).append("\n");
+        builder.append(prefix).append("Range of cards behind cut card: ")
+                .append(minNumCardsBehindCutCard).append("-")
+                .append(maxNumCardsBehindCutCard).append("\n");
+        builder.append(prefix).append("Num burn cards: ").append(numBurnCards).append("\n");
+        builder.append(prefix).append("Show burn cards: ").append(showBurnCards).append("\n");
+        builder.append(prefix).append("Dealer hits soft 17s: ").append(isH17).append("\n");
+        builder.append(prefix).append("Number of splits permitted: ").append(maxNumSplits).append("\n");
+        builder.append(prefix).append("Can resplit aces: ").append(canResplitAces).append("\n");
+        builder.append(prefix).append("Can hit split aces: ").append(canHitSplitAces).append("\n");
+        builder.append(prefix).append("Can double down after split: ").append(canDoubleAfterSplit).append("\n");
+        builder.append(prefix).append("Minimum bet amount: ").append(MoneyHelper.formatForDisplay(minBetAmount)).append("\n");
+        builder.append(prefix).append("Maximum bet amount: ").append(MoneyHelper.formatForDisplay(maxBetAmount)).append("\n");
+        builder.append(prefix).append("Late surrender available: ").append(lateSurrenderAvailable).append("\n");
+        builder.append(prefix).append("Double down only on 10 or 11: ").append(canDoubleOnTenOrElevenOnly).append("\n");
+        builder.append("███████████████████████████████████████");
+        return builder.toString();
+    }
+
     public static Rules getDefaultSixDecks() {
         return new Rules(
                 6,

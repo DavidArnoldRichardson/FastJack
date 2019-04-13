@@ -141,4 +141,8 @@ public class OutputterSilentAndFast extends Outputter {
     @Override
     public void playerPushes(Seat seat, HandForPlayer hand) {
     }
+
+    @Override
+    public void showRules(Rules rules) {
+    }
 }

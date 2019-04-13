@@ -42,6 +42,8 @@ public class Table {
     }
 
     public int playRounds(int numRoundsToPlay) {
+        outputter.showRules(rules);
+
         shoe.shuffle();
         shoe.setPenetration();
         shoe.burnCards();

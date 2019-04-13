@@ -237,4 +237,9 @@ public class OutputterVerboseToScreen extends Outputter {
         showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
                 + ", hand of " + hand.show() + " tied with the dealer.");
     }
+
+    @Override
+    public void showRules(Rules rules) {
+        showMessage(rules.show());
+    }
 }
