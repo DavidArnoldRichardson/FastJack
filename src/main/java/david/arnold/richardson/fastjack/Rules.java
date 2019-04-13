@@ -67,6 +67,7 @@ public class Rules {
         @SuppressWarnings("StringBufferReplaceableByString")
         StringBuilder builder = new StringBuilder();
         builder.append("███████████████████████████████████████\n");
+        builder.append(prefix).append("Seed: ").append(randomness.getSeed()).append("\n");
         builder.append(prefix).append("Number of decks: ").append(numDecks).append("\n");
         builder.append(prefix).append("Range of cards behind cut card: ")
                 .append(minNumCardsBehindCutCard).append("-")

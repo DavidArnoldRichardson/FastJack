@@ -3,7 +3,7 @@ package david.arnold.richardson.fastjack;
 // Note: Why all these methods? Why not just use showMessage with a string?
 // To save CPU. Don't allocate memory and do operations unless needed.
 public abstract class Outputter {
-    protected abstract void showMessage(String message);
+    public abstract void showMessage(String message);
 
     public abstract void startRound(int roundNumber);
 

@@ -3,7 +3,7 @@ package david.arnold.richardson.fastjack;
 public class OutputterSilentAndFast extends Outputter {
 
     @Override
-    protected void showMessage(String message) {
+    public void showMessage(String message) {
     }
 
     @Override

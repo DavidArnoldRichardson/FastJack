@@ -1,30 +1,35 @@
-package david.arnold.richardson.fastjack;
+package david.arnold.richardson.fastjack.run;
 
+import david.arnold.richardson.fastjack.*;
 import david.arnold.richardson.fastjack.strategy.bet.BetStrategy;
 import david.arnold.richardson.fastjack.strategy.bet.BetStrategyAlwaysMin;
 import david.arnold.richardson.fastjack.strategy.play.PlayStrategy;
 import david.arnold.richardson.fastjack.strategy.play.PlayStrategyBasic;
 
-public class SimRunner {
-    public void run() {
+public class RunBasicStrategyManyHands extends SimRunner {
+
+    @Override
+    public void runHelper() {
         Outputter outputterVerbose = new OutputterVerboseToScreen();
         Outputter outputterSilent = new OutputterSilentAndFast();
         Rules rules = Rules.getWendover6D();
         System.out.println("FastJack Seed: " + rules.getRandomness().getSeed());
         Table table = new Table(outputterSilent, rules);
 
-        Player player1 = new Player(
+        Player player = new Player(
                 "Abe",
-                200000000L,
+                1000000000L,
                 table);
         PlayStrategy playStrategy = new PlayStrategyBasic(rules);
-        BetStrategy betStrategy = new BetStrategyAlwaysMin(player1, rules);
-        player1.setStrategies(playStrategy, betStrategy);
-        table.addPlayer(player1);
+        BetStrategy betStrategy = new BetStrategyAlwaysMin(player, rules);
+        player.setStrategies(playStrategy, betStrategy);
+        table.addPlayer(player);
 
         int numRoundsPlayed = table.playRounds(10000000);
         outputterVerbose.showMessage("\nPlayed " + numRoundsPlayed + " rounds.");
-        outputterVerbose.showMessage(player1.showResult());
+        outputterVerbose.showMessage(player.showResult());
+
+        long playersDelta = player.getBankroll() - player.getInitialBankroll();
         long tableBankrollDelta = table.getTableBankrollDelta();
         if (tableBankrollDelta < 0L) {
             outputterVerbose.showMessage("Casino paid the players a total of " + MoneyHelper.formatForDisplay(-tableBankrollDelta) + ".");
@@ -32,6 +37,10 @@ public class SimRunner {
             outputterVerbose.showMessage("Casino took " + MoneyHelper.formatForDisplay(tableBankrollDelta) + " from the players.");
         } else {
             outputterVerbose.showMessage("Casino was a wash.");
+        }
+
+        if (playersDelta != -tableBankrollDelta) {
+            System.out.println("WHAT! Accounting error. Players delta: " + playersDelta + " but table delta: " + tableBankrollDelta);
         }
     }
 }

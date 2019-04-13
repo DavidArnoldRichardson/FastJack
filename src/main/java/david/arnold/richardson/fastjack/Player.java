@@ -48,6 +48,10 @@ public class Player {
         return bankroll;
     }
 
+    public long getInitialBankroll() {
+        return initialBankroll;
+    }
+
     public void removeFromBankroll(long money) {
         bankroll -= money;
     }
