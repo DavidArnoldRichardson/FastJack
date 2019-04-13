@@ -51,6 +51,10 @@ public abstract class HelperForTests {
         rulesCannotSurrender = Rules.getDefaultSixDecks();
         rulesCannotSurrender.setLateSurrenderAvailable(false);
 
+        resetTables();
+    }
+
+    private void resetTables() {
         tableWithOneDeck = new Table(new OutputterSilentAndFast(), rulesDefault1D);
         tableWithSixDecks = new Table(new OutputterSilentAndFast(), rulesDefault6D);
 
@@ -95,83 +99,52 @@ public abstract class HelperForTests {
     }
 
     protected PlayerDecision compute(int... cards) {
-        return compute(rulesDefault6D, true, cards);
+        return compute(tableWithSixDecks, rulesDefault6D, true, cards);
     }
 
     protected PlayerDecision computeCannotSplit(int... cards) {
-        return compute(rulesDefault6D, false, cards);
+        return compute(tableWithSixDecks, rulesDefault6D, false, cards);
     }
 
     protected PlayerDecision compute(
             Rules rules,
             int... cards) {
-        return compute(rules, true, cards);
+        return compute(tableWithSixDecks, rules, true, cards);
     }
 
     protected PlayerDecision compute(
+            Table table,
             Rules rules,
             boolean splittingAvailable,
 
             // the first ones are indexes into the shoe
-            // the last one is the dealer upcard value (needs to be converted to index into shoe).
+            // the last one is the dealer upcard value
             int... cards) {
 
-        tableWithSixDecks.setRules(rules);
+        resetTables();
+
+        table.setRules(rules);
         PlayStrategy playStrategy = new PlayStrategyBasic(rules);
-        Player player = new Player("test", 100000L, tableWithSixDecks);
+        Player player = new Player("test", 100000L, table);
         player.setStrategies(playStrategy, new BetStrategyAlwaysMin(player, rules));
-        Seat seat = tableWithSixDecks.addPlayer(player);
+        Seat seat = table.addPlayer(player);
 
         int indexOfDealerUpcardValue = cards.length - 1;
         int dealerUpcardValue = cards[indexOfDealerUpcardValue];
-        int dealerUpcardIndexIntoShoe;
-        switch(dealerUpcardValue) {
-            case 1:
-                dealerUpcardIndexIntoShoe = cA;
-                break;
-            case 2:
-                dealerUpcardIndexIntoShoe = c2;
-                break;
-            case 3:
-                dealerUpcardIndexIntoShoe = c3;
-                break;
-            case 4:
-                dealerUpcardIndexIntoShoe = c4;
-                break;
-            case 5:
-                dealerUpcardIndexIntoShoe = c5;
-                break;
-            case 6:
-                dealerUpcardIndexIntoShoe = c6;
-                break;
-            case 7:
-                dealerUpcardIndexIntoShoe = c7;
-                break;
-            case 8:
-                dealerUpcardIndexIntoShoe = c8;
-                break;
-            case 9:
-                dealerUpcardIndexIntoShoe = c9;
-                break;
-            case 10:
-                dealerUpcardIndexIntoShoe = cT;
-                break;
-            default:
-                throw new RuntimeException("bad value");
-        }
 
         int numCardsInHand = cards.length - 1;
-        HandForPlayer hand = new HandForPlayer(tableWithSixDecks.getShoe(), seat);
+        HandForPlayer hand = new HandForPlayer(table.getShoe(), seat);
         for (int i = 0; i < numCardsInHand; i++) {
             hand.addCard(cards[i]);
         }
-        System.out.println(hand.show());
 
         if (!splittingAvailable) {
             hand.setHandIsResultOfSplit();
             seat.setNumHandsInUse(rules.getMaxNumSplits() + 1);
         }
 
-        return playStrategy.getPlay(hand, dealerUpcardIndexIntoShoe);
+        return playStrategy.getPlay(
+                hand,
+                dealerUpcardValue);
     }
 }

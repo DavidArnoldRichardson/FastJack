@@ -75,7 +75,7 @@ public class Rules {
                 false,
                 500L,
                 20000L,
-                true,
+                false,
                 false);
     }
 
@@ -93,7 +93,7 @@ public class Rules {
                 false,
                 500L,
                 20000L,
-                true,
+                false,
                 false);
     }
 
