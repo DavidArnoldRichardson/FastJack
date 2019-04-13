@@ -245,11 +245,11 @@ public class PlayStrategyBasicHardHandsTest extends HelperForTests {
                     assertEquals(PlayerDecision.SUR, compute(rulesCanSurrender, c7, c9, upcardValue));
 
                     // handle case where can't surrender due to more than 2 cards in hand
-                    assertEquals(PlayerDecision.STD, compute(rulesCanSurrender, c2, c4, cT, upcardValue));
+                    assertEquals(PlayerDecision.HIT, compute(rulesCanSurrender, c2, c4, cT, upcardValue));
 
                     // handle conditions where can't surrender due to table rules
-                    assertEquals(PlayerDecision.STD, compute(rulesCannotSurrender, c6, cT, upcardValue));
-                    assertEquals(PlayerDecision.STD, compute(rulesCannotSurrender, c7, c9, upcardValue));
+                    assertEquals(PlayerDecision.HIT, compute(rulesCannotSurrender, c6, cT, upcardValue));
+                    assertEquals(PlayerDecision.HIT, compute(rulesCannotSurrender, c7, c9, upcardValue));
                     break;
                 case Ace:
                     assertEquals(PlayerDecision.SUR, compute(rulesCanSurrender, c6, cT, upcardValue));
