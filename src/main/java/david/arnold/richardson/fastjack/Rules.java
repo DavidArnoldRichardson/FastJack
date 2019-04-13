@@ -61,9 +61,27 @@ public class Rules {
         this.logicHolder = new LogicHolder();
     }
 
-    public static Rules getDefault() {
+    public static Rules getDefaultSixDecks() {
         return new Rules(
                 6,
+                52,
+                52,
+                1,
+                false,
+                true,
+                3,
+                true,
+                false,
+                false,
+                500L,
+                20000L,
+                true,
+                false);
+    }
+
+    public static Rules getDefaultOneDeck() {
+        return new Rules(
+                1,
                 52,
                 52,
                 1,

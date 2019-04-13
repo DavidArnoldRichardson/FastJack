@@ -18,8 +18,8 @@ public class Table {
             Outputter outputter,
             Rules rules) {
         this.outputter = outputter;
-        this.shoe = new Shoe(rules, outputter);
-        this.rules = shoe.getRules();
+        this.rules = rules;
+        this.shoe = new Shoe(this, outputter);
 
         seats = new Seat[NUM_SEATS];
         insuranceBets = new long[NUM_SEATS];
@@ -363,6 +363,14 @@ public class Table {
 
     public long getTableBankrollDelta() {
         return tableBankroll - tableBankrollStart;
+    }
+
+    public Rules getRules() {
+        return rules;
+    }
+
+    public void setRules(Rules rules) {
+        this.rules = rules;
     }
 
     public Outputter getOutputter() {

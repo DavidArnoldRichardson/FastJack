@@ -3,11 +3,11 @@ package david.arnold.richardson.fastjack;
 import david.arnold.richardson.fastjack.strategy.bet.BetStrategyAlwaysMin;
 import david.arnold.richardson.fastjack.strategy.play.PlayStrategy;
 import david.arnold.richardson.fastjack.strategy.play.PlayStrategyBasic;
-import org.junit.Before;
 
 public abstract class HelperForTests {
 
-    protected Shoe shoe;
+    Table tableWithOneDeck;
+    Table tableWithSixDecks;
 
     // These are indexes to a card with the corresponding value.
     protected int cA;
@@ -32,29 +32,30 @@ public abstract class HelperForTests {
     protected final static int Nine = 9;
     protected final static int Ten = 10;
 
-    protected Rules rulesDefault = null;
-    protected Rules rulesDoubleDownLimited = null;
-    protected Rules rulesCanSurrender = null;
-    protected Rules rulesCannotSurrender = null;
+    protected Rules rulesDefault6D;
+    protected Rules rulesDefault1D;
+    protected Rules rulesDoubleDownLimited;
+    protected Rules rulesCanSurrender;
+    protected Rules rulesCannotSurrender;
 
-    @Before
-    public void setupOneTest() {
-        rulesDefault = Rules.getDefault();
+    public HelperForTests() {
+        rulesDefault6D = Rules.getDefaultSixDecks();
+        rulesDefault1D = Rules.getDefaultOneDeck();
 
-        rulesDoubleDownLimited = Rules.getDefault();
+        rulesDoubleDownLimited = Rules.getDefaultSixDecks();
         rulesDoubleDownLimited.setCanDoubleOnTenOrElevenOnly(true);
 
-        rulesCanSurrender = Rules.getDefault();
+        rulesCanSurrender = Rules.getDefaultSixDecks();
         rulesCanSurrender.setLateSurrenderAvailable(true);
 
-        rulesCannotSurrender = Rules.getDefault();
+        rulesCannotSurrender = Rules.getDefaultSixDecks();
         rulesCannotSurrender.setLateSurrenderAvailable(false);
 
-        shoe = new Shoe(
-                rulesDefault,
-                new OutputterSilentAndFast());
+        tableWithOneDeck = new Table(new OutputterSilentAndFast(), rulesDefault1D);
+        tableWithSixDecks = new Table(new OutputterSilentAndFast(), rulesDefault6D);
 
-        prepareCardsForTests(shoe);
+        prepareCardsForTests(tableWithOneDeck.getShoe());
+        prepareCardsForTests(tableWithSixDecks.getShoe());
     }
 
     protected void resetHand(Hand hand, int... cardIndexes) {
@@ -94,11 +95,11 @@ public abstract class HelperForTests {
     }
 
     protected PlayerDecision compute(int... cards) {
-        return compute(rulesDefault, true, cards);
+        return compute(rulesDefault6D, true, cards);
     }
 
     protected PlayerDecision computeCannotSplit(int... cards) {
-        return compute(rulesDefault, false, cards);
+        return compute(rulesDefault6D, false, cards);
     }
 
     protected PlayerDecision compute(
@@ -115,15 +116,11 @@ public abstract class HelperForTests {
             // the last one is the dealer upcard value (needs to be converted to index into shoe).
             int... cards) {
 
-        // todo: There is a bug here. There are two shoes, one built by the table, and this one.
-        //  Problem is there are Rules all over the place. Should consolidate those, and only store them on the Table
-        //  object, and have everything pull from that, and not have its own copy. Everything can link to the table.
-        shoe.setRules(rules);
+        tableWithSixDecks.setRules(rules);
         PlayStrategy playStrategy = new PlayStrategyBasic(rules);
-        Table table = new Table(new OutputterSilentAndFast(), rules);
-        Player player = new Player("test", 100000L, rules, table);
+        Player player = new Player("test", 100000L, tableWithSixDecks);
         player.setStrategies(playStrategy, new BetStrategyAlwaysMin(player, rules));
-        Seat seat = table.addPlayer(player);
+        Seat seat = tableWithSixDecks.addPlayer(player);
 
         int indexOfDealerUpcardValue = cards.length - 1;
         int dealerUpcardValue = cards[indexOfDealerUpcardValue];
@@ -164,7 +161,7 @@ public abstract class HelperForTests {
         }
 
         int numCardsInHand = cards.length - 1;
-        HandForPlayer hand = new HandForPlayer(table.getShoe(), seat);
+        HandForPlayer hand = new HandForPlayer(tableWithSixDecks.getShoe(), seat);
         for (int i = 0; i < numCardsInHand; i++) {
             hand.addCard(cards[i]);
         }

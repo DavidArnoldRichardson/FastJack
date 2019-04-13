@@ -16,7 +16,6 @@ public class SimRunner {
         Player player1 = new Player(
                 "Abe",
                 200000L,
-                rules,
                 table);
         PlayStrategy playStrategy = new PlayStrategyBasic(rules);
         BetStrategy betStrategy = new BetStrategyAlwaysMin(player1, rules);

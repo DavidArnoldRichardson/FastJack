@@ -9,18 +9,15 @@ public class Player {
     private long bankroll;
     private PlayStrategy playStrategy;
     private BetStrategy betStrategy;
-    private Rules rules;
     private Table table;
 
     public Player(
             String playerName,
             long bankroll,
-            Rules rules,
             Table table) {
         this.playerName = playerName;
         this.initialBankroll = bankroll;
         this.bankroll = bankroll;
-        this.rules = rules;
         this.table = table;
     }
 

@@ -7,14 +7,16 @@ import static org.junit.Assert.assertEquals;
 public class ShoeTest extends HelperForTests {
     @Test
     public void testOneDeckShuffle() {
-        Shoe shoe = new Shoe(Rules.getWendover1D(), new OutputterSilentAndFast());
+        Shoe shoe = new Shoe(tableWithOneDeck, new OutputterSilentAndFast());
+        tableWithSixDecks.setRules(Rules.getWendover1D());
         String output = shoe.toString();
         assertEquals(52 * 3, output.length());
     }
 
     @Test
     public void testSixDeckShuffle() {
-        Shoe shoe = new Shoe(Rules.getWendover6D(), new OutputterSilentAndFast());
+        Shoe shoe = new Shoe(tableWithSixDecks, new OutputterSilentAndFast());
+        tableWithSixDecks.setRules(Rules.getWendover6D());
         String output = shoe.toString();
         assertEquals(52 * 3 * 6, output.length());
     }

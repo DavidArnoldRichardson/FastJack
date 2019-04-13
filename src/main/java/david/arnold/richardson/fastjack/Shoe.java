@@ -7,8 +7,8 @@ import static david.arnold.richardson.fastjack.Rules.*;
 
 public class Shoe {
 
-    private Rules rules;
     private Outputter outputter;
+    private Table table;
 
     // All the card values are stored here in this array. They never leave.
     // All reference to the cards is done via the index into this array.
@@ -25,11 +25,11 @@ public class Shoe {
     private static final byte CARD_SYMBOL_MASK = 0x0F;
 
     public Shoe(
-            Rules rules,
+            Table table,
             Outputter outputter) {
-        this.rules = rules;
+        this.table = table;
         this.outputter = outputter;
-        this.numDecks = rules.getNumDecks();
+        this.numDecks = table.getRules().getNumDecks();
         this.numCards = numDecks * Rules.NUM_CARDS_PER_DECK;
         this.cards = createCards();
     }
@@ -45,12 +45,7 @@ public class Shoe {
     }
 
     public Rules getRules() {
-        return rules;
-    }
-
-    // used for tests
-    public void setRules(Rules rules) {
-        this.rules = rules;
+        return table.getRules();
     }
 
     private String getSuiteSymbol(int cardIndex) {
@@ -103,6 +98,7 @@ public class Shoe {
     }
 
     public void shuffle() {
+        Rules rules = table.getRules();
         outputter.shuffle(rules.getNumDecks());
         Randomness randomness = rules.getRandomness();
         for (int i = 0; i < numCards; i++) {
@@ -114,6 +110,7 @@ public class Shoe {
     }
 
     public void setPenetration() {
+        Rules rules = table.getRules();
         // Set them to the same value for a performance boost, and slightly less realism.
         int minNumCardsBehindCutCard = rules.getMinNumCardsBehindCutCard();
         if (minNumCardsBehindCutCard == rules.getMaxNumCardsBehindCutCard()) {
@@ -126,7 +123,7 @@ public class Shoe {
     }
 
     public void burnCards() {
-        this.indexOfNextCardToBeDealt = rules.getNumBurnCards();
+        this.indexOfNextCardToBeDealt = table.getRules().getNumBurnCards();
         outputter.showBurnCards(this);
     }
 

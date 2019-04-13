@@ -8,7 +8,7 @@ import static org.junit.Assert.assertTrue;
 public class HandForDealerTest extends HelperForTests {
     @Test
     public void testShouldHitHardLow() {
-        HandForDealer hand = new HandForDealer(shoe);
+        HandForDealer hand = new HandForDealer(tableWithSixDecks.getShoe());
         resetHand(hand, c2, c2);
         assertTrue(hand.shouldDealerHit());
         resetHand(hand, c2, c3);
@@ -29,7 +29,7 @@ public class HandForDealerTest extends HelperForTests {
 
     @Test
     public void testShouldHitHardHigh() {
-        HandForDealer hand = new HandForDealer(shoe);
+        HandForDealer hand = new HandForDealer(tableWithSixDecks.getShoe());
         resetHand(hand, cT, c7);
         assertFalse(hand.shouldDealerHit());
         resetHand(hand, cT, c8);
@@ -46,7 +46,7 @@ public class HandForDealerTest extends HelperForTests {
 
     @Test
     public void testShouldHitSoftLow() {
-        HandForDealer hand = new HandForDealer(shoe);
+        HandForDealer hand = new HandForDealer(tableWithSixDecks.getShoe());
         resetHand(hand, cA, cA);
         assertTrue(hand.shouldDealerHit());
         resetHand(hand, cA, c2);
@@ -65,7 +65,7 @@ public class HandForDealerTest extends HelperForTests {
 
     @Test
     public void testShouldHitSoftHigh() {
-        HandForDealer hand = new HandForDealer(shoe);
+        HandForDealer hand = new HandForDealer(tableWithSixDecks.getShoe());
         resetHand(hand, cA, c7);
         assertFalse(hand.shouldDealerHit());
         resetHand(hand, cA, c8);
@@ -82,8 +82,8 @@ public class HandForDealerTest extends HelperForTests {
 
     @Test
     public void testShouldHitSoft17_false() {
-        HandForDealer hand = new HandForDealer(shoe);
-        shoe.getRules().setH17(false);
+        HandForDealer hand = new HandForDealer(tableWithSixDecks.getShoe());
+        tableWithSixDecks.getRules().setH17(false);
         resetHand(hand, cA, c6);
         assertFalse(hand.shouldDealerHit());
         resetHand(hand, cA, c3, c3);
@@ -94,8 +94,8 @@ public class HandForDealerTest extends HelperForTests {
 
     @Test
     public void testShouldHitSoft17_true() {
-        HandForDealer hand = new HandForDealer(shoe);
-        shoe.getRules().setH17(true);
+        HandForDealer hand = new HandForDealer(tableWithSixDecks.getShoe());
+        tableWithSixDecks.getShoe().getRules().setH17(true);
         resetHand(hand, cA, c6);
         assertTrue(hand.shouldDealerHit());
         resetHand(hand, cA, c3, c3);
