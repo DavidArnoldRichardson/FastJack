@@ -2,6 +2,7 @@ package david.arnold.richardson.fastjack.strategy.play;
 
 import david.arnold.richardson.fastjack.HelperForTests;
 import david.arnold.richardson.fastjack.PlayerDecision;
+import david.arnold.richardson.fastjack.Rules;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -9,7 +10,9 @@ import static org.junit.Assert.assertEquals;
 public class PlayStrategyBasicSplitHandsTest extends HelperForTests {
 
     @Test
-    public void testPairOfTwosOrThrees() {
+    public void testPairOfTwosOrThreesDoubleAfterSplit() {
+        Rules rules = Rules.getDefaultSixDecks();
+        rules.setCanDoubleAfterSplit(true);
         for (int upcardValue = 1; upcardValue < 11; upcardValue++) {
             switch (upcardValue) {
                 case Two:
@@ -18,39 +21,92 @@ public class PlayStrategyBasicSplitHandsTest extends HelperForTests {
                 case Five:
                 case Six:
                 case Seven:
-                    assertEquals(PlayerDecision.SPL, compute(c2, c2, upcardValue));
-                    assertEquals(PlayerDecision.SPL, compute(c3, c3, upcardValue));
+                    assertEquals(PlayerDecision.SPL, compute(rules, c2, c2, upcardValue));
+                    assertEquals(PlayerDecision.SPL, compute(rules, c3, c3, upcardValue));
                     break;
                 case Eight:
                 case Nine:
                 case Ten:
                 case Ace:
-                    assertEquals(PlayerDecision.HIT, compute(c2, c2, upcardValue));
-                    assertEquals(PlayerDecision.HIT, compute(c3, c3, upcardValue));
+                    assertEquals(PlayerDecision.HIT, compute(rules, c2, c2, upcardValue));
+                    assertEquals(PlayerDecision.HIT, compute(rules, c3, c3, upcardValue));
                     break;
             }
         }
     }
 
     @Test
-    public void testPairOfFours() {
+    public void testPairOfTwosOrThreesNoDoubleAfterSplit() {
+        Rules rules = Rules.getDefaultSixDecks();
+        rules.setCanDoubleAfterSplit(false);
+        for (int upcardValue = 1; upcardValue < 11; upcardValue++) {
+            switch (upcardValue) {
+                case Two:
+                case Three:
+                    assertEquals(PlayerDecision.HIT, compute(rules, c2, c2, upcardValue));
+                    assertEquals(PlayerDecision.HIT, compute(rules, c3, c3, upcardValue));
+                    break;
+                case Four:
+                case Five:
+                case Six:
+                case Seven:
+                    assertEquals(PlayerDecision.SPL, compute(rules, c2, c2, upcardValue));
+                    assertEquals(PlayerDecision.SPL, compute(rules, c3, c3, upcardValue));
+                    break;
+                case Eight:
+                case Nine:
+                case Ten:
+                case Ace:
+                    assertEquals(PlayerDecision.HIT, compute(rules, c2, c2, upcardValue));
+                    assertEquals(PlayerDecision.HIT, compute(rules, c3, c3, upcardValue));
+                    break;
+            }
+        }
+    }
+
+    @Test
+    public void testPairOfFoursDoubleAfterSplit() {
+        Rules rules = Rules.getDefaultSixDecks();
+        rules.setCanDoubleAfterSplit(true);
         for (int upcardValue = 1; upcardValue < 11; upcardValue++) {
             switch (upcardValue) {
                 case Two:
                 case Three:
                 case Four:
-                    assertEquals(PlayerDecision.HIT, compute(c4, c4, upcardValue));
+                    assertEquals(PlayerDecision.HIT, compute(rules, c4, c4, upcardValue));
                     break;
                 case Five:
                 case Six:
-                    assertEquals(PlayerDecision.SPL, compute(c4, c4, upcardValue));
+                    assertEquals(PlayerDecision.SPL, compute(rules, c4, c4, upcardValue));
                     break;
                 case Seven:
                 case Eight:
                 case Nine:
                 case Ten:
                 case Ace:
-                    assertEquals(PlayerDecision.HIT, compute(c4, c4, upcardValue));
+                    assertEquals(PlayerDecision.HIT, compute(rules, c4, c4, upcardValue));
+                    break;
+            }
+        }
+    }
+
+    @Test
+    public void testPairOfFoursNoDoubleAfterSplit() {
+        Rules rules = Rules.getDefaultSixDecks();
+        rules.setCanDoubleAfterSplit(false);
+        for (int upcardValue = 1; upcardValue < 11; upcardValue++) {
+            switch (upcardValue) {
+                case Two:
+                case Three:
+                case Four:
+                case Five:
+                case Six:
+                case Seven:
+                case Eight:
+                case Nine:
+                case Ten:
+                case Ace:
+                    assertEquals(PlayerDecision.HIT, compute(rules, c4, c4, upcardValue));
                     break;
             }
         }
@@ -79,7 +135,9 @@ public class PlayStrategyBasicSplitHandsTest extends HelperForTests {
     }
 
     @Test
-    public void testPairOfSixes() {
+    public void testPairOfSixesDoubleAfterSplit() {
+        Rules rules = Rules.getDefaultSixDecks();
+        rules.setCanDoubleAfterSplit(true);
         for (int upcardValue = 1; upcardValue < 11; upcardValue++) {
             switch (upcardValue) {
                 case Two:
@@ -87,14 +145,40 @@ public class PlayStrategyBasicSplitHandsTest extends HelperForTests {
                 case Four:
                 case Five:
                 case Six:
-                    assertEquals(PlayerDecision.SPL, compute(c6, c6, upcardValue));
+                    assertEquals(PlayerDecision.SPL, compute(rules, c6, c6, upcardValue));
                     break;
                 case Seven:
                 case Eight:
                 case Nine:
                 case Ten:
                 case Ace:
-                    assertEquals(PlayerDecision.HIT, compute(c6, c6, upcardValue));
+                    assertEquals(PlayerDecision.HIT, compute(rules, c6, c6, upcardValue));
+                    break;
+            }
+        }
+    }
+
+    @Test
+    public void testPairOfSixesNoDoubleAfterSplit() {
+        Rules rules = Rules.getDefaultSixDecks();
+        rules.setCanDoubleAfterSplit(false);
+        for (int upcardValue = 1; upcardValue < 11; upcardValue++) {
+            switch (upcardValue) {
+                case Two:
+                    assertEquals(PlayerDecision.HIT, compute(rules, c6, c6, upcardValue));
+                    break;
+                case Three:
+                case Four:
+                case Five:
+                case Six:
+                    assertEquals(PlayerDecision.SPL, compute(rules, c6, c6, upcardValue));
+                    break;
+                case Seven:
+                case Eight:
+                case Nine:
+                case Ten:
+                case Ace:
+                    assertEquals(PlayerDecision.HIT, compute(rules, c6, c6, upcardValue));
                     break;
             }
         }
@@ -114,12 +198,7 @@ public class PlayStrategyBasicSplitHandsTest extends HelperForTests {
                     break;
                 case Eight:
                 case Nine:
-                    assertEquals(PlayerDecision.HIT, compute(c7, c7, upcardValue));
-                    break;
                 case Ten:
-                    assertEquals(PlayerDecision.SUR, compute(rulesCanSurrender, c7, c7, upcardValue));
-                    assertEquals(PlayerDecision.HIT, compute(rulesCannotSurrender, c7, c7, upcardValue));
-                    break;
                 case Ace:
                     assertEquals(PlayerDecision.HIT, compute(c7, c7, upcardValue));
                     break;
