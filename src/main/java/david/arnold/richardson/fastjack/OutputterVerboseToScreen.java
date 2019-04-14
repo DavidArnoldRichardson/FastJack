@@ -146,7 +146,8 @@ public class OutputterVerboseToScreen extends Outputter {
     @Override
     public void playerHitAndBust(Seat seat, HandForPlayer hand) {
         showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
-                + " hits and busts with " + hand.show() + ".");
+                + " hits and busts with " + hand.show()
+                + ". Lost " + MoneyHelper.formatForDisplay(hand.getBetAmount()) + ".");
     }
 
     @Override
@@ -176,7 +177,8 @@ public class OutputterVerboseToScreen extends Outputter {
     @Override
     public void playerDoubled(Seat seat, HandForPlayer hand) {
         showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
-                + " doubles and gets " + hand.show() + ".");
+                + " doubles and gets " + hand.show()
+                + ". Bet is now " + MoneyHelper.formatForDisplay(hand.getBetAmount()) + ".");
     }
 
     @Override
@@ -226,9 +228,9 @@ public class OutputterVerboseToScreen extends Outputter {
     }
 
     @Override
-    public void dealerWins(Seat seat, HandForPlayer hand) {
+    public void playerLoses(Seat seat, HandForPlayer hand) {
         showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
-                + ", hand of " + hand.show() + " lost "
+                + ", hand of " + hand.show() + " lost. Loses "
                 + MoneyHelper.formatForDisplay(hand.getBetAmount()) + ".");
     }
 

@@ -33,6 +33,6 @@ public class RunBasicStrategyVerbose extends SimRunner {
             table.addPlayer(player);
         }
 
-        return table.playRounds(10);
+        return table.playRounds(100);
     }
 }

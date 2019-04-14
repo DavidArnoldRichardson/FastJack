@@ -135,7 +135,7 @@ public class OutputterSilentAndFast extends Outputter {
     }
 
     @Override
-    public void dealerWins(Seat seat, HandForPlayer hand) {
+    public void playerLoses(Seat seat, HandForPlayer hand) {
     }
 
     @Override

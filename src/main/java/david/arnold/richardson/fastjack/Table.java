@@ -215,7 +215,7 @@ public class Table {
                             int playerHandValue = hand.computeMaxPointSum();
                             long betAmount = hand.getBetAmount();
                             if (playerHandValue < dealerHandValue) {
-                                outputter.dealerWins(seat, hand);
+                                outputter.playerLoses(seat, hand);
                                 tableBankroll += betAmount;
                             } else if (playerHandValue > dealerHandValue) {
                                 outputter.playerWins(seat, hand);

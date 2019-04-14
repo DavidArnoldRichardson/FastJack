@@ -69,7 +69,7 @@ public abstract class Outputter {
 
     public abstract void playerWins(Seat seat, HandForPlayer hand);
 
-    public abstract void dealerWins(Seat seat, HandForPlayer hand);
+    public abstract void playerLoses(Seat seat, HandForPlayer hand);
 
     public abstract void playerPushes(Seat seat, HandForPlayer hand);
 

@@ -91,8 +91,8 @@ public class Rules {
     public static Rules getDefaultSixDecks() {
         return new Rules(
                 6,
-                52,
-                52,
+                52 + 26,
+                52 * 2,
                 1,
                 false,
                 true,
@@ -109,8 +109,8 @@ public class Rules {
     public static Rules getDefaultOneDeck() {
         return new Rules(
                 1,
-                52,
-                52,
+                26,
+                26,
                 1,
                 false,
                 true,
@@ -127,8 +127,8 @@ public class Rules {
     public static Rules getWendover6D() {
         return new Rules(
                 6,
-                52,
-                78,
+                52 + 26,
+                52 * 2,
                 1,
                 false,
                 true,
