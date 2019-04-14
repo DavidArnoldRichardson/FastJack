@@ -27,11 +27,11 @@ public abstract class Outputter {
 
     public abstract void dealerUpcardIsAce();
 
-    public abstract void insuranceBetMade(Seat seat, long insuranceBet);
+    public abstract void insuranceBetMade(Seat seat);
 
     public abstract void revealDealerHand(HandForDealer handForDealer);
 
-    public abstract void payInsurance(Player player, int seatNumber, long insuranceBet);
+    public abstract void payInsurance(Seat seat);
 
     public abstract void dealerBlackjack(HandForDealer handForDealer);
 
@@ -74,4 +74,6 @@ public abstract class Outputter {
     public abstract void playerPushes(Seat seat, HandForPlayer hand);
 
     public abstract void showRules(Rules rules);
+
+    public abstract void playerDeclinesToBet(Seat seat);
 }

@@ -51,7 +51,7 @@ public class OutputterSilentAndFast extends Outputter {
     }
 
     @Override
-    public void insuranceBetMade(Seat seat, long insuranceBet) {
+    public void insuranceBetMade(Seat seat) {
     }
 
     @Override
@@ -59,7 +59,7 @@ public class OutputterSilentAndFast extends Outputter {
     }
 
     @Override
-    public void payInsurance(Player player, int seatNumber, long insuranceBet) {
+    public void payInsurance(Seat seat) {
     }
 
     @Override
@@ -144,5 +144,9 @@ public class OutputterSilentAndFast extends Outputter {
 
     @Override
     public void showRules(Rules rules) {
+    }
+
+    @Override
+    public void playerDeclinesToBet(Seat seat) {
     }
 }

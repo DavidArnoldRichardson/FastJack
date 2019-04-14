@@ -87,9 +87,8 @@ public class OutputterVerboseToScreen extends Outputter {
     }
 
     @Override
-    public void insuranceBetMade(
-            Seat seat,
-            long insuranceBet) {
+    public void insuranceBetMade(Seat seat) {
+        long insuranceBet = seat.getInsuranceBet();
         if (insuranceBet > 0L) {
             showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
                     + " makes an insurance bet of "
@@ -104,8 +103,9 @@ public class OutputterVerboseToScreen extends Outputter {
     }
 
     @Override
-    public void payInsurance(Player player, int seatNumber, long insuranceBet) {
-        showMessage(getPrefix(player, seatNumber)
+    public void payInsurance(Seat seat) {
+        long insuranceBet = seat.getInsuranceBet();
+        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
                 + " won the insurance bet of " + MoneyHelper.formatForDisplay(insuranceBet)
                 + " and got an extra " + MoneyHelper.formatForDisplay(insuranceBet << 1) + ".");
     }
@@ -243,5 +243,10 @@ public class OutputterVerboseToScreen extends Outputter {
     @Override
     public void showRules(Rules rules) {
         showMessage(rules.show());
+    }
+
+    @Override
+    public void playerDeclinesToBet(Seat seat) {
+        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber()) + " doesn't place a bet.");
     }
 }

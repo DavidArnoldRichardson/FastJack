@@ -6,6 +6,7 @@ public class Seat {
     private Table table;
     private HandForPlayer[] hands;
     private int numHandsInUse;
+    private long insuranceBet;
 
     public Seat(
             Table table,
@@ -52,21 +53,12 @@ public class Seat {
     }
 
     public boolean createNewHandWithBet() {
-        long desiredBetAmount = MoneyHelper.computeAcceptableBet(
+        long betAmount = MoneyHelper.computeAcceptableBet(
                 player.getBetStrategy().getBetAmount(),
                 player.getBankroll(),
                 table.getShoe().getRules().getMinBetAmount(),
                 table.getShoe().getRules().getMaxBetAmount());
-        return createNewHandWithBet(desiredBetAmount);
-    }
-
-    private boolean createNewHandWithBet(long betAmount) {
-        table.getOutputter().placeBet(player, seatNumber, betAmount);
-        HandForPlayer hand = hands[numHandsInUse++];
-        hand.reset();
-        hand.setBetAmount(betAmount);
-        player.removeFromBankroll(betAmount);
-        return betAmount > 0L;
+        return createNewHandWithBet(betAmount);
     }
 
     public void createSplitHand(int handIndexToPlay) {
@@ -78,9 +70,24 @@ public class Seat {
         handThatWasCreated.setHandIsResultOfSplit();
     }
 
-    public long determineInsuranceBet() {
+    private boolean createNewHandWithBet(long betAmount) {
+        HandForPlayer hand = hands[numHandsInUse++];
+        hand.reset();
+
+        if (betAmount == 0L) {
+            table.getOutputter().playerDeclinesToBet(this);
+            return false;
+        }
+
+        table.getOutputter().placeBet(player, seatNumber, betAmount);
+        hand.setBetAmount(betAmount);
+        player.removeFromBankroll(betAmount);
+        return true;
+    }
+
+    public void makeInsuranceBet() {
         if (!player.getPlayStrategy().shouldGetInsurance()) {
-            return 0L;
+            return;
         }
 
         long insuranceBet = hands[0].getBetAmount() >> 1;
@@ -88,6 +95,10 @@ public class Seat {
             insuranceBet = player.getBankroll();
         }
         player.removeFromBankroll(insuranceBet);
+        table.getOutputter().insuranceBetMade(this);
+    }
+
+    public long getInsuranceBet() {
         return insuranceBet;
     }
 
@@ -101,6 +112,7 @@ public class Seat {
 
     public void resetHands() {
         numHandsInUse = 0;
+        this.insuranceBet = 0L;
     }
 
     public int getSeatNumber() {

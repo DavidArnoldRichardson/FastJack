@@ -14,7 +14,7 @@ public class HandForPlayer extends Hand {
     }
 
     @Override
-    public void resetHelper() {
+    protected void resetHelper() {
         betAmount = 0L;
         handIsResultOfSplit = false;
     }

@@ -61,7 +61,7 @@ public abstract class Hand {
         resetHelper();
     }
 
-    public abstract void resetHelper();
+    protected abstract void resetHelper();
 
     public boolean hasCards() {
         return numCardsInHand > 0;

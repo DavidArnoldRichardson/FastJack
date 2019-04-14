@@ -145,8 +145,8 @@ public class Rules {
     public static Rules getWendover6D() {
         return new Rules(
                 6,
-                52 + 26,
-                52 * 2,
+                30,
+                70,
                 1,
                 false,
                 true,

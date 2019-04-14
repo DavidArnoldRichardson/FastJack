@@ -9,13 +9,13 @@ public class Table {
 
     private Outputter outputter;
     private Seat[] seats;
-    private long[] insuranceBets;
     private int numSeatsInUse = 0;
     private Shoe shoe;
     private Rules rules;
     private HandForDealer handForDealer;
-    private long tableBankrollStart = 100000000000000L;
-    private long tableBankroll = tableBankrollStart;
+
+    // This can go negative, casino has infinite money.
+    private long tableBankroll = 0L;
 
     public Table(
             Outputter outputter,
@@ -25,10 +25,8 @@ public class Table {
         this.shoe = new Shoe(this, outputter);
 
         seats = new Seat[NUM_SEATS];
-        insuranceBets = new long[NUM_SEATS];
         for (int i = 0; i < NUM_SEATS; i++) {
             seats[i] = new Seat(this, i);
-            insuranceBets[i] = 0L;
         }
         handForDealer = new HandForDealer(shoe);
     }
@@ -118,26 +116,22 @@ public class Table {
         if (upcardIsAce) {
             outputter.dealerUpcardIsAce();
             for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
-                long insuranceBet = seats[seatNumber].determineInsuranceBet();
-                insuranceBets[seatNumber] = insuranceBet;
-                outputter.insuranceBetMade(seats[seatNumber], insuranceBet);
+                seats[seatNumber].makeInsuranceBet();
             }
         }
 
         if (handForDealer.isBlackjack()) {
-            // pay out insurance
             if (upcardIsAce) {
+                // pay out insurance
                 outputter.revealDealerHand(handForDealer);
 
                 for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
-                    long insuranceBet = insuranceBets[seatNumber];
+                    long insuranceBet = seats[seatNumber].getInsuranceBet();
                     if (insuranceBet > 0) {
-                        long moneyToPayPlayer = insuranceBet * 3;
-                        Player player = seats[seatNumber].getPlayer();
-                        player.payPlayer(moneyToPayPlayer);
-                        tableBankroll -= insuranceBet << 1;
-                        insuranceBets[seatNumber] = 0L;
-                        outputter.payInsurance(player, seatNumber, insuranceBet);
+                        // original insurance bet returned, plus double it.
+                        seats[seatNumber].getPlayer().payPlayer(insuranceBet * 3);
+                        tableBankroll -= (insuranceBet << 1);
+                        outputter.payInsurance(seats[seatNumber]);
                     }
                 }
             }
@@ -167,11 +161,7 @@ public class Table {
             // collect lost insurance bets
             if (upcardIsAce) {
                 for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
-                    long insuranceBet = insuranceBets[seatNumber];
-                    if (insuranceBet > 0) {
-                        tableBankroll += insuranceBet;
-                        insuranceBets[seatNumber] = 0L;
-                    }
+                    tableBankroll += seats[seatNumber].getInsuranceBet();
                 }
             }
 
@@ -378,7 +368,7 @@ public class Table {
     }
 
     public long getTableBankrollDelta() {
-        return tableBankroll - tableBankrollStart;
+        return tableBankroll;
     }
 
     public Rules getRules() {

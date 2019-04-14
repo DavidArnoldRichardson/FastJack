@@ -11,7 +11,7 @@ public class HandForDealer extends Hand {
     }
 
     @Override
-    public void resetHelper() {
+    protected void resetHelper() {
         // nothing to do here
     }
 
