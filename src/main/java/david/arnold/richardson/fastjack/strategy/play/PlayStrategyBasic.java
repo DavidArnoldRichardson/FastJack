@@ -4,6 +4,7 @@ import david.arnold.richardson.fastjack.HandForPlayer;
 import david.arnold.richardson.fastjack.PlayerDecision;
 import david.arnold.richardson.fastjack.Rules;
 
+import static david.arnold.richardson.fastjack.PlayerDecision.STD;
 import static david.arnold.richardson.fastjack.PlayerDecision.n_a;
 
 public class PlayStrategyBasic extends PlayStrategy {
@@ -131,6 +132,14 @@ public class PlayStrategyBasic extends PlayStrategy {
             }
             if (playerDecision != n_a) {
                 return playerDecision;
+            }
+        }
+
+        if (hand.isPairOfAces()) {
+            if (hand.isHandIsResultOfSplit()) {
+                if (!rules.isCanHitSplitAces()) {
+                    return STD;
+                }
             }
         }
 

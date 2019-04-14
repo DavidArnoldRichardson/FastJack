@@ -10,7 +10,7 @@ public class MatrixHitStandSoft extends Matrix {
     public MatrixHitStandSoft() {
         table = new PlayerDecision[][]{
                 //A    2    3    4    5    6    7    8    9    T
-                {HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT}, // 2: A,A
+                {HIT, HIT, HIT, STD, STD, STD, HIT, HIT, HIT, HIT}, // 2: A,A - treated as a 12, not a 2.
                 {HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT}, // 3: A,2
                 {HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT}, // 4: A,3
                 {HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT}, // 5: A,4

@@ -74,6 +74,10 @@ public class HandForPlayer extends Hand {
         this.handIsResultOfSplit = true;
     }
 
+    public boolean isHandIsResultOfSplit() {
+        return handIsResultOfSplit;
+    }
+
     // passing the parameter in to save some CPU cycles
     public boolean canDoubleDown(
             int minHandSum) {
