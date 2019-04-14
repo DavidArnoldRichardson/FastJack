@@ -26,7 +26,12 @@ public abstract class SimRunner {
     protected abstract Rules getRules();
 
     private void showResult(int numRoundsPlayed) {
-        outputterVerbose.showMessage("\nPlayed " + numRoundsPlayed + " rounds.");
+        outputterVerbose.showMessage("\nPlayed " + numRoundsPlayed + " rounds.\n");
+
+        for (Player player : table.getPlayers()) {
+            outputterVerbose.showMessage(player.showResult());
+        }
+        System.out.println();
 
         long tableBankrollDelta = table.getTableBankrollDelta();
         if (tableBankrollDelta < 0L) {

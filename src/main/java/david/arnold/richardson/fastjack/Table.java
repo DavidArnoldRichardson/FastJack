@@ -83,7 +83,8 @@ public class Table {
         // set player bets
         boolean atLeastOneBetWasPlaced = false;
         for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
-            atLeastOneBetWasPlaced = atLeastOneBetWasPlaced || seats[seatNumber].createNewHandWithBet();
+            boolean betPlaced = seats[seatNumber].createNewHandWithBet();
+            atLeastOneBetWasPlaced = atLeastOneBetWasPlaced || betPlaced;
         }
 
         if (!atLeastOneBetWasPlaced) {

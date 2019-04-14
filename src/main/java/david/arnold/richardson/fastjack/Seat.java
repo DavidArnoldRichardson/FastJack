@@ -21,6 +21,14 @@ public class Seat {
         resetHands();
     }
 
+    @Override
+    public String toString() {
+        if (player == null) {
+            return "(empty)";
+        }
+        return player.getPlayerName();
+    }
+
     public void assignPlayerToSeat(Player player) {
         table.getOutputter().sitPlayer(player, seatNumber);
         this.player = player;
