@@ -1,5 +1,8 @@
 package david.arnold.richardson.fastjack;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Table {
 
     public static final int NUM_SEATS = 7;
@@ -39,6 +42,14 @@ public class Table {
         Seat newlyOccupiedSeat = seats[numSeatsInUse];
         numSeatsInUse++;
         return newlyOccupiedSeat;
+    }
+
+    public Set<Player> getPlayers() {
+        Set<Player> players = new HashSet<>();
+        for (int i = 0; i < numSeatsInUse; i++) {
+            players.add(seats[i].getPlayer());
+        }
+        return players;
     }
 
     public int playRounds(int numRoundsToPlay) {

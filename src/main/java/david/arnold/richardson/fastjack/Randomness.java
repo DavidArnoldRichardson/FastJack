@@ -7,8 +7,13 @@ public class Randomness {
     private Long seed;
     private Boolean overrideNextPercentCheckWithThisValue = null;
 
+    public Randomness() {
+        this(generateRandomSeed());
+    }
+
     public Randomness(Long seed) {
         this.seed = seed;
+        System.out.println("Using random seed: " + seed);
         this.random = new Random(seed);
     }
 

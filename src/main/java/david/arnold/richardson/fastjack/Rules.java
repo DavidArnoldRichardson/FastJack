@@ -59,6 +59,7 @@ public class Rules {
         this.canDoubleOnTenOrElevenOnly = canDoubleOnTenOrElevenOnly;
 
         this.logicHolder = new LogicHolder();
+        this.randomness = new Randomness();
     }
 
     public String show() {
@@ -159,15 +160,13 @@ public class Rules {
                 false);
     }
 
-    public void setSeed(long seed) {
-        this.randomness = new Randomness(seed);
+    public Randomness getRandomness() {
+        return randomness;
     }
 
-    public Randomness getRandomness() {
-        if (randomness == null) {
-            this.randomness = new Randomness(Randomness.generateRandomSeed());
-        }
-        return randomness;
+    // used for testing
+    public void setRandomness(Randomness randomness) {
+        this.randomness = randomness;
     }
 
     public LogicHolder getLogicHolder() {
