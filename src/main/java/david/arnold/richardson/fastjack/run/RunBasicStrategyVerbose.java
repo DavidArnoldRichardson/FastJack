@@ -17,7 +17,7 @@ public class RunBasicStrategyVerbose extends SimRunner {
     @Override
     protected Rules getRules() {
         this.playIsVerbose = true;
-        return Rules.getWendover6D();
+        return Rules.getDefaultMostCommon();
     }
 
     @Override

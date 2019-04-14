@@ -115,10 +115,11 @@ public class Shoe {
         int minNumCardsBehindCutCard = rules.getMinNumCardsBehindCutCard();
         if (minNumCardsBehindCutCard == rules.getMaxNumCardsBehindCutCard()) {
             this.indexOfCutCard = numCards - 1 - minNumCardsBehindCutCard;
+        } else {
+            int range = rules.getMaxNumCardsBehindCutCard() - minNumCardsBehindCutCard;
+            this.indexOfCutCard = numCards - 1 - minNumCardsBehindCutCard - rules.getRandomness().getRandomInt(range);
         }
 
-        int range = rules.getMaxNumCardsBehindCutCard() - minNumCardsBehindCutCard;
-        this.indexOfCutCard = numCards - 1 - minNumCardsBehindCutCard + rules.getRandomness().getRandomInt(range);
         outputter.placeCutCard(this);
     }
 

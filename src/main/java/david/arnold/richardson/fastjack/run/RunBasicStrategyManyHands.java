@@ -17,7 +17,7 @@ public class RunBasicStrategyManyHands extends SimRunner {
     @Override
     protected Rules getRules() {
         this.playIsVerbose = false;
-        return Rules.getWendover6D();
+        return Rules.getDefaultMostCommon();
     }
 
     @Override
