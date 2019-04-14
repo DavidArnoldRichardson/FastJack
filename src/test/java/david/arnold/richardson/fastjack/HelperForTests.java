@@ -99,23 +99,31 @@ public abstract class HelperForTests {
     }
 
     protected PlayerDecision compute(int... cards) {
-        return compute(tableWithSixDecks, rulesDefault6D, true, cards);
-    }
-
-    protected PlayerDecision computeCannotSplit(int... cards) {
-        return compute(tableWithSixDecks, rulesDefault6D, false, cards);
+        return compute(0, tableWithSixDecks, rulesDefault6D, cards);
     }
 
     protected PlayerDecision compute(
             Rules rules,
             int... cards) {
-        return compute(tableWithSixDecks, rules, true, cards);
+        return compute(0, tableWithSixDecks, rules, cards);
+    }
+
+    protected PlayerDecision computeButMaxSplitsReached(
+            Rules rules,
+            int... cards) {
+        return compute(rules.getMaxNumSplits(), tableWithSixDecks, rules, cards);
+    }
+
+    protected PlayerDecision computeButAlreadySplitOnce(
+            Rules rules,
+            int... cards) {
+        return compute(1, tableWithSixDecks, rules, cards);
     }
 
     protected PlayerDecision compute(
+            int numSplitsAlreadyHappened,
             Table table,
             Rules rules,
-            boolean splittingAvailable,
 
             // the first ones are indexes into the shoe
             // the last one is the dealer upcard value
@@ -138,9 +146,9 @@ public abstract class HelperForTests {
             hand.addCard(cards[i]);
         }
 
-        if (!splittingAvailable) {
+        if (numSplitsAlreadyHappened > 0) {
             hand.setHandIsResultOfSplit();
-            seat.setNumHandsInUse(rules.getMaxNumSplits() + 1);
+            seat.setNumHandsInUse(numSplitsAlreadyHappened + 1);
         }
 
         return playStrategy.getPlay(

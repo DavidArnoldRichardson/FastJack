@@ -345,25 +345,27 @@ public class Table {
     private boolean playOnNewlySplitHand(
             Seat seat,
             HandForPlayer hand) {
-        boolean keepPlaying = true;
 
         hand.addCard(shoe.dealCard());
 
         // check various situations that would make the player unable to continue with this hand
         if (hand.isBlackjack()) {
-            keepPlaying = false;
             outputter.gotSecondCardOnSplitAndGot21(seat, hand);
+            return false;
         } else {
-            if (hand.isPairOfAces()
-                    && !rules.isCanHitSplitAces()
-                    && !rules.isCanResplitAces()) {
-                keepPlaying = false;
+            if (hand.isPairOfAces()) {
+                if (rules.isCanHitSplitAces()) {
+                    return true;
+                }
+                if (rules.isCanResplitAces()) {
+                    return true;
+                }
                 outputter.gotSecondCardOnSplitAndCannotContinue(seat, hand);
-            } else {
-                outputter.gotSecondCardOnSplit(seat, hand);
+                return false;
             }
+            outputter.gotSecondCardOnSplit(seat, hand);
+            return true;
         }
-        return keepPlaying;
     }
 
     private boolean playDealer() {

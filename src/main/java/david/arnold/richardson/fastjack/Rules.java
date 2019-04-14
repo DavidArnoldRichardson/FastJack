@@ -88,6 +88,24 @@ public class Rules {
         return builder.toString();
     }
 
+    public static Rules getDefaultMostCommon() {
+        return new Rules(
+                6,
+                125,
+                125,
+                1,
+                false,
+                true,
+                3,
+                false,
+                false,
+                true,
+                500L,
+                20000L,
+                false,
+                false);
+    }
+
     public static Rules getDefaultSixDecks() {
         return new Rules(
                 6,

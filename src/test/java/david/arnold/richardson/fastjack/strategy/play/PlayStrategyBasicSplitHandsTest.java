@@ -248,20 +248,81 @@ public class PlayStrategyBasicSplitHandsTest extends HelperForTests {
 
     @Test
     public void testPairOfAces() {
+        Rules rules00 = Rules.getDefaultSixDecks();
+        rules00.setCanHitSplitAces(false);
+        rules00.setCanResplitAces(false);
+
+        Rules rules01 = Rules.getDefaultSixDecks();
+        rules01.setCanHitSplitAces(false);
+        rules01.setCanResplitAces(true);
+
+        Rules rules10 = Rules.getDefaultSixDecks();
+        rules10.setCanHitSplitAces(true);
+        rules10.setCanResplitAces(false);
+
+        Rules rules11 = Rules.getDefaultSixDecks();
+        rules11.setCanHitSplitAces(true);
+        rules11.setCanResplitAces(true);
+
         for (int upcardValue = 1; upcardValue < 11; upcardValue++) {
             switch (upcardValue) {
                 case Two:
                 case Three:
+                    assertEquals(PlayerDecision.STD, compute(rules00, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.SPL, compute(rules01, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.HIT, compute(rules10, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.SPL, compute(rules11, cA, cA, upcardValue));
+
+                    assertEquals(PlayerDecision.STD, computeButAlreadySplitOnce(rules00, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.SPL, computeButAlreadySplitOnce(rules01, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.HIT, computeButAlreadySplitOnce(rules10, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.SPL, computeButAlreadySplitOnce(rules11, cA, cA, upcardValue));
+
+                    assertEquals(PlayerDecision.STD, computeButMaxSplitsReached(rules00, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.STD, computeButMaxSplitsReached(rules01, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.HIT, computeButMaxSplitsReached(rules10, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.HIT, computeButMaxSplitsReached(rules11, cA, cA, upcardValue));
+
+                    break;
                 case Four:
                 case Five:
                 case Six:
+                    assertEquals(PlayerDecision.STD, compute(rules00, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.SPL, compute(rules01, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.STD, compute(rules10, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.SPL, compute(rules11, cA, cA, upcardValue));
+
+                    assertEquals(PlayerDecision.STD, computeButAlreadySplitOnce(rules00, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.SPL, computeButAlreadySplitOnce(rules01, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.STD, computeButAlreadySplitOnce(rules10, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.SPL, computeButAlreadySplitOnce(rules11, cA, cA, upcardValue));
+
+                    assertEquals(PlayerDecision.STD, computeButMaxSplitsReached(rules00, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.STD, computeButMaxSplitsReached(rules01, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.STD, computeButMaxSplitsReached(rules10, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.STD, computeButMaxSplitsReached(rules11, cA, cA, upcardValue));
+
+                    break;
                 case Seven:
                 case Eight:
                 case Nine:
                 case Ten:
                 case Ace:
-                    assertEquals(PlayerDecision.SPL, compute(cA, cA, upcardValue));
-                    assertEquals(PlayerDecision.HIT, computeCannotSplit(cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.STD, compute(rules00, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.SPL, compute(rules01, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.HIT, compute(rules10, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.SPL, compute(rules11, cA, cA, upcardValue));
+
+                    assertEquals(PlayerDecision.STD, computeButAlreadySplitOnce(rules00, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.SPL, computeButAlreadySplitOnce(rules01, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.HIT, computeButAlreadySplitOnce(rules10, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.SPL, computeButAlreadySplitOnce(rules11, cA, cA, upcardValue));
+
+                    assertEquals(PlayerDecision.STD, computeButMaxSplitsReached(rules00, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.STD, computeButMaxSplitsReached(rules01, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.HIT, computeButMaxSplitsReached(rules10, cA, cA, upcardValue));
+                    assertEquals(PlayerDecision.HIT, computeButMaxSplitsReached(rules11, cA, cA, upcardValue));
+
                     break;
             }
         }
