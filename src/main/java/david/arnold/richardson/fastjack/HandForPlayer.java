@@ -53,15 +53,18 @@ public class HandForPlayer extends Hand {
             return false;
         }
 
-        // check to make sure there haven't already been too many splits
-        if (seat.getNumHandsInUse() == shoe.getRules().getMaxNumSplits() + 1) {
+        boolean playerLacksSufficientFunds = seat.getPlayer().getBankroll() < getBetAmount();
+        if (playerLacksSufficientFunds) {
             return false;
         }
 
-        // check to make sure player has sufficient funds to split
-        //noinspection RedundantIfStatement
-        if (seat.getPlayer().getBankroll() < getBetAmount()) {
+        boolean alreadyBeenTooManySplits = seat.getNumHandsInUse() == shoe.getRules().getMaxNumSplits() + 1;
+        if (alreadyBeenTooManySplits) {
             return false;
+        }
+
+        if (isPairOfAces() && handIsResultOfSplit) {
+            return shoe.getRules().isCanResplitAces();
         }
 
         return true;
