@@ -148,52 +148,18 @@ public class Table {
 
             // player blackjacks have already been paid, and the hands reset, at this point.
 
-            // Note: both sides of the conditional have some duplicate code.
-            // This is to save a few CPU cycles, as we don't need to compute the dealer
-            // hand value if the dealer busted.
             boolean dealerBusted = playDealer();
             if (dealerBusted) {
                 // pay players with bets still on their hands
                 for (int seatNumber = numSeatsInUse - 1; seatNumber >= 0; seatNumber--) {
-                    Seat seat = seats[seatNumber];
-                    int numHands = seat.getNumHandsInUse();
-                    for (int handIndex = numHands - 1; handIndex >= 0; handIndex--) {
-                        HandForPlayer hand = seat.getHand(handIndex);
-                        if (hand.hasCards()) {
-                            outputter.playerWins(seat, hand);
-                            long betAmount = hand.getBetAmount();
-                            seat.getPlayer().addToBankroll(betAmount << 1);
-                            tableBankroll -= betAmount;
-                            hand.reset();
-                        }
-                    }
+                    seats[seatNumber].handleDealerBust();
                 }
             } else {
                 // pay players with hands that beat the dealer's hand
                 // take bets from players with hands that lose against the dealer's hand
                 int dealerHandValue = handForDealer.computeMaxPointSum();
                 for (int seatNumber = numSeatsInUse - 1; seatNumber >= 0; seatNumber--) {
-                    Seat seat = seats[seatNumber];
-                    int numHands = seat.getNumHandsInUse();
-                    for (int handIndex = numHands - 1; handIndex >= 0; handIndex--) {
-                        HandForPlayer hand = seat.getHand(handIndex);
-                        if (hand.hasCards()) {
-                            int playerHandValue = hand.computeMaxPointSum();
-                            long betAmount = hand.getBetAmount();
-                            if (playerHandValue < dealerHandValue) {
-                                outputter.playerLoses(seat, hand);
-                                tableBankroll += betAmount;
-                            } else if (playerHandValue > dealerHandValue) {
-                                outputter.playerWins(seat, hand);
-                                seat.getPlayer().addToBankroll(betAmount << 1);
-                                tableBankroll -= betAmount;
-                            } else {
-                                outputter.playerPushes(seat, hand);
-                                seat.getPlayer().addToBankroll(betAmount);
-                            }
-                            hand.reset();
-                        }
-                    }
+                    seats[seatNumber].handleDealerStand(dealerHandValue);
                 }
             }
         }
