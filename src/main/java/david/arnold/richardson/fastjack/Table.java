@@ -81,8 +81,8 @@ public class Table {
         // set player bets
         boolean atLeastOneBetWasPlaced = false;
         for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
-            boolean betPlaced = seats[seatNumber].createNewHandWithBet();
-            atLeastOneBetWasPlaced = atLeastOneBetWasPlaced || betPlaced;
+            boolean betWasPlaced = seats[seatNumber].createNewHandWithBet();
+            atLeastOneBetWasPlaced = atLeastOneBetWasPlaced || betWasPlaced;
         }
 
         if (!atLeastOneBetWasPlaced) {
@@ -90,9 +90,9 @@ public class Table {
             return false;
         }
 
-        // deal first card to each player
+        // deal first card to each player who bet
         for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
-            seats[seatNumber].getHand(0).addCard(shoe.dealCard());
+            seats[seatNumber].receiveCard();
         }
 
         // deal first card to dealer
@@ -100,10 +100,7 @@ public class Table {
 
         // deal second card to each player
         for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
-            Seat seat = seats[seatNumber];
-            HandForPlayer hand = seat.getHand(0);
-            hand.addCard(shoe.dealCard());
-            outputter.showDealtHand(seat.getPlayer(), seatNumber, hand);
+            seats[seatNumber].receiveSecondCard();
         }
 
         // deal hole card to dealer
@@ -124,37 +121,16 @@ public class Table {
             if (upcardIsAce) {
                 // pay out insurance
                 outputter.revealDealerHand(handForDealer);
-
                 for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
-                    long insuranceBet = seats[seatNumber].getInsuranceBet();
-                    if (insuranceBet > 0) {
-                        // original insurance bet returned, plus double it.
-                        seats[seatNumber].getPlayer().payPlayer(insuranceBet * 3);
-                        tableBankroll -= (insuranceBet << 1);
-                        outputter.payInsurance(seats[seatNumber]);
-                    }
+                    seats[seatNumber].payInsuranceToPlayer();
                 }
             }
 
-            outputter.dealerBlackjack(handForDealer);
+            outputter.dealerHasBlackjack(handForDealer);
 
             // clear out all the player hands because nobody plays when dealer gets blackjack
             for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
-                Seat seat = seats[seatNumber];
-                HandForPlayer hand = seat.getHand(0);
-                long betAmount = hand.getBetAmount();
-                boolean playerHandIsBlackjack = hand.isBlackjack();
-                Player player = seat.getPlayer();
-                if (playerHandIsBlackjack) {
-                    // player pushes
-                    player.payPlayer(betAmount);
-                    outputter.pushOnDealerBlackjack(player, seatNumber, betAmount);
-                } else {
-                    // dealer's blackjack wins the bet
-                    tableBankroll += betAmount;
-                    outputter.loseOnDealerBlackjack(player, seatNumber, betAmount);
-                }
-                hand.reset();
+                seats[seatNumber].handleDealerGotBlackjack();
             }
         } else {
 
@@ -365,6 +341,10 @@ public class Table {
         boolean dealerBusted = handForDealer.isBusted();
         outputter.dealerHandResult(handForDealer, dealerBusted);
         return dealerBusted;
+    }
+
+    public void addToBankroll(long money) {
+        tableBankroll += money;
     }
 
     public long getTableBankrollDelta() {

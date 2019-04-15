@@ -19,11 +19,11 @@ public abstract class Outputter {
 
     public abstract void roundAborted();
 
-    public abstract void placeBet(Player player, int seatNumber, long desiredBetAmount);
+    public abstract void placeBet(Seat seat, long desiredBetAmount);
 
-    public abstract void sitPlayer(Player player, int seatNumber);
+    public abstract void sitPlayer(Seat seat);
 
-    public abstract void showDealtHand(Player player, int seatNumber, HandForPlayer hand);
+    public abstract void showDealtHand(Seat seat);
 
     public abstract void dealerUpcardIsAce();
 
@@ -33,11 +33,11 @@ public abstract class Outputter {
 
     public abstract void payInsurance(Seat seat);
 
-    public abstract void dealerBlackjack(HandForDealer handForDealer);
+    public abstract void dealerHasBlackjack(HandForDealer handForDealer);
 
-    public abstract void pushOnDealerBlackjack(Player player, int seatNumber, long betAmount);
+    public abstract void pushOnDealerBlackjack(Seat seat);
 
-    public abstract void loseOnDealerBlackjack(Player player, int seatNumber, long betAmount);
+    public abstract void loseOnDealerBlackjack(Seat seat);
 
     public abstract void playerBlackjack(Seat seat, HandForPlayer hand);
 

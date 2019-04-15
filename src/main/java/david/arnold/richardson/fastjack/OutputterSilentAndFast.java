@@ -35,15 +35,15 @@ public class OutputterSilentAndFast extends Outputter {
     }
 
     @Override
-    public void placeBet(Player player, int seatNumber, long desiredBetAmount) {
+    public void placeBet(Seat seat, long desiredBetAmount) {
     }
 
     @Override
-    public void sitPlayer(Player player, int seatNumber) {
+    public void sitPlayer(Seat seat) {
     }
 
     @Override
-    public void showDealtHand(Player player, int seatNumber, HandForPlayer hand) {
+    public void showDealtHand(Seat seat) {
     }
 
     @Override
@@ -63,15 +63,15 @@ public class OutputterSilentAndFast extends Outputter {
     }
 
     @Override
-    public void dealerBlackjack(HandForDealer handForDealer) {
+    public void dealerHasBlackjack(HandForDealer handForDealer) {
     }
 
     @Override
-    public void pushOnDealerBlackjack(Player player, int seatNumber, long betAmount) {
+    public void pushOnDealerBlackjack(Seat seat) {
     }
 
     @Override
-    public void loseOnDealerBlackjack(Player player, int seatNumber, long betAmount) {
+    public void loseOnDealerBlackjack(Seat seat) {
     }
 
     @Override

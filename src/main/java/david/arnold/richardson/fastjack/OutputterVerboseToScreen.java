@@ -2,10 +2,9 @@ package david.arnold.richardson.fastjack;
 
 public class OutputterVerboseToScreen extends Outputter {
 
-    private String getPrefix(
-            Player player,
-            int seatNumber) {
-        return "Seat " + (seatNumber + 1) + " (" + player.getPlayerName() + ")";
+    private String getPrefix(Seat seat) {
+        return "Seat " + (seat.getSeatNumber() + 1)
+                + " (" + seat.getPlayer().getPlayerName() + ")";
     }
 
     @Override
@@ -58,27 +57,21 @@ public class OutputterVerboseToScreen extends Outputter {
     }
 
     @Override
-    public void placeBet(
-            Player player,
-            int seatNumber,
-            long desiredBetAmount) {
-        showMessage(getPrefix(player, seatNumber)
-                + " bets " + MoneyHelper.formatForDisplay(desiredBetAmount) + ".");
+    public void placeBet(Seat seat, long desiredBetAmount) {
+        showMessage(getPrefix(seat) + " bets " + MoneyHelper.formatForDisplay(desiredBetAmount) + ".");
     }
 
     @Override
-    public void sitPlayer(Player player, int seatNumber) {
-        showMessage(getPrefix(player, seatNumber)
-                + " has a bankroll of " + MoneyHelper.formatForDisplay(player.getBankroll()) + ".");
+    public void sitPlayer(Seat seat) {
+        showMessage(getPrefix(seat) + " has a bankroll of "
+                + MoneyHelper.formatForDisplay(seat.getPlayer().getBankroll()) + ".");
     }
 
     @Override
-    public void showDealtHand(
-            Player player,
-            int seatNumber,
-            HandForPlayer hand) {
-        showMessage(getPrefix(player, seatNumber)
-                + " gets " + hand.show() + ".");
+    public void showDealtHand(Seat seat) {
+        if (seat.isPlayingThisRound()) {
+            showMessage(getPrefix(seat) + " gets " + seat.getHand(0).show() + ".");
+        }
     }
 
     @Override
@@ -90,7 +83,7 @@ public class OutputterVerboseToScreen extends Outputter {
     public void insuranceBetMade(Seat seat) {
         long insuranceBet = seat.getInsuranceBet();
         if (insuranceBet > 0L) {
-            showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+            showMessage(getPrefix(seat)
                     + " makes an insurance bet of "
                     + MoneyHelper.formatForDisplay(insuranceBet) + ".");
         }
@@ -105,109 +98,108 @@ public class OutputterVerboseToScreen extends Outputter {
     @Override
     public void payInsurance(Seat seat) {
         long insuranceBet = seat.getInsuranceBet();
-        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+        showMessage(getPrefix(seat)
                 + " won the insurance bet of " + MoneyHelper.formatForDisplay(insuranceBet)
                 + " and got an extra " + MoneyHelper.formatForDisplay(insuranceBet << 1) + ".");
     }
 
     @Override
-    public void dealerBlackjack(HandForDealer handForDealer) {
+    public void dealerHasBlackjack(HandForDealer handForDealer) {
         showMessage("Dealer checks the hole card, then turns it over showing " + handForDealer.show() + ". Blackjack!");
     }
 
     @Override
-    public void pushOnDealerBlackjack(Player player, int seatNumber, long betAmount) {
-        showMessage(getPrefix(player, seatNumber)
+    public void pushOnDealerBlackjack(Seat seat) {
+        showMessage(getPrefix(seat)
                 + " also has blackjack, and gets back the bet of "
-                + MoneyHelper.formatForDisplay(betAmount) + ".");
+                + MoneyHelper.formatForDisplay(seat.getHand(0).getBetAmount()) + ".");
     }
 
     @Override
-    public void loseOnDealerBlackjack(Player player, int seatNumber, long betAmount) {
-        showMessage(getPrefix(player, seatNumber)
-                + " loses " + MoneyHelper.formatForDisplay(betAmount)
+    public void loseOnDealerBlackjack(Seat seat) {
+        showMessage(getPrefix(seat)
+                + " loses " + MoneyHelper.formatForDisplay(seat.getHand(0).getBetAmount())
                 + " to the dealer blackjack.");
     }
 
     @Override
     public void playerBlackjack(Seat seat, HandForPlayer hand) {
         long betAmount = hand.getBetAmount();
-        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+        showMessage(getPrefix(seat)
                 + " got blackjack! Bet of " + MoneyHelper.formatForDisplay(betAmount)
                 + " wins " + MoneyHelper.formatForDisplay(betAmount + (betAmount >> 1)) + ".");
     }
 
     @Override
     public void playerStand(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
-                + " stands with " + hand.show() + ".");
+        showMessage(getPrefix(seat) + " stands with " + hand.show() + ".");
     }
 
     @Override
     public void playerHitAndBust(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+        showMessage(getPrefix(seat)
                 + " hits and busts with " + hand.show()
                 + ". Lost " + MoneyHelper.formatForDisplay(hand.getBetAmount()) + ".");
     }
 
     @Override
     public void playerHitAndGot21(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+        showMessage(getPrefix(seat)
                 + " hits and gets 21 with " + hand.show() + ".");
     }
 
     @Override
     public void playerHit(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+        showMessage(getPrefix(seat)
                 + " hits and now has " + hand.show() + ".");
     }
 
     @Override
     public void playerDoubledAndBust(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+        showMessage(getPrefix(seat)
                 + " doubles and busts with " + hand.show() + ".");
     }
 
     @Override
     public void playerDoubledAndGot21(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+        showMessage(getPrefix(seat)
                 + " doubles and gets 21 with " + hand.show() + ".");
     }
 
     @Override
     public void playerDoubled(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+        showMessage(getPrefix(seat)
                 + " doubles and gets " + hand.show()
                 + ". Bet is now " + MoneyHelper.formatForDisplay(hand.getBetAmount()) + ".");
     }
 
     @Override
     public void playerSurrendered(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+        showMessage(getPrefix(seat)
                 + " surrenders with " + hand.show() + ".");
     }
 
     @Override
     public void playerSplits(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+        showMessage(getPrefix(seat)
                 + " splits with " + hand.show() + ".");
     }
 
     @Override
     public void gotSecondCardOnSplit(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+        showMessage(getPrefix(seat)
                 + " gets the second card on the split hand, and now has " + hand.show() + ".");
     }
 
     @Override
     public void gotSecondCardOnSplitAndGot21(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+        showMessage(getPrefix(seat)
                 + " gets the second card on the split hand, and reached 21 points with " + hand.show() + ".");
     }
 
     @Override
     public void gotSecondCardOnSplitAndCannotContinue(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+        showMessage(getPrefix(seat)
                 + " gets the second card on the split hand, and now ends play on the hand with " + hand.show() + ".");
     }
 
@@ -222,22 +214,21 @@ public class OutputterVerboseToScreen extends Outputter {
 
     @Override
     public void playerWins(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+        showMessage(getPrefix(seat)
                 + ", hand of " + hand.show() + " beat the dealer, and won "
                 + MoneyHelper.formatForDisplay(hand.getBetAmount()) + ".");
     }
 
     @Override
     public void playerLoses(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
+        showMessage(getPrefix(seat)
                 + ", hand of " + hand.show() + " lost. Loses "
                 + MoneyHelper.formatForDisplay(hand.getBetAmount()) + ".");
     }
 
     @Override
     public void playerPushes(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber())
-                + ", hand of " + hand.show() + " tied with the dealer.");
+        showMessage(getPrefix(seat) + ", hand of " + hand.show() + " tied with the dealer.");
     }
 
     @Override
@@ -247,6 +238,6 @@ public class OutputterVerboseToScreen extends Outputter {
 
     @Override
     public void playerDeclinesToBet(Seat seat) {
-        showMessage(getPrefix(seat.getPlayer(), seat.getSeatNumber()) + " doesn't place a bet.");
+        showMessage(getPrefix(seat) + " doesn't place a bet.");
     }
 }

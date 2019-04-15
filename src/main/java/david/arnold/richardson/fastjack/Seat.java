@@ -31,8 +31,12 @@ public class Seat {
     }
 
     public void assignPlayerToSeat(Player player) {
-        table.getOutputter().sitPlayer(player, seatNumber);
         this.player = player;
+        table.getOutputter().sitPlayer(this);
+    }
+
+    public boolean isPlayingThisRound() {
+        return hands[0].getBetAmount() > 0L;
     }
 
     public Player getPlayer() {
@@ -79,23 +83,38 @@ public class Seat {
             return false;
         }
 
-        table.getOutputter().placeBet(player, seatNumber, betAmount);
+        table.getOutputter().placeBet(this, betAmount);
         hand.setBetAmount(betAmount);
         player.removeFromBankroll(betAmount);
         return true;
     }
 
-    public void makeInsuranceBet() {
-        if (!player.getPlayStrategy().shouldGetInsurance()) {
-            return;
+    public void receiveCard() {
+        if (isPlayingThisRound()) {
+            hands[0].addCard(table.getShoe().dealCard());
         }
+    }
 
-        long insuranceBet = hands[0].getBetAmount() >> 1;
-        if (insuranceBet > player.getBankroll()) {
-            insuranceBet = player.getBankroll();
+    public void receiveSecondCard() {
+        if (isPlayingThisRound()) {
+            receiveCard();
+            table.getOutputter().showDealtHand(this);
         }
-        player.removeFromBankroll(insuranceBet);
-        table.getOutputter().insuranceBetMade(this);
+    }
+
+    public void makeInsuranceBet() {
+        if (isPlayingThisRound()) {
+            if (!player.getPlayStrategy().shouldGetInsurance()) {
+                return;
+            }
+
+            long insuranceBet = hands[0].getBetAmount() >> 1;
+            if (insuranceBet > player.getBankroll()) {
+                insuranceBet = player.getBankroll();
+            }
+            player.removeFromBankroll(insuranceBet);
+            table.getOutputter().insuranceBetMade(this);
+        }
     }
 
     public long getInsuranceBet() {
@@ -117,5 +136,32 @@ public class Seat {
 
     public int getSeatNumber() {
         return seatNumber;
+    }
+
+    public void payInsuranceToPlayer() {
+        if (insuranceBet > 0) {
+            // original insurance bet returned, plus double it.
+            player.payPlayer(insuranceBet * 3);
+            table.addToBankroll(-(insuranceBet << 1));
+            table.getOutputter().payInsurance(this);
+        }
+    }
+
+    public void handleDealerGotBlackjack() {
+        HandForPlayer hand = hands[0];
+        long betAmount = hand.getBetAmount();
+        if (betAmount > 0L) {
+            boolean playerHandIsBlackjack = hand.isBlackjack();
+            if (playerHandIsBlackjack) {
+                // player pushes
+                player.payPlayer(betAmount);
+                table.getOutputter().pushOnDealerBlackjack(this);
+            } else {
+                // dealer's blackjack wins the bet
+                table.addToBankroll(betAmount);
+                table.getOutputter().loseOnDealerBlackjack(this);
+            }
+            hand.reset();
+        }
     }
 }
