@@ -46,8 +46,12 @@ public abstract class SimRunner {
 
         long playersBankrollDelta = computePlayersBankrollDelta();
         if (playersBankrollDelta != -tableBankrollDelta) {
-            System.out.println("WHAT! Accounting error. Players delta: "
-                    + playersBankrollDelta + " but table delta: " + tableBankrollDelta);
+            String errorMessage = "WHAT! Accounting error. Players delta: "
+                    + MoneyHelper.formatForDisplay(playersBankrollDelta)
+                    + " but table delta: " + MoneyHelper.formatForDisplay(tableBankrollDelta)
+                    + ". Seed=" + getRules().getRandomness().getSeed();
+            outputterVerbose.showMessage(errorMessage);
+            throw new RuntimeException(errorMessage);
         }
     }
 

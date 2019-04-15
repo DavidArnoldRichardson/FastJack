@@ -105,7 +105,7 @@ public class OutputterVerboseToScreen extends Outputter {
 
     @Override
     public void dealerHasBlackjack(HandForDealer handForDealer) {
-        showMessage("Dealer checks the hole card, then turns it over showing " + handForDealer.show() + ". Blackjack!");
+        //showMessage("Dealer checks the hole card, then turns it over showing " + handForDealer.show() + ". Blackjack!");
     }
 
     @Override

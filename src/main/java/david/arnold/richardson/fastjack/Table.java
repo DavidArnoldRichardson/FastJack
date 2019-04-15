@@ -325,6 +325,14 @@ public class Table {
         this.rules = rules;
     }
 
+    // used for testing
+    public void tweakShoe(int... cardValuesToSet) {
+        for (int i = 0; i < cardValuesToSet.length; i++) {
+            int firstIndex = rules.getNumBurnCards();
+            shoe.cards[firstIndex + i] = (byte)(cardValuesToSet[i] - 1);
+        }
+    }
+
     public Outputter getOutputter() {
         return outputter;
     }

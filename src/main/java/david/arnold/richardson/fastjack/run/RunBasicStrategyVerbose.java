@@ -2,7 +2,6 @@ package david.arnold.richardson.fastjack.run;
 
 import david.arnold.richardson.fastjack.Player;
 import david.arnold.richardson.fastjack.Rules;
-import david.arnold.richardson.fastjack.Table;
 import david.arnold.richardson.fastjack.strategy.bet.BetStrategy;
 import david.arnold.richardson.fastjack.strategy.bet.BetStrategyAlwaysMin;
 import david.arnold.richardson.fastjack.strategy.play.PlayStrategy;
@@ -22,7 +21,7 @@ public class RunBasicStrategyVerbose extends SimRunner {
 
     @Override
     public int runHelper(Rules rules) {
-        for (int i = 0; i < Table.NUM_SEATS; i++) {
+        for (int i = 0; i < 4; i++) {
             Player player = new Player(
                     playerNames[i],
                     100000L,
@@ -33,6 +32,6 @@ public class RunBasicStrategyVerbose extends SimRunner {
             table.addPlayer(player);
         }
 
-        return table.playRounds(100);
+        return table.playRounds(3);
     }
 }
