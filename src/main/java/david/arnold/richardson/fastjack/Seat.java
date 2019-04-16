@@ -168,41 +168,37 @@ public class Seat {
     }
 
     public void handleDealerBust() {
-        if (isPlayingThisRound()) {
-            // pay bets from right to left
-            for (int handIndex = numHandsInUse - 1; handIndex >= 0; handIndex--) {
-                HandForPlayer hand = hands[handIndex];
-                if (hand.hasCards()) {
-                    table.getOutputter().playerWins(this, hand);
-                    long betAmount = hand.getBetAmount();
-                    player.addToBankroll(betAmount << 1);
-                    table.addToBankroll(-betAmount);
-                    hand.reset();
-                }
+        // pay bets from right to left
+        for (int handIndex = numHandsInUse - 1; handIndex >= 0; handIndex--) {
+            HandForPlayer hand = hands[handIndex];
+            if (hand.hasCards()) {
+                table.getOutputter().playerWins(this, hand);
+                long betAmount = hand.getBetAmount();
+                player.addToBankroll(betAmount << 1);
+                table.addToBankroll(-betAmount);
+                hand.reset();
             }
         }
     }
 
     public void handleDealerStand(int dealerHandValue) {
-        if (isPlayingThisRound()) {
-            for (int handIndex = numHandsInUse - 1; handIndex >= 0; handIndex--) {
-                HandForPlayer hand = hands[handIndex];
-                if (hand.hasCards()) {
-                    int playerHandValue = hand.computeMaxPointSum();
-                    long betAmount = hand.getBetAmount();
-                    if (playerHandValue < dealerHandValue) {
-                        table.getOutputter().playerLoses(this, hand);
-                        table.addToBankroll(betAmount);
-                    } else if (playerHandValue > dealerHandValue) {
-                        table.getOutputter().playerWins(this, hand);
-                        player.addToBankroll(betAmount << 1);
-                        table.addToBankroll(-betAmount);
-                    } else {
-                        table.getOutputter().playerPushes(this, hand);
-                        player.addToBankroll(betAmount);
-                    }
-                    hand.reset();
+        for (int handIndex = numHandsInUse - 1; handIndex >= 0; handIndex--) {
+            HandForPlayer hand = hands[handIndex];
+            if (hand.hasCards()) {
+                int playerHandValue = hand.computeMaxPointSum();
+                long betAmount = hand.getBetAmount();
+                if (playerHandValue < dealerHandValue) {
+                    table.getOutputter().playerLoses(this, hand);
+                    table.addToBankroll(betAmount);
+                } else if (playerHandValue > dealerHandValue) {
+                    table.getOutputter().playerWins(this, hand);
+                    player.addToBankroll(betAmount << 1);
+                    table.addToBankroll(-betAmount);
+                } else {
+                    table.getOutputter().playerPushes(this, hand);
+                    player.addToBankroll(betAmount);
                 }
+                hand.reset();
             }
         }
     }

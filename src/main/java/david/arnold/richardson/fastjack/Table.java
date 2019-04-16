@@ -68,7 +68,7 @@ public class Table {
         return roundNumber;
     }
 
-    boolean playRound(int roundNumber) {
+    public boolean playRound(int roundNumber) {
         outputter.startRound(roundNumber);
 
         if (shoe.hasCutCardBeenDrawn()) {
@@ -148,13 +148,7 @@ public class Table {
 
             // player blackjacks have already been paid, and those hands reset, at this point.
 
-            // check if dealer must play
-            boolean dealerMustPlay = false;
-            for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
-                boolean seatNeedsDealerToPlay = seats[seatNumber].checkIfSeatNeedsDealerToPlay();
-                dealerMustPlay = dealerMustPlay || seatNeedsDealerToPlay;
-            }
-
+            boolean dealerMustPlay = checkIfDealerMustPlay();
             boolean dealerBusted = playDealer(dealerMustPlay);
             if (dealerBusted) {
                 // pay players with bets still on their hands
@@ -177,6 +171,15 @@ public class Table {
         }
 
         return true;
+    }
+
+    private boolean checkIfDealerMustPlay() {
+        for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
+            if (seats[seatNumber].checkIfSeatNeedsDealerToPlay()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void playSeat(
@@ -336,9 +339,9 @@ public class Table {
 
     // used for testing
     public void tweakShoe(int... cardValuesToSet) {
+        shoe.setPenetration();
         for (int i = 0; i < cardValuesToSet.length; i++) {
-            int firstIndex = rules.getNumBurnCards();
-            shoe.cards[firstIndex + i] = (byte) (cardValuesToSet[i] - 1);
+            shoe.cards[i] = (byte) (cardValuesToSet[i] - 1);
         }
     }
 
