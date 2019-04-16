@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TableTest {
     @Test
-    public void testSimplePlayerLoses() {
+    public void testSimplePlayerLosesDueToTotalLessThanDealer() {
         long startBankroll = 10000L;
         Rules rules = Rules.getDefaultSixDecks();
         rules.setRandomness(new Randomness(1L));
@@ -19,6 +19,24 @@ public class TableTest {
         table.addPlayer(player);
 
         table.tweakShoe(3, 10, 4, 10, 5, 6);
+        table.playRound(0);
+        long minBetAmount = rules.getMinBetAmount();
+        assertEquals(startBankroll - minBetAmount, player.getBankroll());
+        assertEquals(minBetAmount, table.getTableBankrollDelta());
+    }
+
+    @Test
+    public void testSimplePlayerLosesDueToBust() {
+        long startBankroll = 10000L;
+        Rules rules = Rules.getDefaultSixDecks();
+        rules.setRandomness(new Randomness(1L));
+        Outputter outputter = new OutputterVerboseToScreen();
+        Table table = new Table(outputter, rules);
+        Player player = new Player("test", startBankroll, table);
+        player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
+        table.addPlayer(player);
+
+        table.tweakShoe(3, 10, 4, 10, 5, 10);
         table.playRound(0);
         long minBetAmount = rules.getMinBetAmount();
         assertEquals(startBankroll - minBetAmount, player.getBankroll());
@@ -183,6 +201,78 @@ public class TableTest {
         table.playRound(0);
         assertEquals(startBankroll, player.getBankroll());
         assertEquals(0L, table.getTableBankrollDelta());
+    }
+
+    @Test
+    public void testSplitEightsWithResplitWinsAll() {
+        long startBankroll = 10000L;
+        Rules rules = Rules.getDefaultSixDecks();
+        rules.setRandomness(new Randomness(1L));
+        Outputter outputter = new OutputterVerboseToScreen();
+        Table table = new Table(outputter, rules);
+        Player player = new Player("test", startBankroll, table);
+        player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
+        table.addPlayer(player);
+
+        table.tweakShoe(8, 10, 8, 7, 8, 10, 10, 10);
+        table.playRound(0);
+        long minBetAmount = rules.getMinBetAmount();
+        assertEquals(startBankroll + (minBetAmount * 3), player.getBankroll());
+        assertEquals(-3 * minBetAmount, table.getTableBankrollDelta());
+    }
+
+    @Test
+    public void testSplitEightsWithResplitLosesAll() {
+        long startBankroll = 10000L;
+        Rules rules = Rules.getDefaultSixDecks();
+        rules.setRandomness(new Randomness(1L));
+        Outputter outputter = new OutputterVerboseToScreen();
+        Table table = new Table(outputter, rules);
+        Player player = new Player("test", startBankroll, table);
+        player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
+        table.addPlayer(player);
+
+        table.tweakShoe(8, 10, 8, 10, 8, 10, 10, 10);
+        table.playRound(0);
+        long minBetAmount = rules.getMinBetAmount();
+        assertEquals(startBankroll - (minBetAmount * 3), player.getBankroll());
+        assertEquals(3 * minBetAmount, table.getTableBankrollDelta());
+    }
+
+    @Test
+    public void testSplitEightsWithResplitLosesTwoWinsOne() {
+        long startBankroll = 10000L;
+        Rules rules = Rules.getDefaultSixDecks();
+        rules.setRandomness(new Randomness(1L));
+        Outputter outputter = new OutputterVerboseToScreen();
+        Table table = new Table(outputter, rules);
+        Player player = new Player("test", startBankroll, table);
+        player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
+        table.addPlayer(player);
+
+        table.tweakShoe(8, 10, 8, 10, 8, 4, 10, 3, 10, 10);
+        table.playRound(0);
+        long minBetAmount = rules.getMinBetAmount();
+        assertEquals(startBankroll - minBetAmount, player.getBankroll());
+        assertEquals(minBetAmount, table.getTableBankrollDelta());
+    }
+
+    @Test
+    public void testSplitEightsWithResplitLosesOneWinsTwo() {
+        long startBankroll = 10000L;
+        Rules rules = Rules.getDefaultSixDecks();
+        rules.setRandomness(new Randomness(1L));
+        Outputter outputter = new OutputterVerboseToScreen();
+        Table table = new Table(outputter, rules);
+        Player player = new Player("test", startBankroll, table);
+        player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
+        table.addPlayer(player);
+
+        table.tweakShoe(8, 10, 8, 7, 8, 10, 4, 10, 10);
+        table.playRound(0);
+        long minBetAmount = rules.getMinBetAmount();
+        assertEquals(startBankroll + minBetAmount, player.getBankroll());
+        assertEquals(-minBetAmount, table.getTableBankrollDelta());
     }
 
     @Test
