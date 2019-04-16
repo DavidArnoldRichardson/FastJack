@@ -117,7 +117,7 @@ public class Table {
             }
         }
 
-        if (handForDealer.isBlackjack()) {
+        if (handForDealer.isSoftTwentyOne()) {
             if (upcardIsAce) {
                 // pay out insurance
                 outputter.revealDealerHand(handForDealer);
@@ -146,9 +146,16 @@ public class Table {
                 playSeat(seats[seatNumber], dealerUpcardValue);
             }
 
-            // player blackjacks have already been paid, and the hands reset, at this point.
+            // player blackjacks have already been paid, and those hands reset, at this point.
 
-            boolean dealerBusted = playDealer();
+            // check if dealer must play
+            boolean dealerMustPlay = false;
+            for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
+                boolean seatNeedsDealerToPlay = seats[seatNumber].checkIfSeatNeedsDealerToPlay();
+                dealerMustPlay = dealerMustPlay || seatNeedsDealerToPlay;
+            }
+
+            boolean dealerBusted = playDealer(dealerMustPlay);
             if (dealerBusted) {
                 // pay players with bets still on their hands
                 for (int seatNumber = numSeatsInUse - 1; seatNumber >= 0; seatNumber--) {
@@ -156,7 +163,7 @@ public class Table {
                 }
             } else {
                 // pay players with hands that beat the dealer's hand
-                // take bets from players with hands that lose against the dealer's hand
+                // collect bet money from players with hands that lose against the dealer's hand
                 int dealerHandValue = handForDealer.computeMaxPointSum();
                 for (int seatNumber = numSeatsInUse - 1; seatNumber >= 0; seatNumber--) {
                     seats[seatNumber].handleDealerStand(dealerHandValue);
@@ -181,7 +188,7 @@ public class Table {
 
         // first hand can be blackjack
         HandForPlayer firstHand = seat.getHand(0);
-        if (firstHand.isBlackjack()) {
+        if (firstHand.isSoftTwentyOne()) {
             outputter.playerBlackjack(seat, firstHand);
             betAmount = firstHand.getBetAmount();
             halfOfBetAmount = betAmount >> 1;
@@ -208,6 +215,7 @@ public class Table {
                 PlayerDecision playerDecision = seat.getPlayerDecision(handIndexToPlay, dealerUpcardValue);
                 switch (playerDecision) {
                     case STD:
+                        hand.setPlayIsComplete();
                         outputter.playerStand(seat, hand);
                         keepPlaying = false;
                         break;
@@ -216,17 +224,14 @@ public class Table {
                         playerHandValue = hand.computeMaxPointSum();
                         keepPlaying = playerHandValue < 21;
                         if (playerHandValue > 21) {
-                            // player bust
                             outputter.playerHitAndBust(seat, hand);
                             betAmount = hand.getBetAmount();
                             tableBankroll += betAmount;
                             hand.reset();
                         } else if (playerHandValue == 21) {
-                            // player 21
+                            hand.setPlayIsComplete();
                             outputter.playerHitAndGot21(seat, hand);
-                            hand.setIsTwentyOnePoints();
                         } else {
-                            // player hit and can hit more if they want
                             outputter.playerHit(seat, hand);
                         }
                         break;
@@ -244,16 +249,13 @@ public class Table {
                         keepPlaying = false;
                         playerHandValue = hand.computeMaxPointSum();
                         if (playerHandValue > 21) {
-                            // player bust
-                            outputter.playerDoubledAndBust(seat, hand);
                             tableBankroll += betAmount;
                             hand.reset();
                         } else if (playerHandValue == 21) {
-                            // player 21
+                            hand.setPlayIsComplete();
                             outputter.playerDoubledAndGot21(seat, hand);
-                            hand.setIsTwentyOnePoints();
                         } else {
-                            // player got their card and is done
+                            hand.setPlayIsComplete();
                             outputter.playerDoubled(seat, hand);
                         }
                         break;
@@ -281,7 +283,8 @@ public class Table {
         hand.addCard(shoe.dealCard());
 
         // check various situations that would make the player unable to continue with this hand
-        if (hand.isBlackjack()) {
+        if (hand.isSoftTwentyOne()) {
+            hand.setPlayIsComplete();
             outputter.gotSecondCardOnSplitAndGot21(seat, hand);
             return false;
         } else {
@@ -292,6 +295,7 @@ public class Table {
                 if (rules.isCanResplitAces()) {
                     return true;
                 }
+                hand.setPlayIsComplete();
                 outputter.gotSecondCardOnSplitAndCannotContinue(seat, hand);
                 return false;
             }
@@ -300,11 +304,16 @@ public class Table {
         }
     }
 
-    private boolean playDealer() {
-        while (handForDealer.shouldDealerHit()) {
-            handForDealer.addCard(shoe.dealCard());
+    private boolean playDealer(boolean dealerMustPlay) {
+        boolean dealerBusted;
+        if (dealerMustPlay) {
+            while (handForDealer.shouldDealerHit()) {
+                handForDealer.addCard(shoe.dealCard());
+            }
+            dealerBusted = handForDealer.isBusted();
+        } else {
+            dealerBusted = false;
         }
-        boolean dealerBusted = handForDealer.isBusted();
         outputter.dealerHandResult(handForDealer, dealerBusted);
         return dealerBusted;
     }
@@ -329,7 +338,7 @@ public class Table {
     public void tweakShoe(int... cardValuesToSet) {
         for (int i = 0; i < cardValuesToSet.length; i++) {
             int firstIndex = rules.getNumBurnCards();
-            shoe.cards[firstIndex + i] = (byte)(cardValuesToSet[i] - 1);
+            shoe.cards[firstIndex + i] = (byte) (cardValuesToSet[i] - 1);
         }
     }
 

@@ -152,7 +152,7 @@ public class Seat {
             HandForPlayer hand = hands[0];
             long betAmount = hand.getBetAmount();
             if (betAmount > 0L) {
-                boolean playerHandIsBlackjack = hand.isBlackjack();
+                boolean playerHandIsBlackjack = hand.isSoftTwentyOne();
                 if (playerHandIsBlackjack) {
                     // player pushes
                     player.payPlayer(betAmount);
@@ -205,5 +205,14 @@ public class Seat {
                 }
             }
         }
+    }
+
+    public boolean checkIfSeatNeedsDealerToPlay() {
+        for (int i = 0; i < numHandsInUse; i++) {
+            if (hands[i].checkIfHandNeedsDealerToPlay()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -72,25 +72,25 @@ public class HandTest extends HelperForTests {
     @Test
     public void testIsBlackjack() {
         Hand hand = new HandForTesting(tableWithSixDecks.getShoe(), 20);
-        assertFalse(hand.isBlackjack());
+        assertFalse(hand.isSoftTwentyOne());
 
         resetHand(hand, c2, c4);
-        assertFalse(hand.isBlackjack());
+        assertFalse(hand.isSoftTwentyOne());
 
         resetHand(hand, cT, c6, c5);
-        assertFalse(hand.isBlackjack());
+        assertFalse(hand.isSoftTwentyOne());
 
         resetHand(hand, cT, cA);
-        assertTrue(hand.isBlackjack());
+        assertTrue(hand.isSoftTwentyOne());
 
         resetHand(hand, cA, cT);
-        assertTrue(hand.isBlackjack());
+        assertTrue(hand.isSoftTwentyOne());
 
         resetHand(hand, cA, cT, cA);
-        assertFalse(hand.isBlackjack());
+        assertFalse(hand.isSoftTwentyOne());
 
         resetHand(hand, cA, cT, c2);
-        assertFalse(hand.isBlackjack());
+        assertFalse(hand.isSoftTwentyOne());
     }
 
     @Test

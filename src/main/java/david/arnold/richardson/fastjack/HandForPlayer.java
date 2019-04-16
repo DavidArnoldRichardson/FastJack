@@ -96,4 +96,12 @@ public class HandForPlayer extends Hand {
 
         return true;
     }
+
+    public boolean checkIfHandNeedsDealerToPlay() {
+        return playIsComplete;
+    }
+
+    public void setPlayIsComplete() {
+        this.playIsComplete = true;
+    }
 }

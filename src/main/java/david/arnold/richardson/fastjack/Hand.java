@@ -4,9 +4,7 @@ public abstract class Hand {
     protected Shoe shoe;
     protected int[] indexesOfCards;
     protected int numCardsInHand;
-
-    // prevents computing max hand point value more often than necessary.
-    protected boolean isTwentyOnePoints;
+    protected boolean playIsComplete;
 
     protected Hand(
             Shoe shoe,
@@ -57,7 +55,7 @@ public abstract class Hand {
 
     public void reset() {
         numCardsInHand = 0;
-        isTwentyOnePoints = false;
+        playIsComplete = false;
         resetHelper();
     }
 
@@ -80,10 +78,6 @@ public abstract class Hand {
     }
 
     protected int computeMaxPointSum() {
-        if (isTwentyOnePoints) {
-            return 21;
-        }
-
         boolean hasAnAce = false;
         int sum = 0;
         for (int i = 0; i < numCardsInHand; i++) {
@@ -93,8 +87,9 @@ public abstract class Hand {
             }
         }
         if (hasAnAce && sum <= 11) {
-            return sum + 10;
+            sum += 10;
         }
+
         return sum;
     }
 
@@ -124,7 +119,9 @@ public abstract class Hand {
         return sum <= 11;
     }
 
-    public boolean isBlackjack() {
+    // Note that a blackjack doesn't just mean that it's an ace and a ten-point card.
+    // The player can get those two cards as a result of a split, for example.
+    public boolean isSoftTwentyOne() {
         if (numCardsInHand != 2) {
             return false;
         }
@@ -143,9 +140,5 @@ public abstract class Hand {
 
     public boolean isBusted() {
         return computeMinPointSum() > 21;
-    }
-
-    public void setIsTwentyOnePoints() {
-        isTwentyOnePoints = true;
     }
 }
