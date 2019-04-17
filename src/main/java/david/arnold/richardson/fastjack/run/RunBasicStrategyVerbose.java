@@ -24,8 +24,7 @@ public class RunBasicStrategyVerbose extends SimRunner {
         for (int i = 0; i < 4; i++) {
             Player player = new Player(
                     playerNames[i],
-                    100000L,
-                    table);
+                    100000L);
             PlayStrategy playStrategy = new PlayStrategyBasic(rules);
             BetStrategy betStrategy = new BetStrategyAlwaysMin(player, rules);
             player.setStrategies(playStrategy, betStrategy);

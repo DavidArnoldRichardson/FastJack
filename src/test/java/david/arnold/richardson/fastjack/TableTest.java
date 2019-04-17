@@ -14,7 +14,7 @@ public class TableTest {
         rules.setRandomness(new Randomness(1L));
         Outputter outputter = new OutputterVerboseToScreen();
         Table table = new Table(outputter, rules);
-        Player player = new Player("test", startBankroll, table);
+        Player player = new Player("test", startBankroll);
         player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
         table.addPlayer(player);
 
@@ -32,7 +32,7 @@ public class TableTest {
         rules.setRandomness(new Randomness(1L));
         Outputter outputter = new OutputterVerboseToScreen();
         Table table = new Table(outputter, rules);
-        Player player = new Player("test", startBankroll, table);
+        Player player = new Player("test", startBankroll);
         player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
         table.addPlayer(player);
 
@@ -50,7 +50,7 @@ public class TableTest {
         rules.setRandomness(new Randomness(1L));
         Outputter outputter = new OutputterVerboseToScreen();
         Table table = new Table(outputter, rules);
-        Player player = new Player("test", startBankroll, table);
+        Player player = new Player("test", startBankroll);
         player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
         table.addPlayer(player);
 
@@ -68,7 +68,7 @@ public class TableTest {
         rules.setRandomness(new Randomness(1L));
         Outputter outputter = new OutputterVerboseToScreen();
         Table table = new Table(outputter, rules);
-        Player player = new Player("test", startBankroll, table);
+        Player player = new Player("test", startBankroll);
         player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
         table.addPlayer(player);
 
@@ -86,7 +86,7 @@ public class TableTest {
         rules.setRandomness(new Randomness(1L));
         Outputter outputter = new OutputterVerboseToScreen();
         Table table = new Table(outputter, rules);
-        Player player = new Player("test", startBankroll, table);
+        Player player = new Player("test", startBankroll);
         player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
         table.addPlayer(player);
 
@@ -104,7 +104,7 @@ public class TableTest {
         rules.setRandomness(new Randomness(1L));
         Outputter outputter = new OutputterVerboseToScreen();
         Table table = new Table(outputter, rules);
-        Player player = new Player("test", startBankroll, table);
+        Player player = new Player("test", startBankroll);
         player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
         table.addPlayer(player);
 
@@ -122,7 +122,7 @@ public class TableTest {
         rules.setRandomness(new Randomness(1L));
         Outputter outputter = new OutputterVerboseToScreen();
         Table table = new Table(outputter, rules);
-        Player player = new Player("test", startBankroll, table);
+        Player player = new Player("test", startBankroll);
         player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
         table.addPlayer(player);
 
@@ -140,7 +140,7 @@ public class TableTest {
         rules.setRandomness(new Randomness(1L));
         Outputter outputter = new OutputterVerboseToScreen();
         Table table = new Table(outputter, rules);
-        Player player = new Player("test", startBankroll, table);
+        Player player = new Player("test", startBankroll);
         player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
         table.addPlayer(player);
 
@@ -158,7 +158,7 @@ public class TableTest {
         rules.setRandomness(new Randomness(1L));
         Outputter outputter = new OutputterVerboseToScreen();
         Table table = new Table(outputter, rules);
-        Player player = new Player("test", startBankroll, table);
+        Player player = new Player("test", startBankroll);
         player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
         table.addPlayer(player);
 
@@ -176,7 +176,7 @@ public class TableTest {
         rules.setRandomness(new Randomness(1L));
         Outputter outputter = new OutputterVerboseToScreen();
         Table table = new Table(outputter, rules);
-        Player player = new Player("test", startBankroll, table);
+        Player player = new Player("test", startBankroll);
         player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
         table.addPlayer(player);
 
@@ -193,7 +193,7 @@ public class TableTest {
         rules.setRandomness(new Randomness(1L));
         Outputter outputter = new OutputterVerboseToScreen();
         Table table = new Table(outputter, rules);
-        Player player = new Player("test", startBankroll, table);
+        Player player = new Player("test", startBankroll);
         player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
         table.addPlayer(player);
 
@@ -210,7 +210,7 @@ public class TableTest {
         rules.setRandomness(new Randomness(1L));
         Outputter outputter = new OutputterVerboseToScreen();
         Table table = new Table(outputter, rules);
-        Player player = new Player("test", startBankroll, table);
+        Player player = new Player("test", startBankroll);
         player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
         table.addPlayer(player);
 
@@ -228,7 +228,7 @@ public class TableTest {
         rules.setRandomness(new Randomness(1L));
         Outputter outputter = new OutputterVerboseToScreen();
         Table table = new Table(outputter, rules);
-        Player player = new Player("test", startBankroll, table);
+        Player player = new Player("test", startBankroll);
         player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
         table.addPlayer(player);
 
@@ -246,7 +246,7 @@ public class TableTest {
         rules.setRandomness(new Randomness(1L));
         Outputter outputter = new OutputterVerboseToScreen();
         Table table = new Table(outputter, rules);
-        Player player = new Player("test", startBankroll, table);
+        Player player = new Player("test", startBankroll);
         player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
         table.addPlayer(player);
 
@@ -264,7 +264,7 @@ public class TableTest {
         rules.setRandomness(new Randomness(1L));
         Outputter outputter = new OutputterVerboseToScreen();
         Table table = new Table(outputter, rules);
-        Player player = new Player("test", startBankroll, table);
+        Player player = new Player("test", startBankroll);
         player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
         table.addPlayer(player);
 
@@ -282,7 +282,7 @@ public class TableTest {
         rules.setRandomness(new Randomness(1L));
         Outputter outputter = new OutputterVerboseToScreen();
         Table table = new Table(outputter, rules);
-        Player player = new Player("test", startBankroll, table);
+        Player player = new Player("test", startBankroll);
         player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
         table.addPlayer(player);
 
@@ -300,7 +300,7 @@ public class TableTest {
         rules.setRandomness(new Randomness(1L));
         Outputter outputter = new OutputterVerboseToScreen();
         Table table = new Table(outputter, rules);
-        Player player = new Player("test", startBankroll, table);
+        Player player = new Player("test", startBankroll);
         player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
         table.addPlayer(player);
 
@@ -318,7 +318,7 @@ public class TableTest {
         rules.setRandomness(new Randomness(1L));
         Outputter outputter = new OutputterVerboseToScreen();
         Table table = new Table(outputter, rules);
-        Player player = new Player("test", startBankroll, table);
+        Player player = new Player("test", startBankroll);
         player.setStrategies(new PlayStrategyBasic(rules), new BetStrategyAlwaysMin(player, rules));
         table.addPlayer(player);
 

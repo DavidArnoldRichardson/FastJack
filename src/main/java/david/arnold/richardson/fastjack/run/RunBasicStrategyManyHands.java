@@ -25,8 +25,7 @@ public class RunBasicStrategyManyHands extends SimRunner {
         for (int i = 0; i < Table.NUM_SEATS; i++) {
             Player player = new Player(
                     playerNames[i],
-                    1000000000L,
-                    table);
+                    1000000000L);
             PlayStrategy playStrategy = new PlayStrategyBasic(rules);
             BetStrategy betStrategy = new BetStrategyAlwaysMin(player, rules);
             player.setStrategies(playStrategy, betStrategy);
