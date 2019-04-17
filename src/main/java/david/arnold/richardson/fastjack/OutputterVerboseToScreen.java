@@ -2,8 +2,16 @@ package david.arnold.richardson.fastjack;
 
 public class OutputterVerboseToScreen extends Outputter {
 
-    private String getPrefix(Seat seat) {
+    private String getPrefix(
+            Seat seat) {
+        return getPrefix(seat, 0);
+    }
+
+    private String getPrefix(
+            Seat seat,
+            int handIndex) {
         return "Seat " + (seat.getSeatNumber() + 1)
+                + " hand " + (handIndex + 1)
                 + " (" + seat.getPlayer().getPlayerName() + ")";
     }
 
@@ -57,8 +65,11 @@ public class OutputterVerboseToScreen extends Outputter {
     }
 
     @Override
-    public void placeBet(Seat seat, long desiredBetAmount) {
-        showMessage(getPrefix(seat) + " bets " + MoneyHelper.formatForDisplay(desiredBetAmount) + ".");
+    public void placeBet(
+            Seat seat,
+            int handIndex,
+            long desiredBetAmount) {
+        showMessage(getPrefix(seat, handIndex) + " bets " + MoneyHelper.formatForDisplay(desiredBetAmount) + ".");
     }
 
     @Override
@@ -131,44 +142,46 @@ public class OutputterVerboseToScreen extends Outputter {
     }
 
     @Override
-    public void playerStand(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat) + " stands with " + hand.show() + ".");
+    public void playerStand(
+            Seat seat,
+            HandForPlayer hand) {
+        showMessage(getPrefix(seat, hand.getHandIndex()) + " stands with " + hand.show() + ".");
     }
 
     @Override
     public void playerHitAndBust(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat)
+        showMessage(getPrefix(seat, hand.getHandIndex())
                 + " hits and busts with " + hand.show()
                 + ". Lost " + MoneyHelper.formatForDisplay(hand.getBetAmount()) + ".");
     }
 
     @Override
     public void playerHitAndGot21(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat)
+        showMessage(getPrefix(seat, hand.getHandIndex())
                 + " hits and gets 21 with " + hand.show() + ".");
     }
 
     @Override
     public void playerHit(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat)
+        showMessage(getPrefix(seat, hand.getHandIndex())
                 + " hits and now has " + hand.show() + ".");
     }
 
     @Override
     public void playerDoubledAndBust(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat)
+        showMessage(getPrefix(seat, hand.getHandIndex())
                 + " doubles and busts with " + hand.show() + ".");
     }
 
     @Override
     public void playerDoubledAndGot21(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat)
+        showMessage(getPrefix(seat, hand.getHandIndex())
                 + " doubles and gets 21 with " + hand.show() + ".");
     }
 
     @Override
     public void playerDoubled(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat)
+        showMessage(getPrefix(seat, hand.getHandIndex())
                 + " doubles and gets " + hand.show()
                 + ". Bet is now " + MoneyHelper.formatForDisplay(hand.getBetAmount()) + ".");
     }
@@ -181,25 +194,25 @@ public class OutputterVerboseToScreen extends Outputter {
 
     @Override
     public void playerSplits(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat)
+        showMessage(getPrefix(seat, hand.getHandIndex())
                 + " splits with " + hand.show() + ".");
     }
 
     @Override
     public void gotSecondCardOnSplit(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat)
+        showMessage(getPrefix(seat, hand.getHandIndex())
                 + " gets the second card on the split hand, and now has " + hand.show() + ".");
     }
 
     @Override
     public void gotSecondCardOnSplitAndGot21(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat)
+        showMessage(getPrefix(seat, hand.getHandIndex())
                 + " gets the second card on the split hand, and reached 21 points with " + hand.show() + ".");
     }
 
     @Override
     public void gotSecondCardOnSplitAndCannotContinue(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat)
+        showMessage(getPrefix(seat, hand.getHandIndex())
                 + " gets the second card on the split hand, and now ends play on the hand with " + hand.show() + ".");
     }
 
@@ -214,21 +227,22 @@ public class OutputterVerboseToScreen extends Outputter {
 
     @Override
     public void playerWins(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat)
+        showMessage(getPrefix(seat, hand.getHandIndex())
                 + ", hand of " + hand.show() + " beat the dealer, and won "
                 + MoneyHelper.formatForDisplay(hand.getBetAmount()) + ".");
     }
 
     @Override
     public void playerLoses(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat)
+        showMessage(getPrefix(seat, hand.getHandIndex())
                 + ", hand of " + hand.show() + " lost. Loses "
                 + MoneyHelper.formatForDisplay(hand.getBetAmount()) + ".");
     }
 
     @Override
     public void playerPushes(Seat seat, HandForPlayer hand) {
-        showMessage(getPrefix(seat) + ", hand of " + hand.show() + " tied with the dealer.");
+        showMessage(getPrefix(seat, hand.getHandIndex())
+                + ", hand of " + hand.show() + " tied with the dealer.");
     }
 
     @Override

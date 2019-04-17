@@ -19,7 +19,7 @@ public abstract class Outputter {
 
     public abstract void roundAborted();
 
-    public abstract void placeBet(Seat seat, long desiredBetAmount);
+    public abstract void placeBet(Seat seat, int handIndex, long desiredBetAmount);
 
     public abstract void sitPlayer(Seat seat);
 

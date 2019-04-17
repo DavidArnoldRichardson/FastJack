@@ -35,7 +35,7 @@ public class OutputterSilentAndFast extends Outputter {
     }
 
     @Override
-    public void placeBet(Seat seat, long desiredBetAmount) {
+    public void placeBet(Seat seat, int handIndex, long desiredBetAmount) {
     }
 
     @Override

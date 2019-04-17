@@ -17,7 +17,7 @@ public class Seat {
         int maxNumHands = shoe.getRules().getMaxNumSplits() + 1;
         hands = new HandForPlayer[maxNumHands];
         for (int i = 0; i < maxNumHands; i++) {
-            hands[i] = new HandForPlayer(shoe, this);
+            hands[i] = new HandForPlayer(shoe, this, i);
         }
         resetHands();
     }
@@ -83,7 +83,7 @@ public class Seat {
             return false;
         }
 
-        table.getOutputter().placeBet(this, betAmount);
+        table.getOutputter().placeBet(this, hand.getHandIndex(), betAmount);
         hand.setBetAmount(betAmount);
         player.removeFromBankroll(betAmount);
         return true;

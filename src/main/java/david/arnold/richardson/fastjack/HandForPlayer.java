@@ -4,13 +4,16 @@ public class HandForPlayer extends Hand {
     private long betAmount;
     private boolean handIsResultOfSplit;
     private Seat seat;
+    private int handIndex;
 
     public HandForPlayer(
             Shoe shoe,
-            Seat seat) {
+            Seat seat,
+            int handIndex) {
         // could be all twos, to a max of 11 (22 points), where the player busts.
         super(shoe, 11);
         this.seat = seat;
+        this.handIndex = handIndex;
     }
 
     @Override
@@ -103,5 +106,9 @@ public class HandForPlayer extends Hand {
 
     public void setPlayIsComplete() {
         this.playIsComplete = true;
+    }
+
+    public int getHandIndex() {
+        return handIndex;
     }
 }

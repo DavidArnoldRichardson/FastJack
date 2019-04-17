@@ -191,4 +191,13 @@ public class TableTest {
         assertEquals(startBankroll, player.getBankroll());
         assertEquals(0L, table.getTableBankrollDelta());
     }
+
+    @Test
+    public void testSplitAcesResplit() {
+        // todo: explicitly set the rules
+        // todo: do a lot more testing around this, with different combinations of rules
+        setCardsAndPlay(1, 10, 1, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        assertEquals(startBankroll - (minBetAmount * 4), player.getBankroll());
+        assertEquals(minBetAmount * 4, table.getTableBankrollDelta());
+    }
 }

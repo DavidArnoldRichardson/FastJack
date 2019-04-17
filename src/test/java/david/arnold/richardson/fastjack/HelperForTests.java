@@ -141,7 +141,7 @@ public abstract class HelperForTests {
         int dealerUpcardValue = cards[indexOfDealerUpcardValue];
 
         int numCardsInHand = cards.length - 1;
-        HandForPlayer hand = new HandForPlayer(table.getShoe(), seat);
+        HandForPlayer hand = new HandForPlayer(table.getShoe(), seat, 0);
         for (int i = 0; i < numCardsInHand; i++) {
             hand.addCard(cards[i]);
         }
