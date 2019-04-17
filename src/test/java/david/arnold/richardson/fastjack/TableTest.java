@@ -193,10 +193,41 @@ public class TableTest {
     }
 
     @Test
-    public void testSplitAcesResplit() {
-        // todo: explicitly set the rules
-        // todo: do a lot more testing around this, with different combinations of rules
-        setCardsAndPlay(1, 10, 1, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    public void testSplitAcesResplit_NoHitSplitAces_NoResplitAces() {
+        rules.setCanHitSplitAces(false);
+        rules.setCanResplitAces(false);
+
+        setCardsAndPlay(1, 10, 1, 7, 1, 1);
+        assertEquals(startBankroll - (minBetAmount * 2), player.getBankroll());
+        assertEquals(minBetAmount * 2, table.getTableBankrollDelta());
+    }
+
+    @Test
+    public void testSplitAcesResplit_NoHitSplitAces_YesResplitAces() {
+        rules.setCanHitSplitAces(false);
+        rules.setCanResplitAces(true);
+
+        setCardsAndPlay(1, 10, 1, 7, 1, 1, 1, 1, 1, 1);
+        assertEquals(startBankroll - (minBetAmount * 4), player.getBankroll());
+        assertEquals(minBetAmount * 4, table.getTableBankrollDelta());
+    }
+
+    @Test
+    public void testSplitAcesResplit_YesHitSplitAces_NoResplitAces() {
+        rules.setCanHitSplitAces(true);
+        rules.setCanResplitAces(false);
+
+        setCardsAndPlay(1, 10, 1, 10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        assertEquals(startBankroll - (minBetAmount * 2), player.getBankroll());
+        assertEquals(minBetAmount * 2, table.getTableBankrollDelta());
+    }
+
+    @Test
+    public void testSplitAcesResplit_YesHitSplitAces_YesResplitAces() {
+        rules.setCanHitSplitAces(true);
+        rules.setCanResplitAces(true);
+
+        setCardsAndPlay(1, 10, 1, 10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
         assertEquals(startBankroll - (minBetAmount * 4), player.getBankroll());
         assertEquals(minBetAmount * 4, table.getTableBankrollDelta());
     }
