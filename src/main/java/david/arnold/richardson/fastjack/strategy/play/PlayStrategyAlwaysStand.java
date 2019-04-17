@@ -10,6 +10,10 @@ public class PlayStrategyAlwaysStand extends PlayStrategy {
     }
 
     @Override
+    public void setupLogic() {
+    }
+
+    @Override
     public PlayerDecision getPlay(
             HandForPlayer hand,
             int dealerUpcardValue) {

@@ -10,7 +10,10 @@ public abstract class PlayStrategy {
 
     public PlayStrategy(Rules rules) {
         this.rules = rules;
+        setupLogic();
     }
+
+    public abstract void setupLogic();
 
     public abstract PlayerDecision getPlay(
             HandForPlayer hand,

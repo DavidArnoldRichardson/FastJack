@@ -28,6 +28,7 @@ public class TableTest {
     }
 
     void setCardsAndPlay(int... cardValues) {
+        player.refreshStrategiesDueToRulesChange();
         table.tweakShoe(cardValues);
         table.playRound(0);
     }
@@ -105,6 +106,28 @@ public class TableTest {
         setCardsAndPlay(6, 8, 5, 9, 9);
         assertEquals(startBankroll + minBetAmount + minBetAmount, player.getBankroll());
         assertEquals(-minBetAmount - minBetAmount, table.getTableBankrollDelta());
+    }
+
+    //////////////
+    //////////////  split fours
+    //////////////
+
+    @Test
+    public void testSplitFoursPlayerLosesBoth_canDoubleAfterSplit() {
+        rules.setCanDoubleAfterSplit(true);
+
+        setCardsAndPlay(4, 6, 4, 9, 10, 10, 4);
+        assertEquals(startBankroll - minBetAmount - minBetAmount, player.getBankroll());
+        assertEquals(minBetAmount + minBetAmount, table.getTableBankrollDelta());
+    }
+
+    @Test
+    public void testSplitFoursPlayerLosesBoth_noDoubleAfterSplit() {
+        rules.setCanDoubleAfterSplit(false);
+
+        setCardsAndPlay(4, 6, 4, 9, 10, 6);
+        assertEquals(startBankroll - minBetAmount, player.getBankroll());
+        assertEquals(minBetAmount, table.getTableBankrollDelta());
     }
 
     //////////////

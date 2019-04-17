@@ -16,6 +16,10 @@ public class BetStrategyAlwaysMin extends BetStrategy {
     }
 
     @Override
+    public void setupLogic() {
+    }
+
+    @Override
     public long getBetAmount() {
         return rules.getMinBetAmount();
     }

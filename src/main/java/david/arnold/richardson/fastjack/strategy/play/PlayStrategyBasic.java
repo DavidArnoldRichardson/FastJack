@@ -19,10 +19,10 @@ public class PlayStrategyBasic extends PlayStrategy {
 
     public PlayStrategyBasic(Rules rules) {
         super(rules);
-        setupLogic();
     }
 
-    private void setupLogic() {
+    @Override
+    public void setupLogic() {
         LogicHolder logicHolder = rules.getLogicHolder();
         int numDecks = rules.getNumDecks();
         boolean isH17 = rules.isH17();

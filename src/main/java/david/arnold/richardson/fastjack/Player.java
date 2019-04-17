@@ -27,6 +27,12 @@ public class Player {
         this.betStrategy = betStrategy;
     }
 
+    // used for testing
+    public void refreshStrategiesDueToRulesChange() {
+        playStrategy.setupLogic();
+        betStrategy.setupLogic();
+    }
+
     public PlayStrategy getPlayStrategy() {
         return playStrategy;
     }
