@@ -2,14 +2,14 @@ package david.arnold.richardson.fastjack.strategy.play;
 
 import david.arnold.richardson.fastjack.HandForPlayer;
 import david.arnold.richardson.fastjack.PlayerDecision;
-import david.arnold.richardson.fastjack.Rules;
+import david.arnold.richardson.fastjack.Table;
 
 public abstract class PlayStrategy {
 
-    protected Rules rules;
+    protected Table table;
 
-    public PlayStrategy(Rules rules) {
-        this.rules = rules;
+    public PlayStrategy(Table table) {
+        this.table = table;
         setupLogic();
     }
 

@@ -2,11 +2,11 @@ package david.arnold.richardson.fastjack.strategy.play;
 
 import david.arnold.richardson.fastjack.HandForPlayer;
 import david.arnold.richardson.fastjack.PlayerDecision;
-import david.arnold.richardson.fastjack.Rules;
+import david.arnold.richardson.fastjack.Table;
 
 public class PlayStrategyAlwaysStand extends PlayStrategy {
-    public PlayStrategyAlwaysStand(Rules rules) {
-        super(rules);
+    public PlayStrategyAlwaysStand(Table table) {
+        super(table);
     }
 
     @Override

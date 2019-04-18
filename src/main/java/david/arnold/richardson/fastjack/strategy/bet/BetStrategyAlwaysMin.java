@@ -1,18 +1,18 @@
 package david.arnold.richardson.fastjack.strategy.bet;
 
 import david.arnold.richardson.fastjack.Player;
-import david.arnold.richardson.fastjack.Rules;
+import david.arnold.richardson.fastjack.Table;
 
 public class BetStrategyAlwaysMin extends BetStrategy {
 
     private Player player;
-    private Rules rules;
+    private Table table;
 
     public BetStrategyAlwaysMin(
             Player player,
-            Rules rules) {
+            Table table) {
         this.player = player;
-        this.rules = rules;
+        this.table = table;
     }
 
     @Override
@@ -21,6 +21,6 @@ public class BetStrategyAlwaysMin extends BetStrategy {
 
     @Override
     public long getBetAmount() {
-        return rules.getMinBetAmount();
+        return table.getRules().getMinBetAmount();
     }
 }

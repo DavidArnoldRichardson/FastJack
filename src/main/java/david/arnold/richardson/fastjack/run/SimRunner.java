@@ -17,11 +17,11 @@ public abstract class SimRunner {
                 playIsVerbose ? outputterVerbose : outputterSilent,
                 rules);
 
-        int numRoundsPlayed = runHelper(rules);
+        int numRoundsPlayed = runHelper(table);
         showResult(numRoundsPlayed);
     }
 
-    public abstract int runHelper(Rules rules);
+    public abstract int runHelper(Table table);
 
     protected abstract Rules getRules();
 

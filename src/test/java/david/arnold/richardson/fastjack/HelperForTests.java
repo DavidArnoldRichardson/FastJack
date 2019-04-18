@@ -132,9 +132,9 @@ public abstract class HelperForTests {
         resetTables();
 
         table.setRules(rules);
-        PlayStrategy playStrategy = new PlayStrategyBasic(rules);
+        PlayStrategy playStrategy = new PlayStrategyBasic(table);
         Player player = new Player("test", 100000L);
-        player.setStrategies(playStrategy, new BetStrategyAlwaysMin(player, rules));
+        player.setStrategies(playStrategy, new BetStrategyAlwaysMin(player, table));
         player.refreshStrategiesDueToRulesChange();
         Seat seat = table.addPlayer(player);
 

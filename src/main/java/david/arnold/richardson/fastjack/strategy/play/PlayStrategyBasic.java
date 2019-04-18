@@ -3,26 +3,28 @@ package david.arnold.richardson.fastjack.strategy.play;
 import david.arnold.richardson.fastjack.HandForPlayer;
 import david.arnold.richardson.fastjack.PlayerDecision;
 import david.arnold.richardson.fastjack.Rules;
+import david.arnold.richardson.fastjack.Table;
 
 import static david.arnold.richardson.fastjack.PlayerDecision.STD;
 import static david.arnold.richardson.fastjack.PlayerDecision.n_a;
 
 public class PlayStrategyBasic extends PlayStrategy {
 
-    Matrix matrixForSurrenderIsPair = null;
-    Matrix matrixForSurrenderIsNotPair = null;
+    Matrix matrixForSurrenderIsPair;
+    Matrix matrixForSurrenderIsNotPair;
     Matrix matrixForSplit;
-    Matrix matrixForSoftDouble = null;
+    Matrix matrixForSoftDouble;
     Matrix matrixForHardDouble;
     Matrix matrixForSoftHitStand;
     Matrix matrixForHardHitStand;
 
-    public PlayStrategyBasic(Rules rules) {
-        super(rules);
+    public PlayStrategyBasic(Table table) {
+        super(table);
     }
 
     @Override
     public void setupLogic() {
+        Rules rules = table.getRules();
         LogicHolder logicHolder = rules.getLogicHolder();
         int numDecks = rules.getNumDecks();
         boolean isH17 = rules.isH17();
@@ -103,7 +105,7 @@ public class PlayStrategyBasic extends PlayStrategy {
         int playerHandMinPointSum = hand.computeMinPointSum();
         PlayerDecision playerDecision;
 
-        if (rules.isLateSurrenderAvailable()) {
+        if (table.getRules().isLateSurrenderAvailable()) {
             if (hand.hasExactlyTwoCards()) {
                 if (hand.isPair()) {
                     playerDecision = matrixForSurrenderIsPair.lookup(playerHandMinPointSum, dealerUpcardValue);
@@ -137,7 +139,7 @@ public class PlayStrategyBasic extends PlayStrategy {
 
         if (hand.isPairOfAces()) {
             if (hand.isHandIsResultOfSplit()) {
-                if (!rules.isCanHitSplitAces()) {
+                if (!table.getRules().isCanHitSplitAces()) {
                     return STD;
                 }
             }
