@@ -21,13 +21,18 @@ public class RunBasicStrategyManyHands extends SimRunner {
     }
 
     @Override
+    protected int getNumHands() {
+        return Table.NUM_SEATS;
+    }
+
+    @Override
     public int runHelper(Table table) {
-        for (int i = 0; i < Table.NUM_SEATS; i++) {
+        for (int i = 0; i < getNumHands(); i++) {
             Player player = new Player(
                     playerNames[i],
                     1000000000L);
             PlayStrategy playStrategy = new PlayStrategyBasic(table);
-            BetStrategy betStrategy = new BetStrategyAlwaysMin(player, table);
+            BetStrategy betStrategy = new BetStrategyAlwaysMin(table);
             player.setStrategies(playStrategy, betStrategy);
             table.addPlayer(player);
         }

@@ -2,6 +2,9 @@ package david.arnold.richardson.fastjack.run;
 
 import david.arnold.richardson.fastjack.*;
 
+import java.time.Duration;
+import java.time.Instant;
+
 public abstract class SimRunner {
 
     protected String[] playerNames = new String[]{"Alex", "Beth", "Carl", "Dora", "Eric", "Fran", "Gary"};
@@ -17,16 +20,27 @@ public abstract class SimRunner {
                 playIsVerbose ? outputterVerbose : outputterSilent,
                 rules);
 
+        Instant startTime = Instant.now();
         int numRoundsPlayed = runHelper(table);
-        showResult(numRoundsPlayed);
+        Instant completionTime = Instant.now();
+        long timeElapsedInMillis = Duration.between(startTime, completionTime).toMillis();
+        showResult(numRoundsPlayed, timeElapsedInMillis);
     }
 
     public abstract int runHelper(Table table);
 
     protected abstract Rules getRules();
 
-    private void showResult(int numRoundsPlayed) {
-        outputterVerbose.showMessage("\nPlayed " + numRoundsPlayed + " rounds.\n");
+    protected abstract int getNumHands();
+
+    private void showResult(
+            int numRoundsPlayed,
+            long numMillis) {
+        numMillis = numMillis <= 0 ? 1 : numMillis;
+        long handsPerMillisecond = ((long)numRoundsPlayed * (long)getNumHands()) / numMillis;
+        outputterVerbose.showMessage("\nPlayed " + numRoundsPlayed
+                + " rounds in " + numMillis
+                + " milliseconds (" + (handsPerMillisecond * 1000) + " hands per second).\n");
 
         for (Player player : table.getPlayers()) {
             outputterVerbose.showMessage(player.showResult());

@@ -22,7 +22,7 @@ public class TableTest {
         Outputter outputter = new OutputterVerboseToScreen();
         table = new Table(outputter, rules);
         player = new Player("test", startBankroll);
-        player.setStrategies(new PlayStrategyBasic(table), new BetStrategyAlwaysMin(player, table));
+        player.setStrategies(new PlayStrategyBasic(table), new BetStrategyAlwaysMin(table));
         table.addPlayer(player);
         minBetAmount = rules.getMinBetAmount();
     }

@@ -21,13 +21,18 @@ public class RunBasicStrategyVerbose extends SimRunner {
     }
 
     @Override
+    protected int getNumHands() {
+        return 4;
+    }
+
+    @Override
     public int runHelper(Table table) {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < getNumHands(); i++) {
             Player player = new Player(
                     playerNames[i],
                     100000L);
             PlayStrategy playStrategy = new PlayStrategyBasic(table);
-            BetStrategy betStrategy = new BetStrategyAlwaysMin(player, table);
+            BetStrategy betStrategy = new BetStrategyAlwaysMin(table);
             player.setStrategies(playStrategy, betStrategy);
             table.addPlayer(player);
         }
