@@ -135,6 +135,7 @@ public abstract class HelperForTests {
         PlayStrategy playStrategy = new PlayStrategyBasic(rules);
         Player player = new Player("test", 100000L);
         player.setStrategies(playStrategy, new BetStrategyAlwaysMin(player, rules));
+        player.refreshStrategiesDueToRulesChange();
         Seat seat = table.addPlayer(player);
 
         int indexOfDealerUpcardValue = cards.length - 1;
