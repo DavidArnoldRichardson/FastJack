@@ -127,8 +127,8 @@ public class Seat {
             // original insurance bet returned, plus double it.
             long insuranceBetAmount = insuranceBet.getAmount();
             insuranceBet.payAll(player.getMoneyPile());
-            table.getMoneyPile().pay(player.getMoneyPile(), insuranceBetAmount << 1);
             table.getOutputter().payInsurance(this);
+            table.getMoneyPile().pay(player.getMoneyPile(), insuranceBetAmount << 1);
         }
     }
 
@@ -163,12 +163,12 @@ public class Seat {
                 boolean playerHandIsBlackjack = hand.isSoftTwentyOne();
                 if (playerHandIsBlackjack) {
                     // player pushes
-                    hand.getMoneyPile().payAll(player.getMoneyPile());
                     table.getOutputter().pushOnDealerBlackjack(this);
+                    hand.getMoneyPile().payAll(player.getMoneyPile());
                 } else {
                     // dealer's blackjack wins the bet
-                    hand.getMoneyPile().payAll(table.getMoneyPile());
                     table.getOutputter().loseOnDealerBlackjack(this);
+                    hand.getMoneyPile().payAll(table.getMoneyPile());
                 }
                 hand.reset();
             }
