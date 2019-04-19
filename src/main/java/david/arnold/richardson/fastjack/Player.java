@@ -7,17 +7,17 @@ import java.text.DecimalFormat;
 
 public class Player {
     private String playerName;
-    private long initialBankroll;
-    private long bankroll;
+    private long initialBankrollAmount;
+    private MoneyPile moneyPile;
     private PlayStrategy playStrategy;
     private BetStrategy betStrategy;
 
     public Player(
             String playerName,
-            long bankroll) {
+            long initialBankrollAmount) {
         this.playerName = playerName;
-        this.initialBankroll = bankroll;
-        this.bankroll = bankroll;
+        this.initialBankrollAmount = initialBankrollAmount;
+        this.moneyPile = MoneyPile.createPlayerMoneyPile(initialBankrollAmount);
     }
 
     public void setStrategies(
@@ -33,6 +33,10 @@ public class Player {
         betStrategy.setupLogic();
     }
 
+    public String getPlayerName() {
+        return playerName;
+    }
+
     public PlayStrategy getPlayStrategy() {
         return playStrategy;
     }
@@ -41,35 +45,27 @@ public class Player {
         return betStrategy;
     }
 
-    public void payPlayer(long money) {
-        bankroll += money;
+    public MoneyPile getMoneyPile() {
+        return this.moneyPile;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public boolean canAfford(long amount) {
+        return moneyPile.canAfford(amount);
     }
 
-    public long getBankroll() {
-        return bankroll;
+    public long getAvailableFunds() {
+        return moneyPile.getAmount();
     }
 
-    public long getInitialBankroll() {
-        return initialBankroll;
-    }
-
-    public void removeFromBankroll(long money) {
-        bankroll -= money;
-    }
-
-    public void addToBankroll(long money) {
-        bankroll += money;
+    public long getInitialBankrollAmount() {
+        return initialBankrollAmount;
     }
 
     public String showResult() {
         return playerName
-                + " started with " + MoneyHelper.formatForDisplay(initialBankroll)
-                + " ended with " + MoneyHelper.formatForDisplay(bankroll)
-                + ". Player edge: " + computePlayerEdge(initialBankroll, bankroll);
+                + " started with " + MoneyPile.show(initialBankrollAmount)
+                + " ended with " + moneyPile.formatForDisplay()
+                + ". Player edge: " + computePlayerEdge(initialBankrollAmount, moneyPile.getAmount());
     }
 
     static String computePlayerEdge(

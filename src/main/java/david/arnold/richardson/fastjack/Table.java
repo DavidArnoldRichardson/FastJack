@@ -13,15 +13,14 @@ public class Table {
     private Shoe shoe;
     private Rules rules;
     private HandForDealer handForDealer;
-
-    // This can go negative, casino has infinite money.
-    private long tableBankroll = 0L;
+    private MoneyPile moneyPile;
 
     public Table(
             Outputter outputter,
             Rules rules) {
         this.outputter = outputter;
         this.rules = rules;
+        this.moneyPile = MoneyPile.createTableMoneyPile();
         this.shoe = new Shoe(this, outputter);
 
         seats = new Seat[NUM_SEATS];
@@ -137,7 +136,7 @@ public class Table {
             // collect lost insurance bets
             if (upcardIsAce) {
                 for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
-                    tableBankroll += seats[seatNumber].getInsuranceBet();
+                    seats[seatNumber].loseInsuranceBet();
                 }
             }
 
@@ -192,11 +191,11 @@ public class Table {
         // first hand can be blackjack
         HandForPlayer firstHand = seat.getHand(0);
         if (firstHand.isSoftTwentyOne()) {
+            Player player = seat.getPlayer();
             outputter.playerBlackjack(seat, firstHand);
-            betAmount = firstHand.getBetAmount();
-            halfOfBetAmount = betAmount >> 1;
-            seat.getPlayer().payPlayer((betAmount << 1) + halfOfBetAmount);
-            tableBankroll -= (betAmount + halfOfBetAmount);
+            betAmount = firstHand.getMoneyPile().getAmount();
+            firstHand.getMoneyPile().payAll(player.getMoneyPile());
+            moneyPile.pay(player.getMoneyPile(), betAmount + (betAmount >> 1));
             firstHand.reset();
             return;
         }
@@ -228,8 +227,7 @@ public class Table {
                         keepPlaying = playerHandValue < 21;
                         if (playerHandValue > 21) {
                             outputter.playerHitAndBust(seat, hand);
-                            betAmount = hand.getBetAmount();
-                            tableBankroll += betAmount;
+                            hand.getMoneyPile().payAll(moneyPile);
                             hand.reset();
                         } else if (playerHandValue == 21) {
                             hand.setPlayIsComplete();
@@ -244,15 +242,14 @@ public class Table {
                         keepPlaying = playOnNewlySplitHand(seat, hand);
                         break;
                     case DBL:
-                        betAmount = hand.getBetAmount();
-                        seat.getPlayer().removeFromBankroll(betAmount);
-                        betAmount = betAmount << 1;
-                        hand.setBetAmount(betAmount);
+                        seat.getPlayer().getMoneyPile().pay(
+                                hand.getMoneyPile(),
+                                hand.getMoneyPile().getAmount());
                         hand.addCard(shoe.dealCard());
                         keepPlaying = false;
                         playerHandValue = hand.computeMaxPointSum();
                         if (playerHandValue > 21) {
-                            tableBankroll += betAmount;
+                            hand.getMoneyPile().payAll(moneyPile);
                             hand.reset();
                         } else if (playerHandValue == 21) {
                             hand.setPlayIsComplete();
@@ -264,10 +261,9 @@ public class Table {
                         break;
                     case SUR:
                         outputter.playerSurrendered(seat, hand);
-                        betAmount = hand.getBetAmount();
-                        halfOfBetAmount = betAmount >> 1;
-                        seat.getPlayer().addToBankroll(halfOfBetAmount);
-                        this.tableBankroll += halfOfBetAmount;
+                        halfOfBetAmount = hand.getMoneyPile().getAmount() >> 1;
+                        hand.getMoneyPile().pay(seat.getPlayer().getMoneyPile(), halfOfBetAmount);
+                        hand.getMoneyPile().payAll(moneyPile);
                         keepPlaying = false;
                         hand.reset();
                         break;
@@ -321,14 +317,6 @@ public class Table {
         return dealerBusted;
     }
 
-    public void addToBankroll(long money) {
-        tableBankroll += money;
-    }
-
-    public long getTableBankrollDelta() {
-        return tableBankroll;
-    }
-
     public Rules getRules() {
         return rules;
     }
@@ -347,5 +335,13 @@ public class Table {
 
     public Outputter getOutputter() {
         return outputter;
+    }
+
+    public MoneyPile getMoneyPile() {
+        return moneyPile;
+    }
+
+    public long getTableBankrollDelta() {
+        return moneyPile.getAmount();
     }
 }

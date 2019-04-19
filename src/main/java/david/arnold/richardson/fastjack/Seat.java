@@ -6,13 +6,14 @@ public class Seat {
     private Table table;
     private HandForPlayer[] hands;
     private int numHandsInUse;
-    private long insuranceBet;
+    private MoneyPile insuranceBet;
 
     public Seat(
             Table table,
             int seatNumber) {
         this.seatNumber = seatNumber;
         this.table = table;
+        this.insuranceBet = new MoneyPile();
         Shoe shoe = table.getShoe();
         int maxNumHands = shoe.getRules().getMaxNumSplits() + 1;
         hands = new HandForPlayer[maxNumHands];
@@ -36,7 +37,7 @@ public class Seat {
     }
 
     public boolean isPlayingThisRound() {
-        return hands[0].getBetAmount() > 0L;
+        return hands[0].getMoneyPile().hasSomeMoney();
     }
 
     public Player getPlayer() {
@@ -57,9 +58,9 @@ public class Seat {
     }
 
     public boolean createNewHandWithBet() {
-        long betAmount = MoneyHelper.computeAcceptableBet(
+        long betAmount = MoneyPile.computeAcceptableBet(
                 player.getBetStrategy().getBetAmount(),
-                player.getBankroll(),
+                player.getAvailableFunds(),
                 table.getShoe().getRules().getMinBetAmount(),
                 table.getShoe().getRules().getMaxBetAmount());
         return createNewHandWithBet(betAmount);
@@ -67,7 +68,7 @@ public class Seat {
 
     public void createSplitHand(int handIndexToPlay) {
         HandForPlayer handToBeSplit = hands[handIndexToPlay];
-        createNewHandWithBet(handToBeSplit.getBetAmount());
+        createNewHandWithBet(handToBeSplit.getMoneyPile().getAmount());
         HandForPlayer handThatWasCreated = hands[numHandsInUse - 1];
         handThatWasCreated.addCard(handToBeSplit.split());
         handToBeSplit.setHandIsResultOfSplit();
@@ -84,8 +85,7 @@ public class Seat {
         }
 
         table.getOutputter().placeBet(this, hand.getHandIndex(), betAmount);
-        hand.setBetAmount(betAmount);
-        player.removeFromBankroll(betAmount);
+        hand.playerCreatesBet(player, betAmount);
         return true;
     }
 
@@ -104,21 +104,40 @@ public class Seat {
 
     public void makeInsuranceBet() {
         if (isPlayingThisRound()) {
-            if (!player.getPlayStrategy().shouldGetInsurance()) {
-                return;
+            if (player.getPlayStrategy().shouldGetInsurance()) {
+                if (hands[0].getMoneyPile().hasSomeMoney()) {
+                    long insuranceBetAmount = hands[0].getMoneyPile().getAmount() >> 1;
+                    if (player.canAfford(insuranceBetAmount)) {
+                        player.getMoneyPile().pay(insuranceBet, insuranceBetAmount);
+                        table.getOutputter().insuranceBetMade(this);
+                    }
+                }
             }
-
-            long insuranceBet = hands[0].getBetAmount() >> 1;
-            if (insuranceBet > player.getBankroll()) {
-                insuranceBet = player.getBankroll();
-            }
-            player.removeFromBankroll(insuranceBet);
-            table.getOutputter().insuranceBetMade(this);
         }
     }
 
-    public long getInsuranceBet() {
-        return insuranceBet;
+    public void loseInsuranceBet() {
+        if (insuranceBet.hasSomeMoney()) {
+            insuranceBet.payAll(table.getMoneyPile());
+        }
+    }
+
+    public void payInsuranceToPlayer() {
+        if (insuranceBet.hasSomeMoney()) {
+            // original insurance bet returned, plus double it.
+            long insuranceBetAmount = insuranceBet.getAmount();
+            insuranceBet.payAll(player.getMoneyPile());
+            table.getMoneyPile().pay(player.getMoneyPile(), insuranceBetAmount << 1);
+            table.getOutputter().payInsurance(this);
+        }
+    }
+
+    public boolean hasInsuranceBet() {
+        return insuranceBet.hasSomeMoney();
+    }
+
+    public String getInsuranceBetForDisplay() {
+        return insuranceBet.formatForDisplay();
     }
 
     public PlayerDecision getPlayerDecision(
@@ -131,35 +150,24 @@ public class Seat {
 
     public void resetHands() {
         numHandsInUse = 0;
-        this.insuranceBet = 0L;
     }
 
     public int getSeatNumber() {
         return seatNumber;
     }
 
-    public void payInsuranceToPlayer() {
-        if (insuranceBet > 0) {
-            // original insurance bet returned, plus double it.
-            player.payPlayer(insuranceBet * 3);
-            table.addToBankroll(-(insuranceBet << 1));
-            table.getOutputter().payInsurance(this);
-        }
-    }
-
     public void handleDealerGotBlackjack() {
         if (isPlayingThisRound()) {
             HandForPlayer hand = hands[0];
-            long betAmount = hand.getBetAmount();
-            if (betAmount > 0L) {
+            if (hand.hasBet()) {
                 boolean playerHandIsBlackjack = hand.isSoftTwentyOne();
                 if (playerHandIsBlackjack) {
                     // player pushes
-                    player.payPlayer(betAmount);
+                    hand.getMoneyPile().payAll(player.getMoneyPile());
                     table.getOutputter().pushOnDealerBlackjack(this);
                 } else {
                     // dealer's blackjack wins the bet
-                    table.addToBankroll(betAmount);
+                    hand.getMoneyPile().payAll(table.getMoneyPile());
                     table.getOutputter().loseOnDealerBlackjack(this);
                 }
                 hand.reset();
@@ -173,9 +181,9 @@ public class Seat {
             HandForPlayer hand = hands[handIndex];
             if (hand.hasCards()) {
                 table.getOutputter().playerWins(this, hand);
-                long betAmount = hand.getBetAmount();
-                player.addToBankroll(betAmount << 1);
-                table.addToBankroll(-betAmount);
+                long betAmount = hand.getMoneyPile().getAmount();
+                hand.getMoneyPile().payAll(player.getMoneyPile());
+                table.getMoneyPile().pay(player.getMoneyPile(), betAmount);
                 hand.reset();
             }
         }
@@ -186,17 +194,17 @@ public class Seat {
             HandForPlayer hand = hands[handIndex];
             if (hand.hasCards()) {
                 int playerHandValue = hand.computeMaxPointSum();
-                long betAmount = hand.getBetAmount();
+                long betAmount = hand.getMoneyPile().getAmount();
                 if (playerHandValue < dealerHandValue) {
                     table.getOutputter().playerLoses(this, hand);
-                    table.addToBankroll(betAmount);
+                    hand.getMoneyPile().payAll(table.getMoneyPile());
                 } else if (playerHandValue > dealerHandValue) {
                     table.getOutputter().playerWins(this, hand);
-                    player.addToBankroll(betAmount << 1);
-                    table.addToBankroll(-betAmount);
+                    hand.getMoneyPile().payAll(player.getMoneyPile());
+                    table.getMoneyPile().pay(player.getMoneyPile(), betAmount);
                 } else {
                     table.getOutputter().playerPushes(this, hand);
-                    player.addToBankroll(betAmount);
+                    hand.getMoneyPile().payAll(table.getMoneyPile());
                 }
                 hand.reset();
             }

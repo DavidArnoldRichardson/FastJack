@@ -80,8 +80,8 @@ public class Rules {
         builder.append(prefix).append("Can resplit aces: ").append(canResplitAces).append("\n");
         builder.append(prefix).append("Can hit split aces: ").append(canHitSplitAces).append("\n");
         builder.append(prefix).append("Can double down after split: ").append(canDoubleAfterSplit).append("\n");
-        builder.append(prefix).append("Minimum bet amount: ").append(MoneyHelper.formatForDisplay(minBetAmount)).append("\n");
-        builder.append(prefix).append("Maximum bet amount: ").append(MoneyHelper.formatForDisplay(maxBetAmount)).append("\n");
+        builder.append(prefix).append("Minimum bet amount: ").append(MoneyPile.show(minBetAmount)).append("\n");
+        builder.append(prefix).append("Maximum bet amount: ").append(MoneyPile.show(maxBetAmount)).append("\n");
         builder.append(prefix).append("Late surrender available: ").append(lateSurrenderAvailable).append("\n");
         builder.append(prefix).append("Double down only on 10 or 11: ").append(canDoubleOnTenOrElevenOnly).append("\n");
         builder.append("███████████████████████████████████████");

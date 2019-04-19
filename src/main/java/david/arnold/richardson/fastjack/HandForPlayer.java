@@ -1,7 +1,7 @@
 package david.arnold.richardson.fastjack;
 
 public class HandForPlayer extends Hand {
-    private long betAmount;
+    private MoneyPile moneyPile;
     private boolean handIsResultOfSplit;
     private Seat seat;
     private int handIndex;
@@ -14,20 +14,34 @@ public class HandForPlayer extends Hand {
         super(shoe, 11);
         this.seat = seat;
         this.handIndex = handIndex;
+        this.moneyPile = new MoneyPile();
     }
 
     @Override
     protected void resetHelper() {
-        betAmount = 0L;
+        if (moneyPile != null && moneyPile.hasSomeMoney()) {
+            throw new RuntimeException("Bug in code! Hand still has money: " + this.moneyPile.getAmount());
+        }
         handIsResultOfSplit = false;
     }
 
-    public long getBetAmount() {
-        return betAmount;
+    public boolean hasBet() {
+        return moneyPile.hasSomeMoney();
     }
 
-    public void setBetAmount(long betAmount) {
-        this.betAmount = betAmount;
+    public void playerCreatesBet(
+            Player player,
+            long betAmount) {
+        player.getMoneyPile().pay(moneyPile, betAmount);
+    }
+
+    public String getBetAmountForDisplay() {
+        return moneyPile.formatForDisplay();
+    }
+
+    public String getBetAmountBlackjackForDisplay() {
+        long amount = moneyPile.getAmount();
+        return MoneyPile.show(amount + (amount >> 1));
     }
 
     public int split() {
@@ -56,7 +70,7 @@ public class HandForPlayer extends Hand {
             return false;
         }
 
-        boolean playerLacksSufficientFunds = seat.getPlayer().getBankroll() < getBetAmount();
+        boolean playerLacksSufficientFunds = !seat.getPlayer().canAfford(moneyPile.getAmount());
         if (playerLacksSufficientFunds) {
             return false;
         }
@@ -110,5 +124,9 @@ public class HandForPlayer extends Hand {
 
     public int getHandIndex() {
         return handIndex;
+    }
+
+    public MoneyPile getMoneyPile() {
+        return moneyPile;
     }
 }

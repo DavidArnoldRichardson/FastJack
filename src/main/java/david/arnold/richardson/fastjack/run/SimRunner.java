@@ -50,9 +50,9 @@ public abstract class SimRunner {
         long tableBankrollDelta = table.getTableBankrollDelta();
         if (tableBankrollDelta < 0L) {
             outputterVerbose.showMessage("Casino paid the players a total of "
-                    + MoneyHelper.formatForDisplay(-tableBankrollDelta) + ".");
+                    + MoneyPile.show(-tableBankrollDelta) + ".");
         } else if (tableBankrollDelta > 0L) {
-            outputterVerbose.showMessage("Casino took " + MoneyHelper.formatForDisplay(tableBankrollDelta)
+            outputterVerbose.showMessage("Casino took " + MoneyPile.show(tableBankrollDelta)
                     + " from the players.");
         } else {
             outputterVerbose.showMessage("Casino was a wash.");
@@ -61,8 +61,8 @@ public abstract class SimRunner {
         long playersBankrollDelta = computePlayersBankrollDelta();
         if (playersBankrollDelta != -tableBankrollDelta) {
             String errorMessage = "WHAT! Accounting error. Players delta: "
-                    + MoneyHelper.formatForDisplay(playersBankrollDelta)
-                    + " but table delta: " + MoneyHelper.formatForDisplay(tableBankrollDelta)
+                    + MoneyPile.show(playersBankrollDelta)
+                    + " but table delta: " + MoneyPile.show(tableBankrollDelta)
                     + ". Seed=" + getRules().getRandomness().getSeed();
             outputterVerbose.showMessage(errorMessage);
             throw new RuntimeException(errorMessage);
@@ -72,7 +72,7 @@ public abstract class SimRunner {
     private long computePlayersBankrollDelta() {
         long delta = 0L;
         for (Player player : table.getPlayers()) {
-            delta += player.getBankroll() - player.getInitialBankroll();
+            delta += (player.getMoneyPile().getAmount() - player.getInitialBankrollAmount());
         }
         return delta;
     }
