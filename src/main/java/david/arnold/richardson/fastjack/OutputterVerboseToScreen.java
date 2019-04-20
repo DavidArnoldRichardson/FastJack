@@ -1,6 +1,9 @@
 package david.arnold.richardson.fastjack;
 
 public class OutputterVerboseToScreen extends Outputter {
+    public boolean isDisplaying() {
+        return true;
+    }
 
     private String getPrefix(
             Seat seat) {
@@ -151,7 +154,7 @@ public class OutputterVerboseToScreen extends Outputter {
     public void playerHitAndBust(Seat seat, HandForPlayer hand) {
         showMessage(getPrefix(seat, hand.getHandIndex())
                 + " hits and busts with " + hand.show()
-                + ". Lost " + hand.getBetAmountForDisplay() + ".");
+                + ". Loses " + hand.getBetAmountForDisplay() + ".");
     }
 
     @Override

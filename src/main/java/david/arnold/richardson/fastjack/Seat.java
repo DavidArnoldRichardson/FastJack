@@ -204,7 +204,7 @@ public class Seat {
                     table.getMoneyPile().pay(player.getMoneyPile(), betAmount);
                 } else {
                     table.getOutputter().playerPushes(this, hand);
-                    hand.getMoneyPile().payAll(table.getMoneyPile());
+                    hand.getMoneyPile().payAll(player.getMoneyPile());
                 }
                 hand.reset();
             }

@@ -22,13 +22,13 @@ public class RunBasicStrategyVerbose extends SimRunner {
     }
 
     @Override
-    protected int getNumHands() {
-        return 4;
+    protected int getNumPlayers() {
+        return 1;
     }
 
     @Override
     public int runHelper(Table table) {
-        for (int i = 0; i < getNumHands(); i++) {
+        for (int i = 0; i < getNumPlayers(); i++) {
             Player player = new Player(
                     playerNames[i],
                     100000L);

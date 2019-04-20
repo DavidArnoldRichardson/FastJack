@@ -21,13 +21,13 @@ public class RunBasicStrategyManyHands extends SimRunner {
     }
 
     @Override
-    protected int getNumHands() {
+    protected int getNumPlayers() {
         return Table.NUM_SEATS;
     }
 
     @Override
     public int runHelper(Table table) {
-        for (int i = 0; i < getNumHands(); i++) {
+        for (int i = 0; i < getNumPlayers(); i++) {
             Player player = new Player(
                     playerNames[i],
                     1000000000L);

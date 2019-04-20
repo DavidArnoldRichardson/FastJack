@@ -31,13 +31,13 @@ public abstract class SimRunner {
 
     protected abstract Rules getRules();
 
-    protected abstract int getNumHands();
+    protected abstract int getNumPlayers();
 
     private void showResult(
             int numRoundsPlayed,
             long numMillis) {
         numMillis = numMillis <= 0 ? 1 : numMillis;
-        long handsPerMillisecond = ((long)numRoundsPlayed * (long)getNumHands()) / numMillis;
+        long handsPerMillisecond = ((long)numRoundsPlayed * (long) getNumPlayers()) / numMillis;
         outputterVerbose.showMessage("\nPlayed " + numRoundsPlayed
                 + " rounds in " + numMillis
                 + " milliseconds (" + (handsPerMillisecond * 1000) + " hands per second).\n");

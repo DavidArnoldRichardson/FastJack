@@ -14,6 +14,7 @@ public class Table {
     private Rules rules;
     private HandForDealer handForDealer;
     private MoneyPile moneyPile;
+    private long[] previousSeatBankrolls;
 
     public Table(
             Outputter outputter,
@@ -22,6 +23,7 @@ public class Table {
         this.rules = rules;
         this.moneyPile = MoneyPile.createTableMoneyPile();
         this.shoe = new Shoe(this, outputter);
+        previousSeatBankrolls = new long[NUM_SEATS];
 
         seats = new Seat[NUM_SEATS];
         for (int i = 0; i < NUM_SEATS; i++) {
@@ -35,6 +37,7 @@ public class Table {
     }
 
     public Seat addPlayer(Player player) {
+        previousSeatBankrolls[numSeatsInUse] = player.getMoneyPile().getAmount();
         seats[numSeatsInUse].assignPlayerToSeat(player);
         Seat newlyOccupiedSeat = seats[numSeatsInUse];
         numSeatsInUse++;
@@ -47,6 +50,19 @@ public class Table {
             players.add(seats[i].getPlayer());
         }
         return players;
+    }
+
+    public void showSeatBankrolls() {
+        if (outputter.isDisplaying()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
+                long newAmount = seats[seatNumber].getPlayer().getMoneyPile().getAmount();
+                long delta = newAmount - previousSeatBankrolls[seatNumber];
+                previousSeatBankrolls[seatNumber] = newAmount;
+                stringBuilder.append(seatNumber + 1).append(": ").append(MoneyPile.show(delta)).append("     ");
+            }
+            outputter.showMessage(stringBuilder.toString());
+        }
     }
 
     public int playRounds(int numRoundsToPlay) {
@@ -62,6 +78,7 @@ public class Table {
         boolean keepPlayingRounds = true;
         while (keepPlayingRounds) {
             boolean someonePlayed = playRound(roundNumber++);
+            showSeatBankrolls();
             keepPlayingRounds = someonePlayed && (roundNumber < numRoundsToPlay);
         }
         return roundNumber;
