@@ -14,7 +14,6 @@ public class Table {
     private Rules rules;
     private HandForDealer handForDealer;
     private MoneyPile moneyPile;
-    private long[] previousSeatBankrolls;
 
     public Table(
             Outputter outputter,
@@ -23,7 +22,6 @@ public class Table {
         this.rules = rules;
         this.moneyPile = MoneyPile.createTableMoneyPile();
         this.shoe = new Shoe(this, outputter);
-        previousSeatBankrolls = new long[NUM_SEATS];
 
         seats = new Seat[NUM_SEATS];
         for (int i = 0; i < NUM_SEATS; i++) {
@@ -37,7 +35,6 @@ public class Table {
     }
 
     public Seat addPlayer(Player player) {
-        previousSeatBankrolls[numSeatsInUse] = player.getMoneyPile().getAmount();
         seats[numSeatsInUse].assignPlayerToSeat(player);
         Seat newlyOccupiedSeat = seats[numSeatsInUse];
         numSeatsInUse++;
@@ -52,16 +49,26 @@ public class Table {
         return players;
     }
 
-    public void showSeatBankrolls() {
+    public void checkSeatBankrolls() {
         if (outputter.isDisplaying()) {
             StringBuilder stringBuilder = new StringBuilder();
             for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
-                long newAmount = seats[seatNumber].getPlayer().getMoneyPile().getAmount();
-                long delta = newAmount - previousSeatBankrolls[seatNumber];
-                previousSeatBankrolls[seatNumber] = newAmount;
-                stringBuilder.append(seatNumber + 1).append(": ").append(MoneyPile.show(delta)).append("     ");
+                long seatDeltaA = seats[seatNumber].computeAndUpdateBankrollTrackingAfterRound();
+                stringBuilder.append(seatNumber + 1).append(": ").append(MoneyPile.show(seatDeltaA)).append("     ");
+                long seatDeltaB = seats[seatNumber].getDeltaAfterRoundPlayed();
+                if (seatDeltaA != seatDeltaB) {
+                    throw new RuntimeException("Accounting error! " + seatDeltaA + " " + seatDeltaB);
+                }
             }
             outputter.showMessage(stringBuilder.toString());
+        } else {
+            for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
+                long seatDeltaA = seats[seatNumber].computeAndUpdateBankrollTrackingAfterRound();
+                long seatDeltaB = seats[seatNumber].getDeltaAfterRoundPlayed();
+                if (seatDeltaA != seatDeltaB) {
+                    throw new RuntimeException("Accounting error! " + seatDeltaA + " " + seatDeltaB);
+                }
+            }
         }
     }
 
@@ -78,7 +85,7 @@ public class Table {
         boolean keepPlayingRounds = true;
         while (keepPlayingRounds) {
             boolean someonePlayed = playRound(roundNumber++);
-            showSeatBankrolls();
+            checkSeatBankrolls();
             keepPlayingRounds = someonePlayed && (roundNumber < numRoundsToPlay);
         }
         return roundNumber;
@@ -97,7 +104,7 @@ public class Table {
         // set player bets
         boolean atLeastOneBetWasPlaced = false;
         for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
-            boolean betWasPlaced = seats[seatNumber].createNewHandWithBet();
+            boolean betWasPlaced = seats[seatNumber].createFirstHandWithBet();
             atLeastOneBetWasPlaced = atLeastOneBetWasPlaced || betWasPlaced;
         }
 
@@ -141,8 +148,6 @@ public class Table {
                     seats[seatNumber].payInsuranceToPlayer();
                 }
             }
-
-            outputter.dealerHasBlackjack(handForDealer);
 
             // clear out all the player hands because nobody plays when dealer gets blackjack
             for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
@@ -201,19 +206,12 @@ public class Table {
     private void playSeat(
             Seat seat,
             int dealerUpcardValue) {
-        long betAmount;
-        long halfOfBetAmount;
         int playerHandValue;
 
         // first hand can be blackjack
         HandForPlayer firstHand = seat.getHand(0);
         if (firstHand.isSoftTwentyOne()) {
-            Player player = seat.getPlayer();
-            outputter.playerBlackjack(seat, firstHand);
-            betAmount = firstHand.getMoneyPile().getAmount();
-            firstHand.getMoneyPile().payAll(player.getMoneyPile());
-            moneyPile.pay(player.getMoneyPile(), betAmount + (betAmount >> 1));
-            firstHand.reset();
+            seat.handlePlayerGotBlackjackAndWon();
             return;
         }
 
@@ -243,9 +241,7 @@ public class Table {
                         playerHandValue = hand.computeMaxPointSum();
                         keepPlaying = playerHandValue < 21;
                         if (playerHandValue > 21) {
-                            outputter.playerHitAndBust(seat, hand);
-                            hand.getMoneyPile().payAll(moneyPile);
-                            hand.reset();
+                            seat.handlePlayerHitAndBust(hand);
                         } else if (playerHandValue == 21) {
                             hand.setPlayIsComplete();
                             outputter.playerHitAndGot21(seat, hand);
@@ -266,8 +262,7 @@ public class Table {
                         keepPlaying = false;
                         playerHandValue = hand.computeMaxPointSum();
                         if (playerHandValue > 21) {
-                            hand.getMoneyPile().payAll(moneyPile);
-                            hand.reset();
+                            seat.handlePlayerDoubleAndBust(hand);
                         } else if (playerHandValue == 21) {
                             hand.setPlayIsComplete();
                             outputter.playerDoubledAndGot21(seat, hand);
@@ -277,12 +272,8 @@ public class Table {
                         }
                         break;
                     case SUR:
-                        outputter.playerSurrendered(seat, hand);
-                        halfOfBetAmount = hand.getMoneyPile().getAmount() >> 1;
-                        hand.getMoneyPile().pay(seat.getPlayer().getMoneyPile(), halfOfBetAmount);
-                        hand.getMoneyPile().payAll(moneyPile);
+                        seat.handlePlayerSurrender(hand);
                         keepPlaying = false;
-                        hand.reset();
                         break;
                     default:
                         throw new IllegalStateException("Unexpected value: " + playerDecision);
@@ -330,7 +321,7 @@ public class Table {
         } else {
             dealerBusted = false;
         }
-        outputter.dealerHandResult(handForDealer, dealerBusted);
+        outputter.showDealerHandResult(handForDealer, dealerBusted);
         return dealerBusted;
     }
 

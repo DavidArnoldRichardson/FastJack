@@ -62,11 +62,8 @@ public class OutputterSilentAndFast extends Outputter {
     }
 
     @Override
-    public void payInsurance(Seat seat) {
-    }
-
-    @Override
-    public void dealerHasBlackjack(HandForDealer handForDealer) {
+    public long playerWinsInsuranceBet(Seat seat) {
+        return seat.hasInsuranceBet() ? seat.getInsuranceBetAmount() << 1 : 0L;
     }
 
     @Override
@@ -74,11 +71,14 @@ public class OutputterSilentAndFast extends Outputter {
     }
 
     @Override
-    public void loseOnDealerBlackjack(Seat seat) {
+    public long loseOnDealerBlackjack(Seat seat) {
+        return -seat.getHand(0).getMoneyPile().getAmount();
     }
 
     @Override
-    public void playerBlackjack(Seat seat, HandForPlayer hand) {
+    public long playerBlackjackAndWins(Seat seat, HandForPlayer hand) {
+        long betAmount = hand.getMoneyPile().getAmount();
+        return betAmount + (betAmount >> 1);
     }
 
     @Override
@@ -86,7 +86,8 @@ public class OutputterSilentAndFast extends Outputter {
     }
 
     @Override
-    public void playerHitAndBust(Seat seat, HandForPlayer hand) {
+    public long playerHitAndBust(Seat seat, HandForPlayer hand) {
+        return -hand.getMoneyPile().getAmount();
     }
 
     @Override
@@ -98,7 +99,8 @@ public class OutputterSilentAndFast extends Outputter {
     }
 
     @Override
-    public void playerDoubledAndBust(Seat seat, HandForPlayer hand) {
+    public long playerDoubledAndBust(Seat seat, HandForPlayer hand) {
+        return -(hand.getMoneyPile().getAmount() << 1);
     }
 
     @Override
@@ -110,7 +112,8 @@ public class OutputterSilentAndFast extends Outputter {
     }
 
     @Override
-    public void playerSurrendered(Seat seat, HandForPlayer hand) {
+    public long playerSurrendered(Seat seat, HandForPlayer hand) {
+        return -(hand.getMoneyPile().getAmount() >> 1);
     }
 
     @Override
@@ -130,15 +133,17 @@ public class OutputterSilentAndFast extends Outputter {
     }
 
     @Override
-    public void dealerHandResult(HandForDealer handForDealer, boolean dealerBusted) {
+    public void showDealerHandResult(HandForDealer handForDealer, boolean dealerBusted) {
     }
 
     @Override
-    public void playerWins(Seat seat, HandForPlayer hand) {
+    public long playerWins(Seat seat, HandForPlayer hand) {
+        return hand.getMoneyPile().getAmount();
     }
 
     @Override
-    public void playerLoses(Seat seat, HandForPlayer hand) {
+    public long playerLoses(Seat seat, HandForPlayer hand) {
+        return -hand.getMoneyPile().getAmount();
     }
 
     @Override

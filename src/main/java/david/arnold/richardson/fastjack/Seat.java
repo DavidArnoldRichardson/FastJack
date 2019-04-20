@@ -8,6 +8,10 @@ public class Seat {
     private int numHandsInUse;
     private MoneyPile insuranceBet;
 
+    // This may break if the same player has multiple seats.
+    private long previousPlayerBankroll;
+    private long deltaAfterRoundPlayed;
+
     public Seat(
             Table table,
             int seatNumber) {
@@ -33,7 +37,19 @@ public class Seat {
 
     public void assignPlayerToSeat(Player player) {
         this.player = player;
+        this.previousPlayerBankroll = player.getMoneyPile().getAmount();
         table.getOutputter().sitPlayer(this);
+    }
+
+    public long computeAndUpdateBankrollTrackingAfterRound() {
+        long newAmount = player.getMoneyPile().getAmount();
+        long valueToReturn = previousPlayerBankroll;
+        previousPlayerBankroll = newAmount;
+        return newAmount - valueToReturn;
+    }
+
+    public long getDeltaAfterRoundPlayed() {
+        return deltaAfterRoundPlayed;
     }
 
     public boolean isPlayingThisRound() {
@@ -57,25 +73,26 @@ public class Seat {
         return hands[handIndex];
     }
 
-    public boolean createNewHandWithBet() {
+    public boolean createFirstHandWithBet() {
+        deltaAfterRoundPlayed = 0L;
         long betAmount = MoneyPile.computeAcceptableBet(
                 player.getBetStrategy().getBetAmount(),
                 player.getAvailableFunds(),
                 table.getShoe().getRules().getMinBetAmount(),
                 table.getShoe().getRules().getMaxBetAmount());
-        return createNewHandWithBet(betAmount);
+        return createHandWithBet(betAmount);
     }
 
     public void createSplitHand(int handIndexToPlay) {
         HandForPlayer handToBeSplit = hands[handIndexToPlay];
-        createNewHandWithBet(handToBeSplit.getMoneyPile().getAmount());
+        createHandWithBet(handToBeSplit.getMoneyPile().getAmount());
         HandForPlayer handThatWasCreated = hands[numHandsInUse - 1];
         handThatWasCreated.addCard(handToBeSplit.split());
         handToBeSplit.setHandIsResultOfSplit();
         handThatWasCreated.setHandIsResultOfSplit();
     }
 
-    private boolean createNewHandWithBet(long betAmount) {
+    private boolean createHandWithBet(long betAmount) {
         HandForPlayer hand = hands[numHandsInUse++];
         hand.reset();
 
@@ -127,7 +144,7 @@ public class Seat {
             // original insurance bet returned, plus double it.
             long insuranceBetAmount = insuranceBet.getAmount();
             insuranceBet.payAll(player.getMoneyPile());
-            table.getOutputter().payInsurance(this);
+            deltaAfterRoundPlayed += table.getOutputter().playerWinsInsuranceBet(this);
             table.getMoneyPile().pay(player.getMoneyPile(), insuranceBetAmount << 1);
         }
     }
@@ -167,7 +184,7 @@ public class Seat {
                     hand.getMoneyPile().payAll(player.getMoneyPile());
                 } else {
                     // dealer's blackjack wins the bet
-                    table.getOutputter().loseOnDealerBlackjack(this);
+                    deltaAfterRoundPlayed += table.getOutputter().loseOnDealerBlackjack(this);
                     hand.getMoneyPile().payAll(table.getMoneyPile());
                 }
                 hand.reset();
@@ -175,12 +192,40 @@ public class Seat {
         }
     }
 
+    public void handlePlayerGotBlackjackAndWon() {
+        deltaAfterRoundPlayed += table.getOutputter().playerBlackjackAndWins(this, hands[0]);
+        long betAmount = hands[0].getMoneyPile().getAmount();
+        hands[0].getMoneyPile().payAll(player.getMoneyPile());
+        table.getMoneyPile().pay(player.getMoneyPile(), betAmount + (betAmount >> 1));
+        hands[0].reset();
+    }
+
+    public void handlePlayerHitAndBust(HandForPlayer hand) {
+        deltaAfterRoundPlayed +=  table.getOutputter().playerHitAndBust(this, hand);
+        hand.getMoneyPile().payAll(table.getMoneyPile());
+        hand.reset();
+    }
+
+    public void handlePlayerDoubleAndBust(HandForPlayer hand) {
+        deltaAfterRoundPlayed += table.getOutputter().playerDoubledAndBust(this, hand);
+        hand.getMoneyPile().payAll(table.getMoneyPile());
+        hand.reset();
+    }
+
+    public void handlePlayerSurrender(HandForPlayer hand) {
+        deltaAfterRoundPlayed +=  table.getOutputter().playerSurrendered(this, hand);
+        long halfOfBetAmount = hand.getMoneyPile().getAmount() >> 1;
+        hand.getMoneyPile().pay(player.getMoneyPile(), halfOfBetAmount);
+        hand.getMoneyPile().payAll(table.getMoneyPile());
+        hand.reset();
+    }
+
     public void handleDealerBust() {
         // pay bets from right to left
         for (int handIndex = numHandsInUse - 1; handIndex >= 0; handIndex--) {
             HandForPlayer hand = hands[handIndex];
             if (hand.hasCards()) {
-                table.getOutputter().playerWins(this, hand);
+                deltaAfterRoundPlayed += table.getOutputter().playerWins(this, hand);
                 long betAmount = hand.getMoneyPile().getAmount();
                 hand.getMoneyPile().payAll(player.getMoneyPile());
                 table.getMoneyPile().pay(player.getMoneyPile(), betAmount);
@@ -196,10 +241,10 @@ public class Seat {
                 int playerHandValue = hand.computeMaxPointSum();
                 long betAmount = hand.getMoneyPile().getAmount();
                 if (playerHandValue < dealerHandValue) {
-                    table.getOutputter().playerLoses(this, hand);
+                    deltaAfterRoundPlayed += table.getOutputter().playerLoses(this, hand);
                     hand.getMoneyPile().payAll(table.getMoneyPile());
                 } else if (playerHandValue > dealerHandValue) {
-                    table.getOutputter().playerWins(this, hand);
+                    deltaAfterRoundPlayed += table.getOutputter().playerWins(this, hand);
                     hand.getMoneyPile().payAll(player.getMoneyPile());
                     table.getMoneyPile().pay(player.getMoneyPile(), betAmount);
                 } else {
@@ -218,5 +263,9 @@ public class Seat {
             }
         }
         return false;
+    }
+
+    public long getInsuranceBetAmount() {
+        return insuranceBet.getAmount();
     }
 }

@@ -33,31 +33,29 @@ public abstract class Outputter {
 
     public abstract void revealDealerHand(HandForDealer handForDealer);
 
-    public abstract void payInsurance(Seat seat);
-
-    public abstract void dealerHasBlackjack(HandForDealer handForDealer);
+    public abstract long playerWinsInsuranceBet(Seat seat);
 
     public abstract void pushOnDealerBlackjack(Seat seat);
 
-    public abstract void loseOnDealerBlackjack(Seat seat);
+    public abstract long loseOnDealerBlackjack(Seat seat);
 
-    public abstract void playerBlackjack(Seat seat, HandForPlayer hand);
+    public abstract long playerBlackjackAndWins(Seat seat, HandForPlayer hand);
 
     public abstract void playerStand(Seat seat, HandForPlayer hand);
 
-    public abstract void playerHitAndBust(Seat seat, HandForPlayer hand);
+    public abstract long playerHitAndBust(Seat seat, HandForPlayer hand);
 
     public abstract void playerHitAndGot21(Seat seat, HandForPlayer hand);
 
     public abstract void playerHit(Seat seat, HandForPlayer hand);
 
-    public abstract void playerDoubledAndBust(Seat seat, HandForPlayer hand);
+    public abstract long playerDoubledAndBust(Seat seat, HandForPlayer hand);
 
     public abstract void playerDoubledAndGot21(Seat seat, HandForPlayer hand);
 
     public abstract void playerDoubled(Seat seat, HandForPlayer hand);
 
-    public abstract void playerSurrendered(Seat seat, HandForPlayer hand);
+    public abstract long playerSurrendered(Seat seat, HandForPlayer hand);
 
     public abstract void playerSplits(Seat seat, HandForPlayer hand);
 
@@ -67,11 +65,11 @@ public abstract class Outputter {
 
     public abstract void gotSecondCardOnSplitAndCannotContinue(Seat seat, HandForPlayer hand);
 
-    public abstract void dealerHandResult(HandForDealer handForDealer, boolean dealerBusted);
+    public abstract void showDealerHandResult(HandForDealer handForDealer, boolean dealerBusted);
 
-    public abstract void playerWins(Seat seat, HandForPlayer hand);
+    public abstract long playerWins(Seat seat, HandForPlayer hand);
 
-    public abstract void playerLoses(Seat seat, HandForPlayer hand);
+    public abstract long playerLoses(Seat seat, HandForPlayer hand);
 
     public abstract void playerPushes(Seat seat, HandForPlayer hand);
 
