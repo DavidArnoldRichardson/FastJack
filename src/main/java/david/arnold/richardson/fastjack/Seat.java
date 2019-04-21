@@ -1,5 +1,7 @@
 package david.arnold.richardson.fastjack;
 
+import david.arnold.richardson.fastjack.strategy.play.PlaySummary;
+
 public class Seat {
     private int seatNumber;
     private Player player;
@@ -161,10 +163,14 @@ public class Seat {
 
     public PlayerDecision getPlayerDecision(
             int handIndex,
-            int dealerUpcardValue) {
-        return player.getPlayStrategy().getPlay(
+            int dealerUpcardValue,
+            PlaySummary playSummary) {
+        PlayerDecision playerDecision = player.getPlayStrategy().getPlay(
                 hands[handIndex],
-                dealerUpcardValue);
+                dealerUpcardValue,
+                playSummary);
+        table.getOutputter().showMessage(playSummary.show());
+        return playerDecision;
     }
 
     public void resetHands() {

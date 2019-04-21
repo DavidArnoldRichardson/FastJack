@@ -16,7 +16,8 @@ public class PlayStrategyAlwaysStand extends PlayStrategy {
     @Override
     public PlayerDecision getPlay(
             HandForPlayer hand,
-            int dealerUpcardValue) {
+            int dealerUpcardValue,
+            PlaySummary playSummary) {
         return PlayerDecision.STD;
     }
 

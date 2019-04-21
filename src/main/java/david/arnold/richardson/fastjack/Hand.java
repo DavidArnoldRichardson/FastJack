@@ -35,6 +35,14 @@ public abstract class Hand {
             builder.append(" ");
         }
 
+        showPointValue(builder, minSum, hasAtLeastOneAce);
+        return builder.toString();
+    }
+
+    public void showPointValue(
+            StringBuilder builder,
+            int minSum,
+            boolean hasAtLeastOneAce) {
         builder.append("(");
         builder.append(minSum);
         boolean hasTwoValues = hasAtLeastOneAce && minSum <= 11;
@@ -43,8 +51,21 @@ public abstract class Hand {
             builder.append(minSum + 10);
         }
         builder.append(")");
+    }
 
-        return builder.toString();
+    public void showSummary(StringBuilder builder) {
+        boolean hasAtLeastOneAce = false;
+        int minSum = 0;
+        for (int i = 0; i < numCardsInHand; i++) {
+            int indexOfCard = indexesOfCards[i];
+            if (shoe.isAce(indexOfCard)) {
+                hasAtLeastOneAce = true;
+            }
+            minSum += shoe.getCardPointValue(indexOfCard);
+            builder.append(Rules.CARD_SYMBOLS.charAt(shoe.getCardPointValue(indexOfCard) - 1));
+        }
+
+        showPointValue(builder, minSum, hasAtLeastOneAce);
     }
 
     public String showCard(int cardIndex) {

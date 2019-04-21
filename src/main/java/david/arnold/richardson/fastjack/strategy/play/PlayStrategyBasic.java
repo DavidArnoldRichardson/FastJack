@@ -5,7 +5,8 @@ import david.arnold.richardson.fastjack.PlayerDecision;
 import david.arnold.richardson.fastjack.Rules;
 import david.arnold.richardson.fastjack.Table;
 
-import static david.arnold.richardson.fastjack.PlayerDecision.*;
+import static david.arnold.richardson.fastjack.PlayerDecision.STD;
+import static david.arnold.richardson.fastjack.PlayerDecision.n_a;
 
 public class PlayStrategyBasic extends PlayStrategy {
 
@@ -100,7 +101,11 @@ public class PlayStrategyBasic extends PlayStrategy {
     @Override
     public PlayerDecision getPlay(
             HandForPlayer hand,
-            int dealerUpcardValue) {
+            int dealerUpcardValue,
+            PlaySummary playSummary) {
+
+        playSummary.setConditions(dealerUpcardValue, hand);
+
         int playerHandMinPointSum = hand.computeMinPointSum();
         PlayerDecision playerDecision;
 
@@ -112,6 +117,7 @@ public class PlayStrategyBasic extends PlayStrategy {
                     playerDecision = matrixForSurrenderIsNotPair.lookup(playerHandMinPointSum, dealerUpcardValue);
                 }
                 if (playerDecision != n_a) {
+                    playSummary.setPlayerDecision(playerDecision);
                     return playerDecision;
                 }
             }
@@ -120,6 +126,7 @@ public class PlayStrategyBasic extends PlayStrategy {
         if (hand.isSplittablePair()) {
             playerDecision = matrixForSplit.lookup(playerHandMinPointSum, dealerUpcardValue);
             if (playerDecision != n_a) {
+                playSummary.setPlayerDecision(playerDecision);
                 return playerDecision;
             }
         }
@@ -132,6 +139,7 @@ public class PlayStrategyBasic extends PlayStrategy {
                 playerDecision = matrixForHardDouble.lookup(playerHandMinPointSum, dealerUpcardValue);
             }
             if (playerDecision != n_a) {
+                playSummary.setPlayerDecision(playerDecision);
                 return playerDecision;
             }
         }
@@ -139,16 +147,21 @@ public class PlayStrategyBasic extends PlayStrategy {
         if (hand.isHandIsResultOfSplit()) {
             if (hand.firstCardIsAce()) {
                 if (!table.getRules().isCanHitSplitAces()) {
-                    return STD;
+                    playerDecision = STD;
+                    playSummary.setPlayerDecision(playerDecision);
+                    return playerDecision;
                 }
             }
         }
 
         if (isSoft) {
-            return matrixForSoftHitStand.lookup(playerHandMinPointSum, dealerUpcardValue);
+            playerDecision = matrixForSoftHitStand.lookup(playerHandMinPointSum, dealerUpcardValue);
         } else {
-            return matrixForHardHitStand.lookup(playerHandMinPointSum, dealerUpcardValue);
+            playerDecision = matrixForHardHitStand.lookup(playerHandMinPointSum, dealerUpcardValue);
         }
+
+        playSummary.setPlayerDecision(playerDecision);
+        return playerDecision;
     }
 
     @Override

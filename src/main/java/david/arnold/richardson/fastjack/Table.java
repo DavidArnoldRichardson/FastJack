@@ -1,6 +1,7 @@
 package david.arnold.richardson.fastjack;
 
 import david.arnold.richardson.fastjack.run.SimRunResult;
+import david.arnold.richardson.fastjack.strategy.play.PlaySummary;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +17,7 @@ public class Table {
     private Rules rules;
     private HandForDealer handForDealer;
     private MoneyPile moneyPile;
+    private PlaySummary playSummary;
 
     public Table(
             Outputter outputter,
@@ -24,6 +26,7 @@ public class Table {
         this.rules = rules;
         this.moneyPile = MoneyPile.createTableMoneyPile();
         this.shoe = new Shoe(this, outputter);
+        this.playSummary = new PlaySummary(rules);
 
         seats = new Seat[NUM_SEATS];
         for (int i = 0; i < NUM_SEATS; i++) {
@@ -237,7 +240,10 @@ public class Table {
             }
 
             while (keepPlaying) {
-                PlayerDecision playerDecision = seat.getPlayerDecision(handIndexToPlay, dealerUpcardValue);
+                PlayerDecision playerDecision = seat.getPlayerDecision(
+                        handIndexToPlay,
+                        dealerUpcardValue,
+                        playSummary);
                 switch (playerDecision) {
                     case STD:
                         hand.setPlayIsComplete();

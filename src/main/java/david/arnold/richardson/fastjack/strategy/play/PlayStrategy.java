@@ -17,7 +17,8 @@ public abstract class PlayStrategy {
 
     public abstract PlayerDecision getPlay(
             HandForPlayer hand,
-            int dealerUpcardValue);
+            int dealerUpcardValue,
+            PlaySummary playSummary);
 
     public abstract boolean shouldGetInsurance();
 }

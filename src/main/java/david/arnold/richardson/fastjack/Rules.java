@@ -88,6 +88,43 @@ public class Rules {
         return builder.toString();
     }
 
+    public String showSummary() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("[").append(numDecks).append("D,");
+        if (isH17) {
+            builder.append("H17,");
+        } else {
+            builder.append("S17,");
+        }
+
+        if (!canResplitAces) {
+            builder.append("n");
+        }
+        builder.append("RSA,");
+
+        if (!canDoubleAfterSplit) {
+            builder.append("n");
+        }
+        builder.append("DAS,");
+
+        if (!canHitSplitAces) {
+            builder.append("n");
+        }
+        builder.append("HSA,");
+
+        if (!lateSurrenderAvailable) {
+            builder.append("n");
+        }
+        builder.append("LS,");
+
+        if (!canDoubleOnTenOrElevenOnly) {
+            builder.append("n");
+        }
+        builder.append("RDD]");
+
+        return builder.toString();
+    }
+
     public static Rules getDefaultMostCommon() {
         return new Rules(
                 6,

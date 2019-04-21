@@ -3,6 +3,7 @@ package david.arnold.richardson.fastjack;
 import david.arnold.richardson.fastjack.strategy.bet.BetStrategyAlwaysMin;
 import david.arnold.richardson.fastjack.strategy.play.PlayStrategy;
 import david.arnold.richardson.fastjack.strategy.play.PlayStrategyBasic;
+import david.arnold.richardson.fastjack.strategy.play.PlaySummary;
 
 public abstract class HelperForTests {
 
@@ -154,6 +155,7 @@ public abstract class HelperForTests {
 
         return playStrategy.getPlay(
                 hand,
-                dealerUpcardValue);
+                dealerUpcardValue,
+                new PlaySummary(rules));
     }
 }

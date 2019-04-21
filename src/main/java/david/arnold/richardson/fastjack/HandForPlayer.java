@@ -128,4 +128,8 @@ public class HandForPlayer extends Hand {
     public MoneyPile getMoneyPile() {
         return moneyPile;
     }
+
+    public int getNumberOfHandsAlreadyAtSeat() {
+        return seat.getNumHandsInUse();
+    }
 }
