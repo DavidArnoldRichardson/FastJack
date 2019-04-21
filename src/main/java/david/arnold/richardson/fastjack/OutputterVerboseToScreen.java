@@ -173,14 +173,17 @@ public class OutputterVerboseToScreen extends Outputter {
     @Override
     public long playerDoubledAndBust(Seat seat, HandForPlayer hand) {
         showMessage(getPrefix(seat, hand.getHandIndex())
-                + " doubles and busts with " + hand.show() + ".");
-        return -(hand.getMoneyPile().getAmount() << 1);
+                + " doubles and busts with " + hand.show()
+                + ". Loses bet of "
+                + hand.getMoneyPile().formatForDisplay() + ".");
+        return -hand.getMoneyPile().getAmount();
     }
 
     @Override
     public void playerDoubledAndGot21(Seat seat, HandForPlayer hand) {
         showMessage(getPrefix(seat, hand.getHandIndex())
-                + " doubles and gets 21 with " + hand.show() + ".");
+                + " doubles and gets 21 with " + hand.show()
+                + ". Bet is now " + hand.getBetAmountForDisplay() + ".");
     }
 
     @Override
