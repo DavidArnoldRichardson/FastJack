@@ -81,6 +81,13 @@ public class HandForDealerTest extends HelperForTests {
     }
 
     @Test
+    public void testForHorribleBug() {
+        HandForDealer hand = new HandForDealer(tableWithSixDecks.getShoe());
+        resetHand(hand, cT, c5, cA);
+        assertTrue(hand.shouldDealerHit());
+    }
+
+    @Test
     public void testShouldHitSoft17_false() {
         HandForDealer hand = new HandForDealer(tableWithSixDecks.getShoe());
         tableWithSixDecks.getRules().setH17(false);

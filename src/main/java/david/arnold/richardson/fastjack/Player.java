@@ -53,10 +53,6 @@ public class Player {
         return moneyPile.canAfford(amount);
     }
 
-    public long getAvailableFunds() {
-        return moneyPile.getAmount();
-    }
-
     public long getInitialBankrollAmount() {
         return initialBankrollAmount;
     }

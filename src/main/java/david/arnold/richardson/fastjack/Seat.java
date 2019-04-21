@@ -6,7 +6,6 @@ public class Seat {
     private Table table;
     private HandForPlayer[] hands;
     private HandForPlayer firstHand;
-    private int maxNumHands;
     private int numHandsInUse;
     private MoneyPile insuranceBet;
 
@@ -21,7 +20,7 @@ public class Seat {
         this.table = table;
         this.insuranceBet = new MoneyPile();
         Shoe shoe = table.getShoe();
-        this.maxNumHands = shoe.getRules().getMaxNumSplits() + 1;
+        int maxNumHands = shoe.getRules().getMaxNumSplits() + 1;
         hands = new HandForPlayer[maxNumHands];
         for (int i = 0; i < maxNumHands; i++) {
             hands[i] = new HandForPlayer(shoe, this, i);
@@ -80,7 +79,7 @@ public class Seat {
         deltaAfterRoundPlayed = 0L;
         long betAmount = MoneyPile.computeAcceptableBet(
                 player.getBetStrategy().getBetAmount(),
-                player.getAvailableFunds(),
+                player.getMoneyPile().getAmount(),
                 table.getShoe().getRules().getMinBetAmount(),
                 table.getShoe().getRules().getMaxBetAmount());
         return createHandWithBet(betAmount);
