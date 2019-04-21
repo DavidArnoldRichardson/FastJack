@@ -21,9 +21,15 @@ public class SimRunResult {
                 + " rounds (" + numShoesPlayed + " shoes) in " + numMillis
                 + " milliseconds (" + (handsPerMillisecond * 1000) + " hands per second).\n");
 
+        double sumOfEdges = 0.0D;
+        int numPlayers = 0;
         for (Player player : table.getPlayers()) {
+            numPlayers++;
+            sumOfEdges += player.getEdge();
             outputter.showMessage(player.showResult());
         }
+        double averageEdge = sumOfEdges / (double) numPlayers;
+        outputter.showMessage("Average player edge: " + Player.formatEdge(averageEdge));
         System.out.println();
 
         long tableBankrollDelta = table.getTableBankrollDelta();

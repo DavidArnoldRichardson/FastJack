@@ -61,20 +61,30 @@ public class Player {
         return initialBankrollAmount;
     }
 
+    public double getEdge() {
+        return getEdge(
+                initialBankrollAmount,
+                moneyPile.getAmount());
+    }
+
+    public static double getEdge(
+            double initialBankroll,
+            double finalBankroll) {
+        return (1.0D - (finalBankroll / initialBankroll)) * -100.0D;
+    }
+
+    public static String formatEdge(double edge) {
+        DecimalFormat df = new DecimalFormat("#0.000");
+        return df.format(edge) + "%";
+    }
+
     public String showResult() {
+        double edge = getEdge(
+                initialBankrollAmount,
+                moneyPile.getAmount());
         return playerName
                 + " started with " + MoneyPile.show(initialBankrollAmount)
                 + " ended with " + moneyPile.formatForDisplay()
-                + ". Player edge: " + computePlayerEdge(initialBankrollAmount, moneyPile.getAmount());
-    }
-
-    static String computePlayerEdge(
-            long initialBankroll,
-            long finalBankroll) {
-        double ib = (double) initialBankroll;
-        double fb = (double) finalBankroll;
-        double ratio = (1.0D - (fb / ib)) * -100.0D;
-        DecimalFormat df = new DecimalFormat("#0.000");
-        return df.format(ratio) + "%";
+                + ". Player edge: " + formatEdge(edge);
     }
 }

@@ -17,8 +17,7 @@ public class RunBasicStrategyVerbose extends SimRunner {
     @Override
     protected Rules getRules() {
         this.playIsVerbose = true;
-        Rules defaultMostCommon = Rules.getDefaultMostCommon();
-        return defaultMostCommon;
+        return Rules.getDefaultMostCommon();
     }
 
     @Override
@@ -38,6 +37,6 @@ public class RunBasicStrategyVerbose extends SimRunner {
             table.addPlayer(player);
         }
 
-        return table.playRounds(10000);
+        return table.playRounds(1000);
     }
 }
