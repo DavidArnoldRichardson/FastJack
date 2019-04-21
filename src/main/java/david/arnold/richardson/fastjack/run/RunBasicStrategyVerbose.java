@@ -23,7 +23,7 @@ public class RunBasicStrategyVerbose extends SimRunner {
 
     @Override
     protected int getNumPlayers() {
-        return 7;
+        return 1;
     }
 
     @Override

@@ -9,9 +9,8 @@ public class RoundRunStats {
         numShoesPlayed = 0;
     }
 
-    public RoundRunStats incrementRoundNumber() {
+    public void incrementRoundNumber() {
         roundNumber++;
-        return this;
     }
 
     public void incrementNumShoesPlayed() {

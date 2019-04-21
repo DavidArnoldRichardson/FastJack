@@ -86,8 +86,9 @@ public class Table {
         RoundRunStats roundRunStats = new RoundRunStats();
         boolean keepPlayingRounds = true;
         while (keepPlayingRounds) {
-            boolean someonePlayed = playRound(roundRunStats.incrementRoundNumber());
+            boolean someonePlayed = playRound(roundRunStats);
             checkSeatBankrolls();
+            roundRunStats.incrementRoundNumber();
             keepPlayingRounds = someonePlayed && (roundRunStats.getRoundNumber() < numRoundsToPlay);
         }
 
