@@ -95,7 +95,7 @@ public class OutputterVerboseToScreen extends Outputter {
 
     @Override
     public void dealerUpcardIsAce() {
-        showMessage("Dealer upcard is an ace. Insurance is made available.");
+        showMessage("Dealer asks players if they want insurance.");
     }
 
     @Override

@@ -5,8 +5,7 @@ import david.arnold.richardson.fastjack.PlayerDecision;
 import david.arnold.richardson.fastjack.Rules;
 import david.arnold.richardson.fastjack.Table;
 
-import static david.arnold.richardson.fastjack.PlayerDecision.STD;
-import static david.arnold.richardson.fastjack.PlayerDecision.n_a;
+import static david.arnold.richardson.fastjack.PlayerDecision.*;
 
 public class PlayStrategyBasic extends PlayStrategy {
 
@@ -137,8 +136,8 @@ public class PlayStrategyBasic extends PlayStrategy {
             }
         }
 
-        if (hand.isPairOfAces()) {
-            if (hand.isHandIsResultOfSplit()) {
+        if (hand.isHandIsResultOfSplit()) {
+            if (hand.firstCardIsAce()) {
                 if (!table.getRules().isCanHitSplitAces()) {
                     return STD;
                 }

@@ -102,6 +102,13 @@ public abstract class Hand {
         return false;
     }
 
+    public boolean firstCardIsAce() {
+        if (numCardsInHand >= 1) {
+            return shoe.isAce(indexesOfCards[0]);
+        }
+        return false;
+    }
+
     // returns true if the hand has an ace that can be 11
     public boolean isSoft() {
         boolean hasAtLeastOneAce = false;

@@ -2,7 +2,7 @@ package david.arnold.richardson.fastjack;
 
 import david.arnold.richardson.fastjack.run.RunBasicStrategyVerbose;
 
-// todo: fix player edge bug. Currently it's at 2.6%
+// todo: fix player edge bug. Currently it's at -2.9%
 
 public class FastJack {
 
