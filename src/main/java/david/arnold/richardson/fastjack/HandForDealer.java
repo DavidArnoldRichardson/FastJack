@@ -16,16 +16,43 @@ public class HandForDealer extends Hand {
     }
 
     public boolean shouldDealerHit() {
-        int minPointSum = computeMinPointSum();
-        boolean hasAce = hasAtLeastOneAce();
-        if (hasAce) {
-            if (minPointSum == 7) {
-                return shoe.getRules().isH17();
+        boolean hasAtLeastOneAce = false;
+        int minimumSum = 0;
+        for (int i = 0; i < numCardsInHand; i++) {
+            minimumSum += shoe.getCardPointValue(indexesOfCards[i]);
+            if (shoe.isAce(indexesOfCards[i])) {
+                hasAtLeastOneAce = true;
             }
-            return minPointSum <= 6;
-        } else {
-            return minPointSum < 17;
         }
+
+        if (hasAtLeastOneAce) {
+            switch (minimumSum) {
+                case 2: // or 12
+                case 3: // or 13
+                case 4: // or 14
+                case 5: // or 15
+                case 6: // or 16
+                    return true;
+                case 7: // or 17
+                    return shoe.getRules().isH17();
+                case 8: // or 18
+                case 9: // or 19
+                case 10: // or 20
+                case 11: // or 21
+                    return false;
+                case 12: // ace is low
+                case 13: // ace is low
+                case 14: // ace is low
+                case 15: // ace is low
+                case 16: // ace is low
+                    return true;
+                default:
+                    // anything more, stand.
+                    return false;
+            }
+        }
+
+        return minimumSum < 17;
     }
 
     public String showHoleCard() {

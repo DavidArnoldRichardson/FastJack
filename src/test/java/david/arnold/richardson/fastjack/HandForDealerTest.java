@@ -81,10 +81,26 @@ public class HandForDealerTest extends HelperForTests {
     }
 
     @Test
-    public void testForHorribleBug() {
+    public void testForMultiCardHandWithAce() {
         HandForDealer hand = new HandForDealer(tableWithSixDecks.getShoe());
+        resetHand(hand, cT, c2, cA);
+        assertTrue(hand.shouldDealerHit());
+        resetHand(hand, cT, c3, cA);
+        assertTrue(hand.shouldDealerHit());
+        resetHand(hand, cT, c4, cA);
+        assertTrue(hand.shouldDealerHit());
         resetHand(hand, cT, c5, cA);
         assertTrue(hand.shouldDealerHit());
+        resetHand(hand, cT, c6, cA);
+        assertFalse(hand.shouldDealerHit());
+        resetHand(hand, cT, c7, cA);
+        assertFalse(hand.shouldDealerHit());
+        resetHand(hand, cT, c8, cA);
+        assertFalse(hand.shouldDealerHit());
+        resetHand(hand, cT, c9, cA);
+        assertFalse(hand.shouldDealerHit());
+        resetHand(hand, cT, cT, cA);
+        assertFalse(hand.shouldDealerHit());
     }
 
     @Test
