@@ -55,8 +55,8 @@ public abstract class HelperForTests {
     }
 
     private void resetTables() {
-        tableWithOneDeck = new Table(new OutputterSilentAndFast(), rulesDefault1D);
-        tableWithSixDecks = new Table(new OutputterSilentAndFast(), rulesDefault6D);
+        tableWithOneDeck = new Table(new OutputterSilentWithCarefulAccounting(), rulesDefault1D);
+        tableWithSixDecks = new Table(new OutputterSilentWithCarefulAccounting(), rulesDefault6D);
 
         prepareCardsForTests(tableWithOneDeck.getShoe());
         prepareCardsForTests(tableWithSixDecks.getShoe());

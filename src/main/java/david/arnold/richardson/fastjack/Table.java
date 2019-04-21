@@ -64,11 +64,14 @@ public class Table {
             }
             outputter.showMessage(stringBuilder.toString());
         } else {
-            for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
-                long seatDeltaA = seats[seatNumber].computeAndUpdateBankrollTrackingAfterRound();
-                long seatDeltaB = seats[seatNumber].getDeltaAfterRoundPlayed();
-                if (seatDeltaA != seatDeltaB) {
-                    throw new RuntimeException("Accounting error! " + seatDeltaA + " " + seatDeltaB);
+            if (outputter.usingCarefulAccounting()) {
+                for (int seatNumber = 0; seatNumber < numSeatsInUse; seatNumber++) {
+                    long seatDeltaA = seats[seatNumber].computeAndUpdateBankrollTrackingAfterRound();
+                    long seatDeltaB = seats[seatNumber].getDeltaAfterRoundPlayed();
+                    if (seatDeltaA != seatDeltaB) {
+                        throw new RuntimeException("Accounting error! " + seatDeltaA + " is not " + seatDeltaB + "."
+                                + " (Perhaps you meant to set careful accounting to false?)");
+                    }
                 }
             }
         }

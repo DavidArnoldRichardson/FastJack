@@ -5,6 +5,8 @@ package david.arnold.richardson.fastjack;
 public abstract class Outputter {
     public abstract boolean isDisplaying();
 
+    public abstract boolean usingCarefulAccounting();
+
     public abstract void showMessage(String message);
 
     public abstract void startRound(int roundNumber);

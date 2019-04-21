@@ -1,13 +1,13 @@
 package david.arnold.richardson.fastjack;
 
-public class OutputterSilentAndFast extends Outputter {
+public class OutputterSilentWithCarefulAccounting extends Outputter {
     public boolean isDisplaying() {
         return false;
     }
 
     @Override
     public boolean usingCarefulAccounting() {
-        return false;
+        return true;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class OutputterSilentAndFast extends Outputter {
 
     @Override
     public long playerWinsInsuranceBet(Seat seat) {
-        return 0L;
+        return seat.hasInsuranceBet() ? seat.getInsuranceBetAmount() << 1 : 0L;
     }
 
     @Override
@@ -77,12 +77,13 @@ public class OutputterSilentAndFast extends Outputter {
 
     @Override
     public long loseOnDealerBlackjack(Seat seat) {
-        return 0L;
+        return -seat.getHand(0).getMoneyPile().getAmount();
     }
 
     @Override
     public long playerBlackjackAndWins(Seat seat, HandForPlayer hand) {
-        return 0L;
+        long betAmount = hand.getMoneyPile().getAmount();
+        return betAmount + (betAmount >> 1);
     }
 
     @Override
@@ -91,7 +92,7 @@ public class OutputterSilentAndFast extends Outputter {
 
     @Override
     public long playerHitAndBust(Seat seat, HandForPlayer hand) {
-        return 0L;
+        return -hand.getMoneyPile().getAmount();
     }
 
     @Override
@@ -104,7 +105,7 @@ public class OutputterSilentAndFast extends Outputter {
 
     @Override
     public long playerDoubledAndBust(Seat seat, HandForPlayer hand) {
-        return 0L;
+        return -(hand.getMoneyPile().getAmount() << 1);
     }
 
     @Override
@@ -117,7 +118,7 @@ public class OutputterSilentAndFast extends Outputter {
 
     @Override
     public long playerSurrendered(Seat seat, HandForPlayer hand) {
-        return 0L;
+        return -(hand.getMoneyPile().getAmount() >> 1);
     }
 
     @Override
@@ -142,12 +143,12 @@ public class OutputterSilentAndFast extends Outputter {
 
     @Override
     public long playerWins(Seat seat, HandForPlayer hand) {
-        return 0L;
+        return hand.getMoneyPile().getAmount();
     }
 
     @Override
     public long playerLoses(Seat seat, HandForPlayer hand) {
-        return 0L;
+        return -hand.getMoneyPile().getAmount();
     }
 
     @Override

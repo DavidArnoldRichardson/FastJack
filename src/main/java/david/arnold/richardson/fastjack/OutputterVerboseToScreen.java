@@ -5,6 +5,11 @@ public class OutputterVerboseToScreen extends Outputter {
         return true;
     }
 
+    @Override
+    public boolean usingCarefulAccounting() {
+        return true;
+    }
+
     private String getPrefix(
             Seat seat) {
         return getPrefix(seat, 0);
