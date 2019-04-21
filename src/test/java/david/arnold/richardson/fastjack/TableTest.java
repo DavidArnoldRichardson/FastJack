@@ -30,7 +30,7 @@ public class TableTest {
     void setCardsAndPlay(int... cardValues) {
         player.refreshStrategiesDueToRulesChange();
         table.tweakShoe(cardValues);
-        table.playRound(0);
+        table.playRound(new RoundRunStats());
     }
 
     //////////////

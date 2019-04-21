@@ -26,7 +26,7 @@ public class RunBasicStrategyManyHands extends SimRunner {
     }
 
     @Override
-    public int runHelper(Table table) {
+    public SimRunResult runHelper(Table table) {
         for (int i = 0; i < getNumPlayers(); i++) {
             Player player = new Player(
                     playerNames[i],

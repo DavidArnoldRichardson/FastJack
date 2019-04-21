@@ -23,11 +23,11 @@ public class RunBasicStrategyVerbose extends SimRunner {
 
     @Override
     protected int getNumPlayers() {
-        return 1;
+        return 7;
     }
 
     @Override
-    public int runHelper(Table table) {
+    public SimRunResult runHelper(Table table) {
         for (int i = 0; i < getNumPlayers(); i++) {
             Player player = new Player(
                     playerNames[i],

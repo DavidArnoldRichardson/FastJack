@@ -1,5 +1,7 @@
 package david.arnold.richardson.fastjack;
 
+import david.arnold.richardson.fastjack.run.SimRunResult;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -72,7 +74,7 @@ public class Table {
         }
     }
 
-    public int playRounds(int numRoundsToPlay) {
+    public SimRunResult playRounds(int numRoundsToPlay) {
         outputter.showRules(rules);
 
         shoe.shuffle();
@@ -81,20 +83,22 @@ public class Table {
 
         // Note: Everything that happens inside this loop is optimized for performance.
         // Don't do anything unnecessary. No allocating memory from the heap if you can help it.
-        int roundNumber = 0;
+        RoundRunStats roundRunStats = new RoundRunStats();
         boolean keepPlayingRounds = true;
         while (keepPlayingRounds) {
-            boolean someonePlayed = playRound(roundNumber++);
+            boolean someonePlayed = playRound(roundRunStats.incrementRoundNumber());
             checkSeatBankrolls();
-            keepPlayingRounds = someonePlayed && (roundNumber < numRoundsToPlay);
+            keepPlayingRounds = someonePlayed && (roundRunStats.getRoundNumber() < numRoundsToPlay);
         }
-        return roundNumber;
+
+        return new SimRunResult(roundRunStats);
     }
 
-    public boolean playRound(int roundNumber) {
-        outputter.startRound(roundNumber);
+    public boolean playRound(RoundRunStats roundRunStats) {
+        outputter.startRound(roundRunStats.getRoundNumber());
 
         if (shoe.hasCutCardBeenDrawn()) {
+            roundRunStats.incrementNumShoesPlayed();
             outputter.cutCardWasDrawn();
             shoe.shuffle();
             shoe.setPenetration();
@@ -351,5 +355,13 @@ public class Table {
 
     public long getTableBankrollDelta() {
         return moneyPile.getAmount();
+    }
+
+    public long computePlayersBankrollDelta() {
+        long delta = 0L;
+        for (Player player : getPlayers()) {
+            delta += (player.getMoneyPile().getAmount() - player.getInitialBankrollAmount());
+        }
+        return delta;
     }
 }
