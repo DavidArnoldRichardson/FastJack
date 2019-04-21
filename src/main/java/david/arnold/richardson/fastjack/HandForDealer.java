@@ -6,8 +6,7 @@ public class HandForDealer extends Hand {
     private static final int CARD_INDEX_OF_HOLE_CARD = 1;
 
     public HandForDealer(Shoe shoe) {
-        // could be all twos, to a max of 9 (18 points), where the dealer must stand.
-        super(shoe, 9);
+        super(shoe);
     }
 
     @Override

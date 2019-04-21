@@ -6,11 +6,9 @@ public abstract class Hand {
     protected int numCardsInHand;
     protected boolean playIsComplete;
 
-    protected Hand(
-            Shoe shoe,
-            int maxNumCardsInHand) {
+    protected Hand(Shoe shoe) {
         this.shoe = shoe;
-        indexesOfCards = new int[maxNumCardsInHand];
+        indexesOfCards = new int[21]; // Tried to figure out the actual max value. Complicated. This works.
         reset();
     }
 

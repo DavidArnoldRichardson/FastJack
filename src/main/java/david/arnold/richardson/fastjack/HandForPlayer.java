@@ -10,8 +10,7 @@ public class HandForPlayer extends Hand {
             Shoe shoe,
             Seat seat,
             int handIndex) {
-        // could be all twos, to a max of 11 (22 points), where the player busts.
-        super(shoe, 11);
+        super(shoe);
         this.seat = seat;
         this.handIndex = handIndex;
         this.moneyPile = new MoneyPile();

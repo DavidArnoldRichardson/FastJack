@@ -10,7 +10,7 @@ public class HandTest extends HelperForTests {
 
     @Test
     public void testComputeMinSum() {
-        Hand hand = new HandForTesting(tableWithSixDecks.getShoe(), 20);
+        Hand hand = new HandForTesting(tableWithSixDecks.getShoe());
         assertEquals(0, hand.computeMinPointSum());
 
         resetHand(hand, cA);
@@ -22,7 +22,7 @@ public class HandTest extends HelperForTests {
 
     @Test
     public void testHasAtLeastOneAce() {
-        Hand hand = new HandForTesting(tableWithSixDecks.getShoe(), 20);
+        Hand hand = new HandForTesting(tableWithSixDecks.getShoe());
         assertFalse(hand.hasAtLeastOneAce());
 
         resetHand(hand, c2, c3, c4, c5, c6, c7, c8, c9, cT);
@@ -40,7 +40,7 @@ public class HandTest extends HelperForTests {
 
     @Test
     public void testIsSoft() {
-        Hand hand = new HandForTesting(tableWithSixDecks.getShoe(), 20);
+        Hand hand = new HandForTesting(tableWithSixDecks.getShoe());
         assertFalse(hand.isSoft());
 
         resetHand(hand, c2, c3);
@@ -71,7 +71,7 @@ public class HandTest extends HelperForTests {
 
     @Test
     public void testIsBlackjack() {
-        Hand hand = new HandForTesting(tableWithSixDecks.getShoe(), 20);
+        Hand hand = new HandForTesting(tableWithSixDecks.getShoe());
         assertFalse(hand.isSoftTwentyOne());
 
         resetHand(hand, c2, c4);
@@ -95,7 +95,7 @@ public class HandTest extends HelperForTests {
 
     @Test
     public void testIsBusted() {
-        Hand hand = new HandForTesting(tableWithSixDecks.getShoe(), 20);
+        Hand hand = new HandForTesting(tableWithSixDecks.getShoe());
         assertFalse(hand.isBusted());
 
         resetHand(hand, c2);

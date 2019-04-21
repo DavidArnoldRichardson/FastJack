@@ -9,7 +9,7 @@ public abstract class SimRunner {
 
     protected String[] playerNames = new String[]{"Alex", "Beth", "Carl", "Dora", "Eric", "Fran", "Gary"};
     protected Outputter outputterVerbose = new OutputterVerboseToScreen();
-    protected Outputter outputterSilent = new OutputterSilentWithCarefulAccounting();
+    protected Outputter outputterSilent = new OutputterSilentAndFast();
     protected Table table;
     protected boolean playIsVerbose;
 
