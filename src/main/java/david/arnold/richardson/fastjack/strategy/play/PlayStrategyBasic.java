@@ -104,8 +104,6 @@ public class PlayStrategyBasic extends PlayStrategy {
             int dealerUpcardValue,
             PlaySummary playSummary) {
 
-        playSummary.setConditions(dealerUpcardValue, hand);
-
         int playerHandMinPointSum = hand.computeMinPointSum();
         PlayerDecision playerDecision;
 
@@ -117,7 +115,7 @@ public class PlayStrategyBasic extends PlayStrategy {
                     playerDecision = matrixForSurrenderIsNotPair.lookup(playerHandMinPointSum, dealerUpcardValue);
                 }
                 if (playerDecision != n_a) {
-                    playSummary.setPlayerDecision(playerDecision);
+                    playSummary.writeLogEntry(table.getOutputter(), dealerUpcardValue, hand, playerDecision);
                     return playerDecision;
                 }
             }
@@ -126,7 +124,7 @@ public class PlayStrategyBasic extends PlayStrategy {
         if (hand.isSplittablePair()) {
             playerDecision = matrixForSplit.lookup(playerHandMinPointSum, dealerUpcardValue);
             if (playerDecision != n_a) {
-                playSummary.setPlayerDecision(playerDecision);
+                playSummary.writeLogEntry(table.getOutputter(), dealerUpcardValue, hand, playerDecision);
                 return playerDecision;
             }
         }
@@ -139,7 +137,7 @@ public class PlayStrategyBasic extends PlayStrategy {
                 playerDecision = matrixForHardDouble.lookup(playerHandMinPointSum, dealerUpcardValue);
             }
             if (playerDecision != n_a) {
-                playSummary.setPlayerDecision(playerDecision);
+                playSummary.writeLogEntry(table.getOutputter(), dealerUpcardValue, hand, playerDecision);
                 return playerDecision;
             }
         }
@@ -148,7 +146,7 @@ public class PlayStrategyBasic extends PlayStrategy {
             if (hand.firstCardIsAce()) {
                 if (!table.getRules().isCanHitSplitAces()) {
                     playerDecision = STD;
-                    playSummary.setPlayerDecision(playerDecision);
+                    playSummary.writeLogEntry(table.getOutputter(), dealerUpcardValue, hand, playerDecision);
                     return playerDecision;
                 }
             }
@@ -160,7 +158,7 @@ public class PlayStrategyBasic extends PlayStrategy {
             playerDecision = matrixForHardHitStand.lookup(playerHandMinPointSum, dealerUpcardValue);
         }
 
-        playSummary.setPlayerDecision(playerDecision);
+        playSummary.writeLogEntry(table.getOutputter(), dealerUpcardValue, hand, playerDecision);
         return playerDecision;
     }
 

@@ -65,7 +65,13 @@ public abstract class Hand {
             builder.append(Rules.CARD_SYMBOLS.charAt(shoe.getCardPointValue(indexOfCard) - 1));
         }
 
-        showPointValue(builder, minSum, hasAtLeastOneAce);
+        builder.append(",").append(minSum).append(",");
+        boolean hasTwoValues = hasAtLeastOneAce && minSum <= 11;
+        if (hasTwoValues) {
+            builder.append(minSum + 10);
+        } else {
+            builder.append(minSum);
+        }
     }
 
     public String showCard(int cardIndex) {

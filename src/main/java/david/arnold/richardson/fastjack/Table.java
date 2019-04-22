@@ -26,7 +26,7 @@ public class Table {
         this.rules = rules;
         this.moneyPile = MoneyPile.createTableMoneyPile();
         this.shoe = new Shoe(this, outputter);
-        this.playSummary = new PlaySummary(rules);
+        this.playSummary = new PlaySummary();
 
         seats = new Seat[NUM_SEATS];
         for (int i = 0; i < NUM_SEATS; i++) {
@@ -293,6 +293,7 @@ public class Table {
                         throw new IllegalStateException("Unexpected value: " + playerDecision);
                 }
             }
+
             handIndexToPlay++;
         }
     }

@@ -1,52 +1,40 @@
 package david.arnold.richardson.fastjack.strategy.play;
 
 import david.arnold.richardson.fastjack.HandForPlayer;
+import david.arnold.richardson.fastjack.Outputter;
 import david.arnold.richardson.fastjack.PlayerDecision;
 import david.arnold.richardson.fastjack.Rules;
 
 public class PlaySummary {
-    private boolean isHandResultOfSplit;
-    private int numHandsAlreadyAtSeat;
-    private int dealerUpcardValue;
-    private HandForPlayer hand;
-    private PlayerDecision playerDecision;
+    private StringBuilder builder;
 
-    private String rulesSummary;
-    private StringBuilder builder = new StringBuilder();
-
-    public PlaySummary(Rules rules) {
-        this.rulesSummary = rules.showSummary() + " ";
+    public PlaySummary() {
+        builder = new StringBuilder();
     }
 
-    public void setConditions(
+    public static String getHeaderLine() {
+        return "isSplit,handsAlreadyAtSeat,hand,handPointsMin,handPointsMax,dealerUpcard,playerDecision";
+    }
+
+    public void writeLogEntry(
+            Outputter outputter,
             int dealerUpcardValue,
-            HandForPlayer hand) {
-        this.isHandResultOfSplit = hand.isHandIsResultOfSplit();
-        this.numHandsAlreadyAtSeat = hand.getNumberOfHandsAlreadyAtSeat();
-        this.dealerUpcardValue = dealerUpcardValue;
-        this.hand = hand;
-        this.playerDecision = null;
-    }
+            HandForPlayer hand,
+            PlayerDecision playerDecision) {
+        if (outputter.isLogging()) {
+            builder.setLength(0);
+            if (hand.isHandIsResultOfSplit()) {
+                builder.append("y,");
+            } else {
+                builder.append("n,");
+            }
+            builder.append(hand.getNumberOfHandsAlreadyAtSeat()).append(",");
+            hand.showSummary(builder);
+            builder.append(",");
+            builder.append(Rules.CARD_SYMBOLS.charAt(dealerUpcardValue)).append(",");
+            builder.append(playerDecision);
 
-    public void setPlayerDecision(PlayerDecision playerDecision) {
-        this.playerDecision = playerDecision;
-    }
-
-    public String show() {
-        if (playerDecision == null) {
-            throw new IllegalStateException("You forgot to set the player decision.");
+            outputter.writeToPlaySummaryLog(builder.toString());
         }
-
-        builder.setLength(0);
-        builder.append(rulesSummary);
-        if (isHandResultOfSplit) {
-            builder.append("[").append(numHandsAlreadyAtSeat).append(" hands] ");
-        }
-        hand.showSummary(builder);
-        builder.append(" vs ");
-        builder.append(Rules.CARD_SYMBOLS.charAt(dealerUpcardValue));
-        builder.append(" : ").append(playerDecision);
-
-        return builder.toString();
     }
 }

@@ -27,6 +27,8 @@ public class RunBasicStrategyVerbose extends SimRunner {
 
     @Override
     public SimRunResult runHelper(Table table) {
+//        table.getOutputter().startCapturingSummaryLogs();
+
         for (int i = 0; i < getNumPlayers(); i++) {
             Player player = new Player(
                     playerNames[i],

@@ -156,6 +156,6 @@ public abstract class HelperForTests {
         return playStrategy.getPlay(
                 hand,
                 dealerUpcardValue,
-                new PlaySummary(rules));
+                new PlaySummary());
     }
 }

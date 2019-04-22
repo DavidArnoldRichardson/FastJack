@@ -9,25 +9,34 @@ public abstract class SimRunner {
 
     protected String[] playerNames = new String[]{"Alex", "Beth", "Carl", "Dora", "Eric", "Fran", "Gary"};
     protected Outputter outputterVerbose = new OutputterVerboseToScreen();
-    protected Outputter outputterSilent = new OutputterSilentAndFast();
+    protected Outputter outputterSilent = new OutputterSilentWithCarefulAccounting();
     protected Table table;
     protected boolean playIsVerbose;
 
     public void run() {
-        Rules rules = getRules();
+        try {
+            Rules rules = getRules();
 
-        table = new Table(
-                playIsVerbose ? outputterVerbose : outputterSilent,
-                rules);
+            table = new Table(
+                    playIsVerbose ? outputterVerbose : outputterSilent,
+                    rules);
 
-        Instant startTime = Instant.now();
-        SimRunResult simRunResult = runHelper(table);
-        Instant completionTime = Instant.now();
-        long timeElapsedInMillis = Duration.between(startTime, completionTime).toMillis();
-        simRunResult.show(
-                outputterVerbose,
-                table,
-                timeElapsedInMillis);
+            Instant startTime = Instant.now();
+            SimRunResult simRunResult = runHelper(table);
+            Instant completionTime = Instant.now();
+            long timeElapsedInMillis = Duration.between(startTime, completionTime).toMillis();
+            simRunResult.show(
+                    outputterVerbose,
+                    table,
+                    timeElapsedInMillis);
+        } finally {
+            if (outputterVerbose != null) {
+                outputterVerbose.closeLogs();
+            }
+            if (outputterSilent != null) {
+                outputterSilent.closeLogs();
+            }
+        }
     }
 
     public abstract SimRunResult runHelper(Table table);

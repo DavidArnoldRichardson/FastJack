@@ -165,12 +165,10 @@ public class Seat {
             int handIndex,
             int dealerUpcardValue,
             PlaySummary playSummary) {
-        PlayerDecision playerDecision = player.getPlayStrategy().getPlay(
+        return player.getPlayStrategy().getPlay(
                 hands[handIndex],
                 dealerUpcardValue,
                 playSummary);
-        table.getOutputter().showMessage(playSummary.show());
-        return playerDecision;
     }
 
     public void resetHands() {
