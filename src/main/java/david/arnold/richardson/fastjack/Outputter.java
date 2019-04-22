@@ -1,5 +1,7 @@
 package david.arnold.richardson.fastjack;
 
+import david.arnold.richardson.fastjack.strategy.play.PlaySummary;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -53,8 +55,10 @@ public abstract class Outputter {
         }
     }
 
-    public void startCapturingSummaryLogs() {
+    public void startCapturingSummaryLogs(Rules rules) {
         openLogs();
+        writeToPlaySummaryLog(rules.showSummary());
+        writeToPlaySummaryLog(PlaySummary.getHeaderLine());
     }
 
     public abstract boolean isDisplaying();

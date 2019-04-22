@@ -27,7 +27,7 @@ public class RunBasicStrategyManyHands extends SimRunner {
 
     @Override
     public SimRunResult runHelper(Table table) {
-//        table.getOutputter().startCapturingSummaryLogs();
+        table.getOutputter().startCapturingSummaryLogs(table.getRules());
 
         for (int i = 0; i < getNumPlayers(); i++) {
             Player player = new Player(
