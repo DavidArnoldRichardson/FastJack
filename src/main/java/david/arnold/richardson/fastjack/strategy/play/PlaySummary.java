@@ -13,7 +13,7 @@ public class PlaySummary {
     }
 
     public static String getHeaderLine() {
-        return "isSplit,handsAlreadyAtSeat,hand,handPointsMin,handPointsMax,dealerUpcard,playerDecision";
+        return "playerDecision,isSplit,handsAlreadyAtSeat,handMinPoints,hand,dealerUpcard";
     }
 
     public void writeLogEntry(
@@ -23,17 +23,17 @@ public class PlaySummary {
             PlayerDecision playerDecision) {
         if (outputter.isLogging()) {
             builder.setLength(0);
+            builder.append(playerDecision).append(",");
             if (hand.isHandIsResultOfSplit()) {
                 builder.append("y,");
             } else {
                 builder.append("n,");
             }
             builder.append(hand.getNumberOfHandsAlreadyAtSeat()).append(",");
-            hand.showSummary(builder);
+            builder.append(hand.computeMinPointSum()).append(",");
+            hand.showSummaryWithCards(builder);
             builder.append(",");
-            builder.append(Rules.CARD_SYMBOLS.charAt(dealerUpcardValue)).append(",");
-            builder.append(playerDecision);
-
+            builder.append(Rules.CARD_SYMBOLS.charAt(dealerUpcardValue - 1));
             outputter.writeToPlaySummaryLog(builder.toString());
         }
     }

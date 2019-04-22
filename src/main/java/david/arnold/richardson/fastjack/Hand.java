@@ -53,24 +53,9 @@ public abstract class Hand {
         builder.append(")");
     }
 
-    public void showSummary(StringBuilder builder) {
-        boolean hasAtLeastOneAce = false;
-        int minSum = 0;
+    public void showSummaryWithCards(StringBuilder builder) {
         for (int i = 0; i < numCardsInHand; i++) {
-            int indexOfCard = indexesOfCards[i];
-            if (shoe.isAce(indexOfCard)) {
-                hasAtLeastOneAce = true;
-            }
-            minSum += shoe.getCardPointValue(indexOfCard);
-            builder.append(Rules.CARD_SYMBOLS.charAt(shoe.getCardPointValue(indexOfCard) - 1));
-        }
-
-        builder.append(",").append(minSum).append(",");
-        boolean hasTwoValues = hasAtLeastOneAce && minSum <= 11;
-        if (hasTwoValues) {
-            builder.append(minSum + 10);
-        } else {
-            builder.append(minSum);
+            builder.append(Rules.CARD_SYMBOLS.charAt(shoe.getCardPointValue(indexesOfCards[i]) - 1));
         }
     }
 
