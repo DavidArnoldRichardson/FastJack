@@ -1,6 +1,7 @@
 package david.arnold.richardson.fastjack.run;
 
 import david.arnold.richardson.fastjack.Player;
+import david.arnold.richardson.fastjack.PlayerEdge;
 import david.arnold.richardson.fastjack.Rules;
 import david.arnold.richardson.fastjack.Table;
 import david.arnold.richardson.fastjack.strategy.bet.BetStrategy;
@@ -17,7 +18,7 @@ public class RunBasicStrategyVerbose extends SimRunner {
     @Override
     protected Rules getRules() {
         this.playIsVerbose = true;
-        return Rules.getDefaultMostCommon();
+        return PlayerEdge.H17_DAS.getRules(6, 125, 125);
     }
 
     @Override

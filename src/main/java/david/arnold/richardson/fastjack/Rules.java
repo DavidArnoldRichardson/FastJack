@@ -126,6 +126,17 @@ public class Rules {
         return builder.toString();
     }
 
+    public static Rules getCommon(
+            PlayerEdge playerEdge,
+            int numDecks,
+            int minNumCardsBehindCutCard,
+            int maxNumCardsBehindCutCard) {
+        return playerEdge.getRules(
+                numDecks,
+                minNumCardsBehindCutCard,
+                maxNumCardsBehindCutCard);
+    }
+
     public static Rules getDefaultMostCommon() {
         return new Rules(
                 6,

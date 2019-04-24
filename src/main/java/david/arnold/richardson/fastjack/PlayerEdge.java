@@ -1,6 +1,7 @@
 package david.arnold.richardson.fastjack;
 
 public enum PlayerEdge {
+    // These values are from Modern Blackjack, Volume 1, Second Edition, by Norm Wattenberger, page 44.
     H17(new double[]{-0.3D, -0.599D, -0.738D, -0.784D, -0.807D}),
     H17_RSA(new double[]{-0.26D, -0.529D, -0.654D, -0.696D, -0.717D}),
     H17_DAS(new double[]{-0.17D, -0.456D, -0.595D, -0.640D, -0.664D}),
@@ -17,6 +18,12 @@ public enum PlayerEdge {
     S17_RSA_LS(new double[]{-0.07D, -0.285D, -0.377D, -0.409D, -0.423D}),
     S17_DAS_LS(new double[]{0.02D, -0.216D, -0.324D, -0.359D, -0.374D}),
     S17_DAS_RSA_LS(new double[]{0.06D, -0.145D, -0.239D, -0.269D, -0.281D});
+
+    static final String RULE_LABEL_H17 = "H17";
+    static final String RULE_LABEL_S17 = "S17";
+    static final String RULE_LABEL_RSA = "RSA";
+    static final String RULE_LABEL_DAS = "DAS";
+    static final String RULE_LABEL_LS = "LS";
 
     private double[] playerEdgesByNumDecks;
 
@@ -57,9 +64,25 @@ public enum PlayerEdge {
     }
 
     private static String generateEdgeLookupString(Rules rules) {
-        return (rules.isH17() ? "H17" : "S17") +
-                (rules.isCanDoubleAfterSplit() ? "_DAS" : "") +
-                (rules.isCanResplitAces() ? "_RSA" : "") +
-                (rules.isLateSurrenderAvailable() ? "_LS" : "");
+        return (rules.isH17() ? RULE_LABEL_H17 : RULE_LABEL_S17) +
+                (rules.isCanDoubleAfterSplit() ? ("_" + RULE_LABEL_DAS) : "") +
+                (rules.isCanResplitAces() ? ("_" + RULE_LABEL_RSA) : "") +
+                (rules.isLateSurrenderAvailable() ? ("_" + RULE_LABEL_LS) : "");
+    }
+
+    public Rules getRules(
+            int numDecks,
+            int minNumCardsBehindCutCard,
+            int maxNumCardsBehindCutCard) {
+        Rules rules = Rules.getDefaultMostCommon();
+        rules.setNumDecks(numDecks);
+        rules.setMinNumCardsBehindCutCard(minNumCardsBehindCutCard);
+        rules.setMaxNumCardsBehindCutCard(maxNumCardsBehindCutCard);
+        String playerEdgeName = this.name();
+        rules.setH17(playerEdgeName.contains(RULE_LABEL_H17));
+        rules.setCanResplitAces(playerEdgeName.contains(RULE_LABEL_RSA));
+        rules.setCanDoubleAfterSplit(playerEdgeName.contains(RULE_LABEL_DAS));
+        rules.setLateSurrenderAvailable(playerEdgeName.contains(RULE_LABEL_LS));
+        return rules;
     }
 }
