@@ -2,6 +2,9 @@ package david.arnold.richardson.fastjack;
 
 import david.arnold.richardson.fastjack.strategy.play.LogicHolder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Rules {
 
     public static final String CARD_SYMBOLS = "A23456789TJQK";
@@ -12,6 +15,7 @@ public class Rules {
 
     private Randomness randomness;
     private LogicHolder logicHolder;
+    private Map<String, double[]> playerEdgeLookup;
 
     private int numDecks;
     private int minNumCardsBehindCutCard;
@@ -60,6 +64,24 @@ public class Rules {
 
         this.logicHolder = new LogicHolder();
         this.randomness = new Randomness();
+
+        playerEdgeLookup = new HashMap<>();
+        playerEdgeLookup.put("H17", new double[] {-0.3D, -0.599D, -0.738D, -0.784D, -0.807D});
+        playerEdgeLookup.put("H17,RSA", new double[] {-0.26D, -0.529D, -0.654D, -0.696D, -0.717D});
+        playerEdgeLookup.put("H17,DAS", new double[] {-0.17D, -0.456D, -0.595D, -0.640D, -0.664D});
+        playerEdgeLookup.put("H17,DAS,RSA", new double[] {-0.12D, -0.387D, -0.512D, -0.552D, -0.573D});
+        playerEdgeLookup.put("H17,LS", new double[] {-0.30D, -0.546D, -0.661D, -0.696D, -0.719D});
+        playerEdgeLookup.put("H17,RSA,LS", new double[] {-0.25D, -0.476D, -0.578D, -0.609D, -0.629D});
+        playerEdgeLookup.put("H17,DAS,LS", new double[] {-0.16D, -0.404D, -0.518D, -0.556D, -0.576D});
+        playerEdgeLookup.put("H17,DAS,RSA,LS", new double[] {-0.12D, -0.334D, -0.434D, -0.468D, -0.486D});
+        playerEdgeLookup.put("S17", new double[] {-0.11D, -0.395D, -0.526D, -0.569D, -0.589D});
+        playerEdgeLookup.put("S17,RSA", new double[] {-0.06D, -0.323D, -0.44D, -0.478D, -0.496D});
+        playerEdgeLookup.put("S17,DAS", new double[] {0.02D, -0.256D, -0.385D, -0.428D, -0.449D});
+        playerEdgeLookup.put("S17,DAS,RSA", new double[] {0.07D, -0.184D, -0.3D, -0.337D, -0.356D});
+        playerEdgeLookup.put("S17,LS", new double[] {-0.11D, -0.356D, -0.462D, -0.5D, -0.517D});
+        playerEdgeLookup.put("S17,RSA,LS", new double[] {-0.07D, -0.285D, -0.377D, -0.409D, -0.423D});
+        playerEdgeLookup.put("S17,DAS,LS", new double[] {0.02D, -0.216D, -0.324D, -0.359D, -0.374D});
+        playerEdgeLookup.put("S17,DAS,RSA,LS", new double[] {0.06D, -0.145D, -0.239D, -0.269D, -0.281D});
     }
 
     public String show() {
@@ -84,6 +106,7 @@ public class Rules {
         builder.append(prefix).append("Maximum bet amount: ").append(MoneyPile.show(maxBetAmount)).append("\n");
         builder.append(prefix).append("Late surrender available: ").append(lateSurrenderAvailable).append("\n");
         builder.append(prefix).append("Double down only on 10 or 11: ").append(canDoubleOnTenOrElevenOnly).append("\n");
+        builder.append(prefix).append("Basic Strategy player edge: ").append(getPlayerEdge()).append("%\n");
         builder.append("███████████████████████████████████████");
         return builder.toString();
     }
@@ -226,6 +249,45 @@ public class Rules {
 
     public LogicHolder getLogicHolder() {
         return logicHolder;
+    }
+
+    public double getPlayerEdge() {
+        int edgeLookupIndex = getEdgeLookupNumDeckIndex();
+        if (edgeLookupIndex == -1) {
+            System.out.println("Invalid number of decks: " + numDecks);
+            return 999D; // just a crazy value
+        }
+        String edgeLookupString = generateEdgeLookupString();
+        double[] edgeValues = playerEdgeLookup.get(edgeLookupString);
+        if (playerEdgeLookup == null) {
+            System.out.println("Invalid rules configuration: " + edgeLookupString);
+            return 998D; // just a crazy value
+        }
+        return edgeValues[edgeLookupIndex];
+    }
+
+    private int getEdgeLookupNumDeckIndex() {
+        switch(numDecks) {
+            case 1:
+                return 0;
+            case 2:
+                return 1;
+            case 4:
+                return 2;
+            case 6:
+                return 3;
+            case 8:
+                return 4;
+            default:
+                return -1; // unknown
+        }
+    }
+
+    private String generateEdgeLookupString() {
+        return (isH17 ? "H17" : "S17") +
+                (canDoubleAfterSplit ? ",DAS" : "") +
+                (canResplitAces ? ",RSA" : "") +
+                (lateSurrenderAvailable ? ",LS" : "");
     }
 
     public int getNumDecks() {
