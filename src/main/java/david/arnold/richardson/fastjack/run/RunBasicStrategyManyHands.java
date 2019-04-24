@@ -18,7 +18,7 @@ public class RunBasicStrategyManyHands extends SimRunner {
     @Override
     protected Rules getRules() {
         this.playIsVerbose = false;
-        return PlayerEdge.H17_DAS.getRules(6, 125, 125);
+        return PlayerEdge.S17_DAS.getRules(6, 125, 125);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class RunBasicStrategyManyHands extends SimRunner {
 
     @Override
     public SimRunResult runHelper(Table table) {
-        table.getOutputter().startCapturingSummaryLogs(table.getRules());
+//        table.getOutputter().startCapturingSummaryLogs(table.getRules());
 
         for (int i = 0; i < getNumPlayers(); i++) {
             Player player = new Player(

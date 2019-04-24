@@ -93,35 +93,35 @@ public class Rules {
         StringBuilder builder = new StringBuilder();
         builder.append("[").append(numDecks).append("D,");
         if (isH17) {
-            builder.append("H17,");
+            builder.append(PlayerEdge.RULE_LABEL_H17 + ",");
         } else {
-            builder.append("S17,");
+            builder.append(PlayerEdge.RULE_LABEL_S17 + ",");
         }
 
         if (!canResplitAces) {
             builder.append("n");
         }
-        builder.append("RSA,");
+        builder.append(PlayerEdge.RULE_LABEL_RSA + ",");
 
         if (!canDoubleAfterSplit) {
             builder.append("n");
         }
-        builder.append("DAS,");
+        builder.append(PlayerEdge.RULE_LABEL_DAS + ",");
 
         if (!canHitSplitAces) {
             builder.append("n");
         }
-        builder.append("HSA,");
+        builder.append(PlayerEdge.RULE_LABEL_HSA + ",");
 
         if (!lateSurrenderAvailable) {
             builder.append("n");
         }
-        builder.append("LS,");
+        builder.append(PlayerEdge.RULE_LABEL_LS + ",");
 
         if (!canDoubleOnTenOrElevenOnly) {
             builder.append("n");
         }
-        builder.append("RDD]");
+        builder.append(PlayerEdge.RULE_LABEL_RDD + "]");
 
         return builder.toString();
     }

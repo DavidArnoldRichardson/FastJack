@@ -24,6 +24,8 @@ public enum PlayerEdge {
     static final String RULE_LABEL_RSA = "RSA";
     static final String RULE_LABEL_DAS = "DAS";
     static final String RULE_LABEL_LS = "LS";
+    static final String RULE_LABEL_HSA = "HSA";
+    static final String RULE_LABEL_RDD = "RDD";
 
     private double[] playerEdgesByNumDecks;
 

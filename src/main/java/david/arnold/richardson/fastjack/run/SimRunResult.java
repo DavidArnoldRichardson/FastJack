@@ -29,7 +29,13 @@ public class SimRunResult {
             outputter.showMessage(player.showResult());
         }
         double averageEdge = sumOfEdges / (double) numPlayers;
-        outputter.showMessage("Average player edge: " + Player.formatEdge(averageEdge));
+        double expectedEdge = table.getRules().getPlayerEdge();
+        double difference = expectedEdge - averageEdge;
+        outputter.showMessage("Average player edge: "
+                + Player.formatEdge(averageEdge)
+                + ". Expected player edge: " + Player.formatEdge(expectedEdge)
+                + ". Difference: " + Player.formatEdge(difference)
+                + ". Rules: " + table.getRules().showSummary());
         System.out.println();
 
         long tableBankrollDelta = table.getTableBankrollDelta();
@@ -52,6 +58,5 @@ public class SimRunResult {
             outputter.showMessage(errorMessage);
             throw new RuntimeException(errorMessage);
         }
-
     }
 }
