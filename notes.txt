@@ -1,0 +1,50 @@
+Running notes, for finding edge bug. 10,000,000 rounds with 7 players.
+
+4D H17_DAS
+Average player edge: -2.828%. Expected player edge: -0.595%. Difference: 2.233%. Rules: [4D,H17,nRSA,DAS,nHSA,nLS,nRDD]
+Average player edge: -2.929%. Expected player edge: -0.595%. Difference: 2.334%. Rules: [4D,H17,nRSA,DAS,nHSA,nLS,nRDD]
+Average player edge: -3.080%. Expected player edge: -0.595%. Difference: 2.485%. Rules: [4D,H17,nRSA,DAS,nHSA,nLS,nRDD]
+
+6D H17_DAS
+Average player edge: -2.851%. Expected player edge: -0.640%. Difference: 2.211%. Rules: [6D,H17,nRSA,DAS,nHSA,nLS,nRDD]
+Average player edge: -3.026%. Expected player edge: -0.640%. Difference: 2.386%. Rules: [6D,H17,nRSA,DAS,nHSA,nLS,nRDD]
+Average player edge: -3.152%. Expected player edge: -0.640%. Difference: 2.512%. Rules: [6D,H17,nRSA,DAS,nHSA,nLS,nRDD]
+Average player edge: -2.924%. Expected player edge: -0.640%. Difference: 2.284%. Rules: [6D,H17,nRSA,DAS,nHSA,nLS,nRDD]
+Average player edge: -3.050%. Expected player edge: -0.640%. Difference: 2.410%. Rules: [6D,H17,nRSA,DAS,nHSA,nLS,nRDD]
+	
+6D S17_DAS
+Average player edge: -2.053%. Expected player edge: -0.428%. Difference: 1.625%. Rules: [6D,S17,nRSA,DAS,nHSA,nLS,nRDD]
+Average player edge: -2.250%. Expected player edge: -0.428%. Difference: 1.822%. Rules: [6D,S17,nRSA,DAS,nHSA,nLS,nRDD]
+Average player edge: -1.959%. Expected player edge: -0.428%. Difference: 1.531%. Rules: [6D,S17,nRSA,DAS,nHSA,nLS,nRDD]
+Average player edge: -1.951%. Expected player edge: -0.428%. Difference: 1.523%. Rules: [6D,S17,nRSA,DAS,nHSA,nLS,nRDD]
+Average player edge: -1.874%. Expected player edge: -0.428%. Difference: 1.446%. Rules: [6D,S17,nRSA,DAS,nHSA,nLS,nRDD]
+
+6D H17
+Average player edge: -3.875%. Expected player edge: -0.784%. Difference: 3.091%. Rules: [6D,H17,nRSA,nDAS,nHSA,nLS,nRDD]
+Average player edge: -3.738%. Expected player edge: -0.784%. Difference: 2.954%. Rules: [6D,H17,nRSA,nDAS,nHSA,nLS,nRDD]
+Average player edge: -3.765%. Expected player edge: -0.784%. Difference: 2.981%. Rules: [6D,H17,nRSA,nDAS,nHSA,nLS,nRDD]
+
+6D S17
+Average player edge: -2.808%. Expected player edge: -0.569%. Difference: 2.239%. Rules: [6D,S17,nRSA,nDAS,nHSA,nLS,nRDD]
+Average player edge: -2.627%. Expected player edge: -0.569%. Difference: 2.058%. Rules: [6D,S17,nRSA,nDAS,nHSA,nLS,nRDD]
+Average player edge: -2.741%. Expected player edge: -0.569%. Difference: 2.172%. Rules: [6D,S17,nRSA,nDAS,nHSA,nLS,nRDD]
+
+6D S17_DAS_RSA_LS
+Average player edge: -1.154%. Expected player edge: -0.269%. Difference: 0.885%. Rules: [6D,S17,RSA,DAS,nHSA,LS,nRDD]
+Average player edge: -1.283%. Expected player edge: -0.269%. Difference: 1.014%. Rules: [6D,S17,RSA,DAS,nHSA,LS,nRDD]
+Average player edge: -1.264%. Expected player edge: -0.269%. Difference: 0.995%. Rules: [6D,S17,RSA,DAS,nHSA,LS,nRDD]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
