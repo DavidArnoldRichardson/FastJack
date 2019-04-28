@@ -98,7 +98,7 @@ public class Seat {
 
     private boolean createHandWithBet(long betAmount) {
         HandForPlayer hand = hands[numHandsInUse++];
-        hand.reset();
+        hand.reset(); // todo: performance tweak: can remove this line, maybe?
 
         if (betAmount == 0L) {
             table.getOutputter().playerDeclinesToBet(this);
@@ -117,7 +117,7 @@ public class Seat {
     }
 
     public void receiveSecondCard() {
-        if (isPlayingThisRound()) {
+        if (isPlayingThisRound()) { // todo: performance tweak: remove this check
             receiveCard();
             table.getOutputter().showDealtHand(this);
         }
@@ -181,7 +181,7 @@ public class Seat {
 
     public void handleDealerGotBlackjack() {
         if (isPlayingThisRound()) {
-            if (firstHand.hasBet()) {
+            if (firstHand.hasBet()) { // todo: performance tweak: remove this redundant check
                 boolean playerHandIsBlackjack = firstHand.isSoftTwentyOne();
                 if (playerHandIsBlackjack) {
                     // player pushes

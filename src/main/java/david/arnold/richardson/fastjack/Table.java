@@ -190,6 +190,8 @@ public class Table {
             } else {
                 // pay players with hands that beat the dealer's hand
                 // collect bet money from players with hands that lose against the dealer's hand
+
+                // todo: performance tweak: this was already run to see if dealer busted
                 int dealerHandValue = handForDealer.computeMaxPointSum();
                 for (int seatNumber = numSeatsInUse - 1; seatNumber >= 0; seatNumber--) {
                     seats[seatNumber].handleDealerStand(dealerHandValue);
@@ -326,6 +328,7 @@ public class Table {
         }
     }
 
+    // todo: performance tweak: return max hand point value instead
     private boolean playDealer(boolean dealerMustPlay) {
         boolean dealerBusted;
         if (dealerMustPlay) {
