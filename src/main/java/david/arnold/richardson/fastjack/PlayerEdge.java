@@ -2,22 +2,25 @@ package david.arnold.richardson.fastjack;
 
 public enum PlayerEdge {
     // These values are from Modern Blackjack, Volume 1, Second Edition, by Norm Wattenberger, page 44.
-    H17(new double[]{-0.3D, -0.599D, -0.738D, -0.784D, -0.807D}),
-    H17_RSA(new double[]{-0.26D, -0.529D, -0.654D, -0.696D, -0.717D}),
-    H17_DAS(new double[]{-0.17D, -0.456D, -0.595D, -0.640D, -0.664D}),
-    H17_DAS_RSA(new double[]{-0.12D, -0.387D, -0.512D, -0.552D, -0.573D}),
-    H17_LS(new double[]{-0.30D, -0.546D, -0.661D, -0.696D, -0.719D}),
-    H17_RSA_LS(new double[]{-0.25D, -0.476D, -0.578D, -0.609D, -0.629D}),
-    H17_DAS_LS(new double[]{-0.16D, -0.404D, -0.518D, -0.556D, -0.576D}),
-    H17_DAS_RSA_LS(new double[]{-0.12D, -0.334D, -0.434D, -0.468D, -0.486D}),
-    S17(new double[]{-0.11D, -0.395D, -0.526D, -0.569D, -0.589D}),
-    S17_RSA(new double[]{-0.06D, -0.323D, -0.44D, -0.478D, -0.496D}),
-    S17_DAS(new double[]{0.02D, -0.256D, -0.385D, -0.428D, -0.449D}),
-    S17_DAS_RSA(new double[]{0.07D, -0.184D, -0.3D, -0.337D, -0.356D}),
-    S17_LS(new double[]{-0.11D, -0.356D, -0.462D, -0.5D, -0.517D}),
-    S17_RSA_LS(new double[]{-0.07D, -0.285D, -0.377D, -0.409D, -0.423D}),
-    S17_DAS_LS(new double[]{0.02D, -0.216D, -0.324D, -0.359D, -0.374D}),
-    S17_DAS_RSA_LS(new double[]{0.06D, -0.145D, -0.239D, -0.269D, -0.281D});
+    //@formatter:off
+    //                   num decks:   1       2        4        6        8
+    H17(new double[]{                -0.30D, -0.599D, -0.738D, -0.784D, -0.807D }),
+    H17_RSA(new double[]{            -0.26D, -0.529D, -0.654D, -0.696D, -0.717D }),
+    H17_DAS(new double[]{            -0.17D, -0.456D, -0.595D, -0.640D, -0.664D }),
+    H17_DAS_RSA(new double[]{        -0.12D, -0.387D, -0.512D, -0.552D, -0.573D }),
+    H17_LS(new double[]{             -0.30D, -0.546D, -0.661D, -0.696D, -0.719D }),
+    H17_RSA_LS(new double[]{         -0.25D, -0.476D, -0.578D, -0.609D, -0.629D }),
+    H17_DAS_LS(new double[]{         -0.16D, -0.404D, -0.518D, -0.556D, -0.576D }),
+    H17_DAS_RSA_LS(new double[]{     -0.12D, -0.334D, -0.434D, -0.468D, -0.486D }),
+    S17(new double[]{                -0.11D, -0.395D, -0.526D, -0.569D, -0.589D }),
+    S17_RSA(new double[]{            -0.06D, -0.323D, -0.440D, -0.478D, -0.496D }),
+    S17_DAS(new double[]{             0.02D, -0.256D, -0.385D, -0.428D, -0.449D }),
+    S17_DAS_RSA(new double[]{         0.07D, -0.184D, -0.300D, -0.337D, -0.356D }),
+    S17_LS(new double[]{             -0.11D, -0.356D, -0.462D, -0.500D, -0.517D }),
+    S17_RSA_LS(new double[]{         -0.07D, -0.285D, -0.377D, -0.409D, -0.423D }),
+    S17_DAS_LS(new double[]{          0.02D, -0.216D, -0.324D, -0.359D, -0.374D }),
+    S17_DAS_RSA_LS(new double[]{      0.06D, -0.145D, -0.239D, -0.269D, -0.281D });
+    //@formatter:on
 
     static final String RULE_LABEL_H17 = "H17";
     static final String RULE_LABEL_S17 = "S17";

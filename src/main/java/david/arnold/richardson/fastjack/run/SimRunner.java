@@ -12,6 +12,7 @@ public abstract class SimRunner {
     protected Outputter outputterSilent = new OutputterSilentWithCarefulAccounting();
     protected Table table;
     protected boolean playIsVerbose;
+    protected boolean captureSummaryLogs;
 
     public void run() {
         try {

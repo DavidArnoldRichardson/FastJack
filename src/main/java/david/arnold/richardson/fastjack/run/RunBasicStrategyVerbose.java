@@ -18,7 +18,8 @@ public class RunBasicStrategyVerbose extends SimRunner {
     @Override
     protected Rules getRules() {
         this.playIsVerbose = true;
-        return PlayerEdge.H17_DAS.getRules(6, 125, 125);
+        this.captureSummaryLogs = false;
+        return PlayerEdge.H17_DAS.getRules(6, 78, 78);
     }
 
     @Override
@@ -28,7 +29,9 @@ public class RunBasicStrategyVerbose extends SimRunner {
 
     @Override
     public SimRunResult runHelper(Table table) {
-//        table.getOutputter().startCapturingSummaryLogs(table.getRules());
+        if (captureSummaryLogs) {
+            table.getOutputter().startCapturingSummaryLogs(table.getRules());
+        }
 
         for (int i = 0; i < getNumPlayers(); i++) {
             Player player = new Player(
